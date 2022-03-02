@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPointParser", "PowerPointParser\PowerPointParser.csproj", "{BA26371B-5CD8-448B-81A8-40523F4CE66D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerPointParserTests", "PowerPointParserTests\PowerPointParserTests.csproj", "{11037A9C-A38C-4067-AC5B-CB1898DE18BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BA26371B-5CD8-448B-81A8-40523F4CE66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA26371B-5CD8-448B-81A8-40523F4CE66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA26371B-5CD8-448B-81A8-40523F4CE66D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
