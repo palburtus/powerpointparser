@@ -1,8 +1,10 @@
 ﻿using System;
+using PowerPointParser.Model;
+
 namespace PowerPointParser
 {
     public interface IParser
     {
-        void Parse();
+        IList<Slide> ParseSpeakerNotes(string path);
     }
 }
