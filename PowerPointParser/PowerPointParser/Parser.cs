@@ -43,6 +43,8 @@ namespace PowerPointParser
 
                 var note = GetNotesSlidePart(presentationPart, slideId);
 
+                StringBuilder speakerNotesStringBuilder = new StringBuilder();
+
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
                     
@@ -58,8 +60,8 @@ namespace PowerPointParser
                             {
                                 using StringReader stringReader = new StringReader(node.OuterXml);
                                 OpenXmlParagraphWrapper? paragraphNode = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
-                                
-                                slide.SpeakerNotes += _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode);
+
+                                speakerNotesStringBuilder.Append(_htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode));
                                 
                             }
                             catch (InvalidOperationException ex)
@@ -75,7 +77,9 @@ namespace PowerPointParser
                     }
                 }
 
+                slide.SpeakerNotes = speakerNotesStringBuilder.ToString();
                 slide.SlidePosition = slidePosition;
+
                 slides.Add(slide);
 
                 slidePosition++;
