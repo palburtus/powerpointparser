@@ -8,7 +8,7 @@ namespace PowerPointParser.Model
 {
     public class Slide
     {
-        public int Index { get; set; }
+        public int SlidePosition { get; set; }
         public string? SpeakerNotes { get; set; }
     }
 }

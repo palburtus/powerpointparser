@@ -93,7 +93,7 @@ namespace PowerPointParser.Dto
         public PPr PPr { get; set; }
 
         [XmlElement(ElementName = "r")]
-        public R? R { get; set; }
+        public List<R>? R { get; set; }
 
         [XmlAttribute(AttributeName = "a")]
         public string A { get; set; }

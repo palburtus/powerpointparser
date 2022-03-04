@@ -31,8 +31,9 @@ namespace PowerPointParser.Tests
             IParser parser = new Parser(new HtmlConverter(), logger.Object);
             var slides = parser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(85, slides.Count);
+            Assert.AreEqual(3, slides.Count);
 
+            Assert.AreEqual(3, slides[2].SlidePosition);
             Assert.AreEqual("Ask devs for other examples", slides[2].SpeakerNotes);
         }
     }

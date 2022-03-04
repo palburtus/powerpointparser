@@ -35,11 +35,13 @@ namespace PowerPointParser
 
             if (presentation.SlideIdList == null) return slides;
 
+            int slidePosition = 1;
+
             foreach (var slideId in presentation.SlideIdList.Elements<SlideId>())
             {
                 Slide slide = new Slide();
 
-                var note = GetnotesSlidePart(presentationPart, slideId);
+                var note = GetNotesSlidePart(presentationPart, slideId);
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
@@ -57,7 +59,7 @@ namespace PowerPointParser
                                 using StringReader stringReader = new StringReader(node.OuterXml);
                                 OpenXmlParagraphWrapper? paragraphNode = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
                                 
-                                slide.SpeakerNotes = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode);
+                                slide.SpeakerNotes += _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode);
                                 
                             }
                             catch (InvalidOperationException ex)
@@ -73,19 +75,26 @@ namespace PowerPointParser
                     }
                 }
 
+                slide.SlidePosition = slidePosition;
                 slides.Add(slide);
-                
+
+                slidePosition++;
+
             }
 
             return slides;
         }
 
-        private static NotesSlidePart? GetnotesSlidePart(PresentationPart presentationPart, SlideId slideId)
+        private static NotesSlidePart? GetNotesSlidePart(PresentationPart presentationPart, SlideId? slideId)
         {
-            SlidePart slidePart = presentationPart.GetPartById(slideId.RelationshipId) as SlidePart;
+            if (slideId == null) return null;
+            if (slideId.RelationshipId == null) return null;
+            
+            OpenXmlPart? openXmlPart = presentationPart.GetPartById(slideId.RelationshipId!);
+            
+            SlidePart? slidePart = openXmlPart as SlidePart;
 
-            var note = slidePart.NotesSlidePart;
-            return note;
+            return slidePart?.NotesSlidePart;
         }
 
         private static bool DoesSlideHaveSpeakerNotes(NotesSlidePart? note)

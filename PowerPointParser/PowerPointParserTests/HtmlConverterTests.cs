@@ -37,12 +37,14 @@ namespace PowerPointParser.Tests
         }
 
         [TestMethod()]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_TNull_ReturnsNull()
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_REmptyNull_ReturnsNull()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            OpenXmlParagraphWrapper? wrapper = new();
-            wrapper.R = new R();
+            OpenXmlParagraphWrapper? wrapper = new()
+            {
+                R = new List<R>()
+            };
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
 

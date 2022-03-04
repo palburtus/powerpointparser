@@ -11,13 +11,18 @@ namespace PowerPointParser
     {
         public string? ConvertOpenXmlParagraphWrapperToHtml(OpenXmlParagraphWrapper? paragraphWrapper)
         {
-            //if (paragraphWrapper?.R == null) return null;
-            //return paragraphWrapper.R.T ?? null;
-
             if (paragraphWrapper == null) return null;
             if (paragraphWrapper.R == null) return null;
-            if (paragraphWrapper.R.T == null) return null;
-            return paragraphWrapper.R.T;
+            if (paragraphWrapper.R.Count == 0) return null;
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var r in paragraphWrapper.R)
+            {
+                sb.Append(r.T);
+            }
+
+            return sb.ToString();
         }
     }
 }
