@@ -16,12 +16,17 @@ namespace PowerPointParser
             if (paragraphWrapper.R.Count == 0) return null;
 
             StringBuilder sb = new StringBuilder();
+            sb.Append("<p>");
 
             foreach (var r in paragraphWrapper.R)
             {
-                sb.Append(r.T);
+                if (r.T != null)
+                {
+                    sb.Append(r.T);
+                }
             }
 
+            sb.Append("</p>");
             return sb.ToString();
         }
     }

@@ -34,10 +34,10 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(3, slides.Count);
 
             Assert.AreEqual(1, slides[0].SlidePosition);
-            Assert.AreEqual("Ask devs for other examples", slides[0].SpeakerNotes);
+            Assert.AreEqual("<p>Intro Slide </p><p>Test</p><p>One</p><p>Two</p><p>Order one</p><p>Order two</p><p>Order three</p><p>Here is a note that is not bold</p>", slides[0].SpeakerNotes);
 
             Assert.AreEqual(3, slides[2].SlidePosition);
-            Assert.AreEqual("Ask devs for other examples", slides[2].SpeakerNotes);
+            Assert.AreEqual("<p>Ask devs for other examples</p>", slides[2].SpeakerNotes);
         }
     }
 }

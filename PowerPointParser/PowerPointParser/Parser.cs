@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
@@ -13,8 +12,9 @@ namespace PowerPointParser
     public class Parser : IParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
+        private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
         private readonly IHtmlConverter _htmlConverter;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public Parser(IHtmlConverter htmlConverter, ILogger logger)
         {
@@ -35,15 +35,17 @@ namespace PowerPointParser
 
             if (presentation.SlideIdList == null) return slides;
 
+            var slideIds = presentation.SlideIdList.Elements<SlideId>();
+
             int slidePosition = 1;
 
-            foreach (var slideId in presentation.SlideIdList.Elements<SlideId>())
+            foreach (var slideId in slideIds)
             {
                 Slide slide = new Slide();
 
                 var note = GetNotesSlidePart(presentationPart, slideId);
 
-                StringBuilder speakerNotesStringBuilder = new StringBuilder();
+                StringBuilder speakerNotesStringBuilder = new ();
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
@@ -59,14 +61,15 @@ namespace PowerPointParser
                             try
                             {
                                 using StringReader stringReader = new StringReader(node.OuterXml);
-                                OpenXmlParagraphWrapper? paragraphNode = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
+                                var paragraphNode = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
 
+                                //TODO consider returning OpenXmlParagraph Wrapper here if the order can be maintained and complexity reduced
                                 speakerNotesStringBuilder.Append(_htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode));
                                 
                             }
                             catch (InvalidOperationException ex)
                             {
-                                _logger.Log(LogLevel.Error, ex, $"Slide Note Deserialization Failed");
+                                _logger.Log(LogLevel.Error, ex, "Slide Note Deserialization Failed");
                             }
                             catch (Exception ex)
                             {
@@ -131,10 +134,7 @@ namespace PowerPointParser
             MemoryStream stream = new MemoryStream(bytes);
             bodyNodeXmlDocument.Load(stream);
 
-            var pNodesList =
-                bodyNodeXmlDocument.SelectNodes("/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']",
-                    xmlNamespaceManager);
-            return pNodesList;
+            return bodyNodeXmlDocument.SelectNodes(PNodesListXPath, xmlNamespaceManager);
         }
     }
 }
