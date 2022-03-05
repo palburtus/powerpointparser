@@ -33,6 +33,9 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(3, slides.Count);
 
+            Assert.AreEqual(1, slides[0].SlidePosition);
+            Assert.AreEqual("Ask devs for other examples", slides[0].SpeakerNotes);
+
             Assert.AreEqual(3, slides[2].SlidePosition);
             Assert.AreEqual("Ask devs for other examples", slides[2].SpeakerNotes);
         }
