@@ -42,7 +42,13 @@ namespace PowerPointParser.Dto
         public SpcAft SpcAft { get; set; }
 
         [XmlElement(ElementName = "buNone")]
-        public object BuNone { get; set; }
+        public object? BuNone { get; set; }
+
+        [XmlElement(ElementName = "buFont")]
+        public BuFont BuFont { get; set; }
+
+        [XmlElement(ElementName = "buAutoNum")]
+        public BuAutoNum? BuAutoNum { get; set; }
 
         [XmlAttribute(AttributeName = "marL")]
         public int MarL { get; set; }
@@ -58,6 +64,22 @@ namespace PowerPointParser.Dto
 
         [XmlAttribute(AttributeName = "rtl")]
         public int Rtl { get; set; }
+    }
+
+    [XmlRoot(ElementName = "buFont")]
+    public class BuFont
+    {
+
+        [XmlAttribute(AttributeName = "typeface")]
+        public string Typeface { get; set; }
+    }
+
+    [XmlRoot(ElementName = "buAutoNum")]
+    public class BuAutoNum
+    {
+
+        [XmlAttribute(AttributeName = "type")]
+        public string? Type { get; set; }
     }
 
     [XmlRoot(ElementName = "rPr")]
@@ -79,7 +101,7 @@ namespace PowerPointParser.Dto
     {
 
         [XmlElement(ElementName = "rPr")]
-        public RPr RPr { get; set; }
+        public RPr? RPr { get; set; }
 
         [XmlElement(ElementName = "t")]
         public string? T { get; set; }
@@ -90,7 +112,7 @@ namespace PowerPointParser.Dto
     {
 
         [XmlElement(ElementName = "pPr")]
-        public PPr PPr { get; set; }
+        public PPr? PPr { get; set; }
 
         [XmlElement(ElementName = "r")]
         public List<R>? R { get; set; }
