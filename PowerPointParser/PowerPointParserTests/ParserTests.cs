@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PowerPointParser.Dto;
-using PowerPointParserTests.Mocks;
 
 namespace PowerPointParser.Tests
 {
@@ -17,27 +15,45 @@ namespace PowerPointParser.Tests
     public class ParserTests
     {
         [TestMethod()]
-        [DeploymentItem("TestData/v0.1_ImprovedCodingPlanfor2022.pptx")]
-        public void ParseTest()
+        [DeploymentItem("TestData/TestDeckOne.pptx")]
+        public void Parse_ParseTestDeck_ReturnsIntWrapperMap()
         {
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "v0.1_ImprovedCodingPlanFor2022.pptx");
+            var path = System.IO.Path.Combine(directory!, "TestDeckOne.pptx");
+            
 
-            IHtmlConverter htmlConverter = new MockHtmlConverter();
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            IParser parser = new Parser(new HtmlConverter(), logger.Object);
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(4, map.Keys.Count);
+        }
+
+        [TestMethod()]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
+        {
+            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
 
 
             Mock<ILogger> logger = new Mock<ILogger>();
 
             IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var slides = parser.ParseSpeakerNotes(path);
+            var map = parser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(3, slides.Count);
+            Assert.AreEqual(2, map.Keys.Count);
 
-            Assert.AreEqual(1, slides[0].SlidePosition);
-            Assert.AreEqual("<p>Intro Slide </p><p>Test</p><p>One</p><p>Two</p><p>Order one</p><p>Order two</p><p>Order three</p><p>Here is a note that is not bold</p>", slides[0].SpeakerNotes);
+            var actual = map[2][0];
 
-            Assert.AreEqual(3, slides[2].SlidePosition);
-            Assert.AreEqual("<p>Ask devs for other examples</p>", slides[2].SpeakerNotes);
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.PPr);
+            Assert.AreEqual("This note is just a paragraph", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+            Assert.IsNull(actual.Text);
         }
     }
 }
