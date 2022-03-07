@@ -95,7 +95,7 @@ namespace PowerPointParser.Tests
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
 
-            Assert.AreEqual("<p><b>hello world</b></p>", actual);
+            Assert.AreEqual("<p><strong>hello world</strong></p>", actual);
         }
 
         [TestMethod()]
@@ -119,7 +119,7 @@ namespace PowerPointParser.Tests
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
 
-            Assert.AreEqual("<li><b>hello world</b></li>", actual);
+            Assert.AreEqual("<li><strong>hello world</strong></li>", actual);
         }
     }
 }

@@ -27,11 +27,11 @@ namespace PowerPointParser
                 if (r.T != null)
                 {
                     if (isListItem) sb.Append("<li>");
-                    if (IsBold(r)) sb.Append("<b>");
+                    if (IsBold(r)) sb.Append("<strong>");
 
                     sb.Append(r.T);
 
-                    if (IsBold(r)) sb.Append("</b>");
+                    if (IsBold(r)) sb.Append("</strong>");
                     if (isListItem) sb.Append("</li>");
                 }
             }
