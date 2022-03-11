@@ -1,12 +1,15 @@
 ﻿using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using Microsoft.Extensions.Logging;
 using PowerPointParser.Dto;
 using Slide = PowerPointParser.Model.Slide;
+using System.IO;
+using System;
 
 namespace PowerPointParser
 {
