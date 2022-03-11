@@ -128,6 +128,7 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actualOne.Text);
             Assert.AreEqual(1, actualOne.R!.Count);
             Assert.AreEqual(0, actualOne.PPr!.Lvl);
+            Assert.AreEqual("•", actualOne.PPr!.BuChar!.Char);
             Assert.AreEqual("Unordered item 1", actualOne.R![0].T);
             Assert.AreEqual(0, actualOne.R![0].RPr!.B);
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
@@ -139,6 +140,7 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actualTwo.Text);
             Assert.AreEqual(1, actualTwo.R!.Count);
             Assert.AreEqual(0, actualTwo.PPr!.Lvl);
+            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
             Assert.AreEqual("Unordered item 2", actualTwo.R![0].T);
             Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
             Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
@@ -150,6 +152,7 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actualThree.Text);
             Assert.AreEqual(1, actualThree.R!.Count);
             Assert.AreEqual(0, actualThree.PPr!.Lvl);
+            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
             Assert.AreEqual("Unordered item 3", actualThree.R![0].T);
             Assert.AreEqual(0, actualThree.R![0].RPr!.B);
             Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
@@ -179,7 +182,8 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actualOne.Text);
             Assert.AreEqual(1, actualOne.R!.Count);
             Assert.AreEqual(0, actualOne.PPr!.Lvl);
-            Assert.AreEqual("Unordered item 1", actualOne.R![0].T);
+            Assert.AreEqual("•", actualOne.PPr!.BuChar!.Char);
+            Assert.AreEqual("Indent Unordered item 1", actualOne.R![0].T);
             Assert.AreEqual(0, actualOne.R![0].RPr!.B);
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
@@ -190,7 +194,8 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actualTwo.Text);
             Assert.AreEqual(1, actualTwo.R!.Count);
             Assert.AreEqual(1, actualTwo.PPr!.Lvl);
-            Assert.AreEqual("Unordered item 2", actualTwo.R![0].T);
+            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
+            Assert.AreEqual("Indent Unordered item 2", actualTwo.R![0].T);
             Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
             Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
@@ -199,13 +204,26 @@ namespace PowerPointParser.Tests
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
-            Assert.AreEqual(1, actualThree.R!.Count);
+            Assert.AreEqual(2, actualThree.R!.Count);
             Assert.AreEqual(2, actualThree.PPr!.Lvl);
-            Assert.AreEqual("Unordered item 3", actualThree.R![0].T);
+            Assert.AreEqual("•", actualThree.PPr!.BuChar!.Char);
+            Assert.AreEqual("Indent Unordered ", actualThree.R![0].T);
             Assert.AreEqual(0, actualThree.R![0].RPr!.B);
             Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
 
+            Assert.AreEqual("item 3", actualThree.R![1].T);
+            Assert.AreEqual(0, actualThree.R![1].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![1].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![1].RPr!.Lang);
+
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
+        {
+            Assert.Fail();
         }
     }
 }

@@ -45,7 +45,10 @@ namespace PowerPointParser.Dto
         public object? BuNone { get; set; }
 
         [XmlElement(ElementName = "buFont")]
-        public BuFont BuFont { get; set; }
+        public BuFont? BuFont { get; set; }
+
+        [XmlElement(ElementName = "buChar")]
+        public BuChar? BuChar { get; set; }
 
         [XmlElement(ElementName = "buAutoNum")]
         public BuAutoNum? BuAutoNum { get; set; }
@@ -72,6 +75,14 @@ namespace PowerPointParser.Dto
 
         [XmlAttribute(AttributeName = "typeface")]
         public string Typeface { get; set; }
+    }
+
+    [XmlRoot(ElementName = "buChar")]
+    public class BuChar
+    {
+
+        [XmlAttribute(AttributeName = "char")]
+        public string Char { get; set; }
     }
 
     [XmlRoot(ElementName = "buAutoNum")]
