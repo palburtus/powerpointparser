@@ -1,11 +1,12 @@
 ﻿using System;
+
 using System.Collections.Generic;
-using PowerPointParser.Model;
+using PowerPointParser.Dto;
 
 namespace PowerPointParser
 {
     public interface IParser
     {
-        IList<Slide> ParseSpeakerNotes(string path);
+        IDictionary<int, IList<OpenXmlParagraphWrapper>> ParseSpeakerNotes(string path);
     }
 }

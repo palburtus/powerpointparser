@@ -20,11 +20,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Mocks\" />
     <Folder Include="SampleOutput\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData\v0.1_ImprovedCodingPlanFor2022.pptx">
+    <None Update="TestData\TestDeckOne.pptx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\TestDeckParagraph.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

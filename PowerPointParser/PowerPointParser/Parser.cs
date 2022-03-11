@@ -1,23 +1,22 @@
 ﻿using System.Text;
 using System.Xml;
-using System.Xml.Linq;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using Microsoft.Extensions.Logging;
 using PowerPointParser.Dto;
-using Slide = PowerPointParser.Model.Slide;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace PowerPointParser
 {
     public class Parser : IParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
+        private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
         private readonly IHtmlConverter _htmlConverter;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public Parser(IHtmlConverter htmlConverter, ILogger logger)
         {
@@ -25,32 +24,30 @@ namespace PowerPointParser
             _logger = logger;
         }
 
-        public IList<Slide> ParseSpeakerNotes(string path)
+        public IDictionary<int, IList<OpenXmlParagraphWrapper>> ParseSpeakerNotes(string path)
         {
-            IList<Slide> slides = new List<Slide>();
+            var slidesContentMap = new Dictionary<int, IList<OpenXmlParagraphWrapper>>();
 
             using PresentationDocument presentationDocument = PresentationDocument.Open(path, false);
             var presentationPart = presentationDocument.PresentationPart;
 
-            if (presentationPart == null) return slides;
+            if (presentationPart == null) return slidesContentMap;
 
             var presentation = presentationPart.Presentation;
 
-            if (presentation.SlideIdList == null) return slides;
+            if (presentation.SlideIdList == null) return slidesContentMap;
 
-            int slidePosition = 1;
+            var slideIds = presentation.SlideIdList.Elements<SlideId>();
 
-            foreach (var slideId in presentation.SlideIdList.Elements<SlideId>())
+            int slideIndex = 1;
+
+            foreach (var slideId in slideIds)
             {
-                Slide slide = new Slide();
-
                 var note = GetNotesSlidePart(presentationPart, slideId);
-
-                StringBuilder speakerNotesStringBuilder = new StringBuilder();
+                var openXmlParagraphWrappers = new List<OpenXmlParagraphWrapper>();
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
-                    
                     var pNodesList = ParsePNodesList(note!);
 
                     if (pNodesList != null)
@@ -58,18 +55,15 @@ namespace PowerPointParser
                         XmlSerializer xmlSerializer = new XmlSerializer(typeof(OpenXmlParagraphWrapper));
                         foreach (XmlNode node in pNodesList)
                         {
-
                             try
                             {
                                 using StringReader stringReader = new StringReader(node.OuterXml);
-                                OpenXmlParagraphWrapper? paragraphNode = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
-
-                                speakerNotesStringBuilder.Append(_htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(paragraphNode));
-                                
+                                var wrapper = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
+                                openXmlParagraphWrappers.Add(wrapper);
                             }
                             catch (InvalidOperationException ex)
                             {
-                                _logger.Log(LogLevel.Error, ex, $"Slide Note Deserialization Failed");
+                                _logger.Log(LogLevel.Error, ex, "Slide Note Deserialization Failed");
                             }
                             catch (Exception ex)
                             {
@@ -79,17 +73,12 @@ namespace PowerPointParser
                         }
                     }
                 }
-
-                slide.SpeakerNotes = speakerNotesStringBuilder.ToString();
-                slide.SlidePosition = slidePosition;
-
-                slides.Add(slide);
-
-                slidePosition++;
-
+                
+                slidesContentMap.Add(slideIndex, openXmlParagraphWrappers);
+                slideIndex++;
             }
 
-            return slides;
+            return slidesContentMap;
         }
 
         private static NotesSlidePart? GetNotesSlidePart(PresentationPart presentationPart, SlideId? slideId)
@@ -134,10 +123,7 @@ namespace PowerPointParser
             MemoryStream stream = new MemoryStream(bytes);
             bodyNodeXmlDocument.Load(stream);
 
-            var pNodesList =
-                bodyNodeXmlDocument.SelectNodes("/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']",
-                    xmlNamespaceManager);
-            return pNodesList;
+            return bodyNodeXmlDocument.SelectNodes(PNodesListXPath, xmlNamespaceManager);
         }
     }
 }
