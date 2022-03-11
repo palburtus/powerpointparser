@@ -3,28 +3,31 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Moq;
 
+// ReSharper disable once CheckNamespace
 namespace PowerPointParser.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class ParserTests
     {
+        private static string? _directory;
+        private static string? _path;
+        private static Mock<ILogger>? _logger;
+
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
-
+            _directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            _path = Path.Combine(_directory!, "TestDeckParagraph.pptx");
+            _logger = new Mock<ILogger>();
         }
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckOne.pptx")]
         public void Parse_ParseTestDeck_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckOne.pptx");
+            var path = Path.Combine(_directory!, "TestDeckOne.pptx");
 
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
             var map = parser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(4, map.Keys.Count);
@@ -34,14 +37,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[2][0];
 
@@ -59,14 +56,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[3][1];
 
@@ -85,14 +76,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseBoldParagraph_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[4][0];
 
@@ -111,14 +96,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[5].Count);
 
@@ -165,14 +144,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[6].Count);
 
@@ -217,14 +190,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[7].Count);
 
@@ -272,14 +239,8 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
-
-
-            Mock<ILogger> logger = new Mock<ILogger>();
-
-            IParser parser = new Parser(new HtmlConverter(), logger.Object);
-            var map = parser.ParseSpeakerNotes(path);
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(4, map[8].Count);
 
