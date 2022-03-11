@@ -7,6 +7,6 @@ namespace PowerPointParser
 {
     public interface IParser
     {
-        IDictionary<int, IList<OpenXmlParagraphWrapper>> ParseSpeakerNotes(string path);
+        IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path);
     }
 }

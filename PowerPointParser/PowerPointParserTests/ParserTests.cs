@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable once CheckNamespace - Test namespaces should match production
 namespace PowerPointParser.Tests
 {
     [TestClass]
@@ -40,7 +40,7 @@ namespace PowerPointParser.Tests
             IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
-            var actual = map[2][0];
+            var actual = map[2][0]!;
 
             Assert.IsNull(actual.A);
             Assert.IsNull(actual.PPr);
@@ -59,7 +59,7 @@ namespace PowerPointParser.Tests
             IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
-            var actual = map[3][1];
+            var actual = map[3][1]!;
 
             Assert.IsNull(actual.A);
             Assert.IsNull(actual.PPr);
@@ -79,7 +79,7 @@ namespace PowerPointParser.Tests
             IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
-            var actual = map[4][0];
+            var actual = map[4][0]!;
 
             Assert.IsNull(actual.A);
             Assert.IsNull(actual.PPr);
@@ -101,7 +101,7 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(3, map[5].Count);
 
-            var actualOne = map[5][0];
+            var actualOne = map[5][0]!;
 
             Assert.IsNull(actualOne.A);
             Assert.IsNull(actualOne.Text);
@@ -113,7 +113,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
 
-            var actualTwo = map[5][1];
+            var actualTwo = map[5][1]!;
 
             Assert.IsNull(actualTwo.A);
             Assert.IsNull(actualTwo.Text);
@@ -125,7 +125,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
 
-            var actualThree = map[5][2];
+            var actualThree = map[5][2]!;
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
@@ -149,7 +149,7 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(3, map[6].Count);
 
-            var actualOne = map[6][0];
+            var actualOne = map[6][0]!;
 
             Assert.IsNull(actualOne.A);
             Assert.IsNull(actualOne.Text);
@@ -161,7 +161,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
 
-            var actualTwo = map[6][1];
+            var actualTwo = map[6][1]!;
 
             Assert.IsNull(actualTwo.A);
             Assert.IsNull(actualTwo.Text);
@@ -173,7 +173,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
 
-            var actualThree = map[6][2];
+            var actualThree = map[6][2]!;
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
@@ -195,7 +195,7 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(3, map[7].Count);
 
-            var actualOne = map[7][0];
+            var actualOne = map[7][0]!;
 
             Assert.IsNull(actualOne.A);
             Assert.IsNull(actualOne.Text);
@@ -208,7 +208,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
 
-            var actualTwo = map[7][1];
+            var actualTwo = map[7][1]!;
 
             Assert.IsNull(actualTwo.A);
             Assert.IsNull(actualTwo.Text);
@@ -221,7 +221,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
 
-            var actualThree = map[7][2];
+            var actualThree = map[7][2]!;
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
@@ -244,7 +244,7 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(4, map[8].Count);
 
-            var actualOne = map[8][0];
+            var actualOne = map[8][0]!;
 
             Assert.IsNull(actualOne.A);
             Assert.IsNull(actualOne.Text);
@@ -257,7 +257,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
 
-            var actualTwo = map[8][1];
+            var actualTwo = map[8][1]!;
 
             Assert.IsNull(actualTwo.A);
             Assert.IsNull(actualTwo.Text);
@@ -275,7 +275,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualTwo.R![1].RPr!.Dirty);
             Assert.AreEqual("en-US", actualTwo.R![1].RPr!.Lang);
 
-            var actualThree = map[8][2];
+            var actualThree = map[8][2]!;
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
@@ -303,7 +303,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualThree.R![3].RPr!.Dirty);
             Assert.AreEqual("en-US", actualThree.R![3].RPr!.Lang);
 
-            var actualFour = map[8][3];
+            var actualFour = map[8][3]!;
 
             Assert.IsNull(actualFour.A);
             Assert.IsNull(actualFour.Text);
@@ -326,7 +326,7 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual(1, map[9].Count);
 
-            var actual = map[9][0];
+            var actual = map[9][0]!;
 
             Assert.IsNull(actual.A);
             Assert.IsNull(actual.Text);

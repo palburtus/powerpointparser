@@ -24,7 +24,7 @@ namespace PowerPointParser
             _logger = logger;
         }
 
-        public IDictionary<int, IList<OpenXmlParagraphWrapper>> ParseSpeakerNotes(string path)
+        public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path)
         {
             var slidesContentMap = new Dictionary<int, IList<OpenXmlParagraphWrapper>>();
 
