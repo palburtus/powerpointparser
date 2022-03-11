@@ -99,6 +99,54 @@ namespace PowerPointParser.Tests
         }
 
         [TestMethod()]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_ConsectiveParagraph_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            var rs = new List<R>();
+            var r = new R
+            {
+                T = "hello"
+            };
+            rs.Add(r);
+
+            OpenXmlParagraphWrapper? wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs
+            };
+
+            var rs2 = new List<R>();
+            var r2 = new R
+            {
+                T = "world"
+            };
+            rs2.Add(r2);
+
+            OpenXmlParagraphWrapper? wrapper2 = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs2
+            };
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
+            actual += converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper2);
+
+            Assert.AreEqual("<p>hello</p><p>world</p>", actual);
+        }
+        /*
+         * Assert.AreEqual("And this is a ", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+            Assert.AreEqual("second paragraph", actual.R![1].T);
+            Assert.AreEqual(0, actual.R![1].RPr!.B);
+            Assert.AreEqual(0, actual.R![1].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![1].RPr!.Lang);
+         */
+
+        [TestMethod()]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItem_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
