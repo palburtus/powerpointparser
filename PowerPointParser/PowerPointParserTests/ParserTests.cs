@@ -204,26 +204,157 @@ namespace PowerPointParser.Tests
 
             Assert.IsNull(actualThree.A);
             Assert.IsNull(actualThree.Text);
-            Assert.AreEqual(2, actualThree.R!.Count);
+            Assert.AreEqual(1, actualThree.R!.Count);
             Assert.AreEqual(2, actualThree.PPr!.Lvl);
             Assert.AreEqual("•", actualThree.PPr!.BuChar!.Char);
-            Assert.AreEqual("Indent Unordered ", actualThree.R![0].T);
+            Assert.AreEqual("Indent Unordered item 3", actualThree.R![0].T);
             Assert.AreEqual(0, actualThree.R![0].RPr!.B);
             Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
+        }
 
-            Assert.AreEqual("item 3", actualThree.R![1].T);
-            Assert.AreEqual(0, actualThree.R![1].RPr!.B);
-            Assert.AreEqual(0, actualThree.R![1].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualThree.R![1].RPr!.Lang);
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
+        {
+            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
 
+
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            IParser parser = new Parser(new HtmlConverter(), logger.Object);
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(3, map[7].Count);
+
+            var actualOne = map[7][0];
+
+            Assert.IsNull(actualOne.A);
+            Assert.IsNull(actualOne.Text);
+            Assert.IsNull(actualOne.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualOne.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actualOne.R!.Count);
+            Assert.AreEqual(0, actualOne.PPr!.Lvl);
+            Assert.AreEqual("Ordered one", actualOne.R![0].T);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.B);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+
+            var actualTwo = map[7][1];
+
+            Assert.IsNull(actualTwo.A);
+            Assert.IsNull(actualTwo.Text);
+            Assert.IsNull(actualTwo.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualTwo.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actualTwo.R!.Count);
+            Assert.AreEqual(0, actualTwo.PPr!.Lvl);
+            Assert.AreEqual("Ordered two", actualTwo.R![0].T);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
+
+            var actualThree = map[7][2];
+
+            Assert.IsNull(actualThree.A);
+            Assert.IsNull(actualThree.Text);
+            Assert.IsNull(actualThree.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualThree.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actualThree.R!.Count);
+            Assert.AreEqual(0, actualThree.PPr!.Lvl);
+            Assert.AreEqual("Ordered three", actualThree.R![0].T);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
         }
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
         {
-            Assert.Fail();
+            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var path = System.IO.Path.Combine(directory!, "TestDeckParagraph.pptx");
+
+
+            Mock<ILogger> logger = new Mock<ILogger>();
+
+            IParser parser = new Parser(new HtmlConverter(), logger.Object);
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(4, map[8].Count);
+
+            var actualOne = map[8][0];
+
+            Assert.IsNull(actualOne.A);
+            Assert.IsNull(actualOne.Text);
+            Assert.IsNull(actualOne.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualOne.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actualOne.R!.Count);
+            Assert.AreEqual(0, actualOne.PPr!.Lvl);
+            Assert.AreEqual("Indent Ordered One", actualOne.R![0].T);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.B);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+
+            var actualTwo = map[8][1];
+
+            Assert.IsNull(actualTwo.A);
+            Assert.IsNull(actualTwo.Text);
+            Assert.IsNull(actualTwo.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualTwo.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(2, actualTwo.R!.Count);
+            Assert.AreEqual(1, actualTwo.PPr!.Lvl);
+            Assert.AreEqual("Indent Ordered One ", actualTwo.R![0].T);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
+
+            Assert.AreEqual("One", actualTwo.R![1].T);
+            Assert.AreEqual(0, actualTwo.R![1].RPr!.B);
+            Assert.AreEqual(0, actualTwo.R![1].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualTwo.R![1].RPr!.Lang);
+
+            var actualThree = map[8][2];
+
+            Assert.IsNull(actualThree.A);
+            Assert.IsNull(actualThree.Text);
+            Assert.IsNull(actualThree.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualThree.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(4, actualThree.R!.Count);
+            Assert.AreEqual(2, actualThree.PPr!.Lvl);
+            Assert.AreEqual("Indent Order One ", actualThree.R![0].T);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
+
+            Assert.AreEqual("One", actualThree.R![1].T);
+            Assert.AreEqual(0, actualThree.R![1].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![1].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![1].RPr!.Lang);
+
+            Assert.AreEqual("", actualThree.R![2].T);
+            Assert.AreEqual(0, actualThree.R![2].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![2].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![2].RPr!.Lang);
+
+            Assert.AreEqual("One", actualThree.R![3].T);
+            Assert.AreEqual(0, actualThree.R![3].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![3].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![3].RPr!.Lang);
+
+            var actualFour = map[8][3];
+
+            Assert.IsNull(actualFour.A);
+            Assert.IsNull(actualFour.Text);
+            Assert.IsNull(actualFour.PPr!.BuChar);
+            Assert.AreEqual("arabicPeriod", actualFour.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actualFour.R!.Count);
+            Assert.AreEqual(0, actualFour.PPr!.Lvl);
+            Assert.AreEqual("Indent Ordered Three", actualFour.R![0].T);
+            Assert.AreEqual(0, actualFour.R![0].RPr!.B);
+            Assert.AreEqual(0, actualFour.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualFour.R![0].RPr!.Lang);
+
         }
     }
 }

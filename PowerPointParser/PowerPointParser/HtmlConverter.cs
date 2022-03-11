@@ -19,24 +19,23 @@ namespace PowerPointParser
 
 
             bool isListItem = IsListItem(paragraphWrapper);
-            
-            if (!isListItem) sb.Append("<p>");
+
+            sb.Append(!isListItem ? "<p>" : "<li>");
 
             foreach (var r in paragraphWrapper.R)
             {
                 if (r.T != null)
                 {
-                    if (isListItem) sb.Append("<li>");
+                    
                     if (IsBold(r)) sb.Append("<strong>");
 
                     sb.Append(r.T);
 
                     if (IsBold(r)) sb.Append("</strong>");
-                    if (isListItem) sb.Append("</li>");
                 }
             }
 
-            if (!isListItem) sb.Append("</p>");
+            sb.Append(!isListItem ? "</p>" : "</li>");
 
             return sb.ToString();
         }
@@ -54,7 +53,18 @@ namespace PowerPointParser
         {
             if(paragraphWrapper == null) return false;
             if(paragraphWrapper.PPr == null) return false;
-            return paragraphWrapper.PPr.BuNone == null;
+
+            if (paragraphWrapper.PPr.BuAutoNum != null)
+            {
+                return paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
+            }
+
+            if (paragraphWrapper.PPr.BuChar != null)
+            {
+                return paragraphWrapper.PPr.BuChar.Char == "•";
+            }
+
+            return false;
         }
 
         private bool IsBold(R? r)

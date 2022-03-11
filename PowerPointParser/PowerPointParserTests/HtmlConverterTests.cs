@@ -99,7 +99,7 @@ namespace PowerPointParser.Tests
         }
 
         [TestMethod()]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_ConsectiveParagraph_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_ConsecutiveParagraph_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
@@ -134,17 +134,28 @@ namespace PowerPointParser.Tests
 
             Assert.AreEqual("<p>hello</p><p>world</p>", actual);
         }
-        /*
-         * Assert.AreEqual("And this is a ", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.B);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
 
-            Assert.AreEqual("second paragraph", actual.R![1].T);
-            Assert.AreEqual(0, actual.R![1].RPr!.B);
-            Assert.AreEqual(0, actual.R![1].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![1].RPr!.Lang);
-         */
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OneLineInTwoRRecords_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            var rs = new List<R>();
+            var rOne = new R { T = "hello " };
+            var rTwo = new R { T = "world" };
+            rs.Add(rOne);
+            rs.Add(rTwo);
+
+            OpenXmlParagraphWrapper? wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs
+            };
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
+
+            Assert.AreEqual("<p>hello world</p>", actual);
+        }
 
         [TestMethod()]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItem_ReturnsString()
@@ -161,13 +172,60 @@ namespace PowerPointParser.Tests
 
             OpenXmlParagraphWrapper? wrapper = new()
             {
-                PPr = new PPr {BuNone = null},
+                PPr = new PPr {BuNone = null, BuChar = new BuChar{ Char =  "•" }},
                 R = rs
             };
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
 
             Assert.AreEqual("<li><strong>hello world</strong></li>", actual);
+        }
+
+        [TestMethod()]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItem_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            var rs = new List<R>();
+            var r = new R { T = "hello world" };
+            rs.Add(r);
+
+            OpenXmlParagraphWrapper? wrapper = new()
+            {
+                PPr = new PPr { BuAutoNum = new BuAutoNum{ Type = "arabicPeriod"}},
+                R = rs
+            };
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
+
+            Assert.AreEqual("<li>hello world</li>", actual);
+        }
+
+        [TestMethod()]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_EmbeddedOrderedListItem_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            var rs = new List<R>();
+            var rOne = new R { T = "hello " };
+            var rTwo = new R { T = "world" };
+            var rThree = new R { T = " " };
+            var rFour = new R { T = "test" };
+
+            rs.Add(rOne);
+            rs.Add(rTwo);
+            rs.Add(rThree);
+            rs.Add(rFour);
+
+            OpenXmlParagraphWrapper? wrapper = new()
+            {
+                PPr = new PPr { BuAutoNum = new BuAutoNum { Type = "arabicPeriod" } },
+                R = rs
+            };
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapper);
+
+            Assert.AreEqual("<li>hello world test</li>", actual);
         }
     }
 }
