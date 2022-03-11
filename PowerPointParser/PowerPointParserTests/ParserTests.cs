@@ -315,7 +315,25 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actualFour.R![0].RPr!.B);
             Assert.AreEqual(0, actualFour.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualFour.R![0].RPr!.Lang);
+        }
 
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
+
+            Assert.AreEqual(1, map[9].Count);
+
+            var actual = map[9][0];
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual("Here a link: https://www.google.com/", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
         }
     }
 }
