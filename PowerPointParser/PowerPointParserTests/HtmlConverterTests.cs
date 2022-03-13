@@ -286,13 +286,13 @@ namespace PowerPointParser.Tests
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("goodbye world"));
             queue.Enqueue(BuildUnorderedListItem("test world"));
-            queue.Enqueue(BuildOrderListItem("hello world"));
-            queue.Enqueue(BuildOrderListItem("goodbye world"));
-            queue.Enqueue(BuildOrderListItem("test world"));
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three"));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><ol><li>hello world</li><li>goodbye world</li><li>test world</li></ol>", actual);
+            Assert.AreEqual("<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><ol><li>one</li><li>two</li><li>three</li></ol>", actual);
         }
 
         private static OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)

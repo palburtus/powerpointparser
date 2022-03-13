@@ -12,7 +12,7 @@ namespace PowerPointParser
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
         }
 
-        public string? ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
+        private string? ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
         {
             if (paragraphWrappers == null) { return null; }
             
@@ -38,6 +38,11 @@ namespace PowerPointParser
                     if (IsFirstListItem(previous, paragraphWrapper))
                     {
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                    }
+
+                    if (IsListOrderTypeChanged(previous, paragraphWrapper))
+                    {
+                        sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
                     }
 
                     sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
@@ -67,6 +72,11 @@ namespace PowerPointParser
         private static bool IsLastListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
         {
             return IsListItem(current) && previous == null;
+        }
+
+        private static bool IsListOrderTypeChanged(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
+        {
+            return IsUnOrderedListItem(previous) && IsOrderedListItem(current);
         }
 
         private static bool IsFirstListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
@@ -113,6 +123,12 @@ namespace PowerPointParser
             sb.Append(!isListItem ? "</p>" : "</li>");
 
             return sb.ToString();
+        }
+
+        private static bool IsUnOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
+        {
+            if (paragraphWrapper?.PPr?.BuChar == null) return false;
+            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuChar.Char == "•";
         }
 
         private static bool IsOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
