@@ -5,11 +5,11 @@ using PowerPointParser.Dto;
 // ReSharper disable once CheckNamespace - Test namespaces should match production
 namespace PowerPointParser.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class HtmlConverterTests
     {
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_WrapperListNull_ReturnsNull()
         {
             IHtmlConverter converter = new HtmlConverter();
@@ -21,7 +21,7 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_WrapperNull_ReturnsNull()
         {
             IHtmlConverter converter = new HtmlConverter();
@@ -35,12 +35,12 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_RNull_ReturnsNull()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            OpenXmlParagraphWrapper wrapper = new ();
+            OpenXmlParagraphWrapper wrapper = new();
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(wrapper);
 
@@ -49,7 +49,7 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_REmptyNull_ReturnsNull()
         {
             IHtmlConverter converter = new HtmlConverter();
@@ -67,77 +67,46 @@ namespace PowerPointParser.Tests
             Assert.IsNull(actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_ParagraphTag_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r = new R
-            {
-                T = "hello world"
-            };
-            rs.Add(r);
-
-            OpenXmlParagraphWrapper wrapper = new()
-            {
-                PPr = new PPr { BuNone = new object() },
-                R = rs
-            };
-
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(wrapper);
+            queue.Enqueue(BuildParagraphLine("hello world"));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p>hello world</p>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_BoldTag_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r = new R
-            {
-                RPr = new RPr { B = 1 },
-                T = "hello world"
-            };
-            rs.Add(r);
-
-            OpenXmlParagraphWrapper wrapper = new()
-            {
-                PPr = new PPr { BuNone = new object() },
-                R = rs
-            };
-
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(wrapper);
+            queue.Enqueue(BuildParagraphLine("hello world", new RPr { B = 1 }));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p><strong>hello world</strong></p>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_BoldAndNonBuildMix_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r1 = new R
+            var rs = new List<R>
             {
-                RPr = new RPr { B = 1 },
-                T = "hello:"
+                BuildR("hello:", new RPr {B = 1}),
+                BuildR(" world")
             };
-            var r2 = new R {T = " world"};
-            rs.Add(r1);
-            rs.Add(r2);
 
             OpenXmlParagraphWrapper wrapper = new()
             {
-                PPr = new PPr { BuNone = new object() },
+                PPr = new PPr {BuNone = new object()},
                 R = rs
             };
 
@@ -149,42 +118,16 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<p><strong>hello:</strong> world</p>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_ConsecutiveParagraph_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r = new R
-            {
-                T = "hello"
-            };
-            rs.Add(r);
-
-            OpenXmlParagraphWrapper wrapper = new()
-            {
-                PPr = new PPr { BuNone = new object() },
-                R = rs
-            };
-
-            var rs2 = new List<R>();
-            var r2 = new R
-            {
-                T = "world"
-            };
-            rs2.Add(r2);
-
-            OpenXmlParagraphWrapper wrapper2 = new()
-            {
-                PPr = new PPr { BuNone = new object() },
-                R = rs2
-            };
-
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(wrapper);
+            queue.Enqueue(BuildParagraphLine("hello"));
 
             Queue<OpenXmlParagraphWrapper?> queue2 = new();
-            queue2.Enqueue(wrapper2);
+            queue2.Enqueue(BuildParagraphLine("world"));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
             actual += converter.ConvertOpenXmlParagraphWrapperToHtml(queue2);
@@ -198,14 +141,14 @@ namespace PowerPointParser.Tests
             IHtmlConverter converter = new HtmlConverter();
 
             var rs = new List<R>();
-            var rOne = new R { T = "hello " };
-            var rTwo = new R { T = "world" };
+            var rOne = new R {T = "hello "};
+            var rTwo = new R {T = "world"};
             rs.Add(rOne);
             rs.Add(rTwo);
 
             OpenXmlParagraphWrapper wrapper = new()
             {
-                PPr = new PPr { BuNone = new object() },
+                PPr = new PPr {BuNone = new object()},
                 R = rs
             };
 
@@ -217,67 +160,34 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<p>hello world</p>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItem_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r = new R
-            {
-                RPr = new RPr { B = 1 },
-                T = "hello world"
-            };
-            rs.Add(r);
-
-            OpenXmlParagraphWrapper wrapper = new()
-            {
-                PPr = new PPr {BuNone = null, BuChar = new BuChar{ Char =  "•" }},
-                R = rs
-            };
-
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(wrapper);
+            queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { B = 1 }));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ul><li><strong>hello world</strong></li></ul>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItems_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            var rs = new List<R>();
-            var r = new R
-            {
-                T = "hello world"
-            };
-            rs.Add(r);
-
-            OpenXmlParagraphWrapper wrapper = new()
-            {
-                PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } },
-                R = rs
-            };
-
-            OpenXmlParagraphWrapper wrapper2 = new()
-            {
-                PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } },
-                R = rs
-            };
-
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(wrapper);
-            queue.Enqueue(wrapper2);
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ul><li>hello world</li><li>hello world</li></ul>", actual);
+            Assert.AreEqual("<ul><li>hello world</li><li>goodbye world</li></ul>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItem_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
@@ -292,16 +202,16 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_EmbeddedOrderedListItem_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
             var rs = new List<R>();
-            var rOne = new R { T = "hello " };
-            var rTwo = new R { T = "world" };
-            var rThree = new R { T = " " };
-            var rFour = new R { T = "test" };
+            var rOne = new R {T = "hello "};
+            var rTwo = new R {T = "world"};
+            var rThree = new R {T = " "};
+            var rFour = new R {T = "test"};
 
             rs.Add(rOne);
             rs.Add(rTwo);
@@ -310,7 +220,7 @@ namespace PowerPointParser.Tests
 
             OpenXmlParagraphWrapper wrapper = new()
             {
-                PPr = new PPr { BuAutoNum = new BuAutoNum { Type = "arabicPeriod" } },
+                PPr = new PPr {BuAutoNum = new BuAutoNum {Type = "arabicPeriod"}},
                 R = rs
             };
 
@@ -322,7 +232,7 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<ol><li>hello world test</li></ol>", actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItems_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
@@ -337,18 +247,43 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<ol><li>hello world</li><li>goodbye world</li><li>test world</li></ol>", actual);
         }
 
-        private OpenXmlParagraphWrapper BuildOrderListItem(string text)
+        private OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null)
+        {
+            var wrapper = BuildListItem(text, rPr);
+            wrapper.PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } };
+            return wrapper;
+        }
+
+        private OpenXmlParagraphWrapper BuildOrderListItem(string text, RPr? rPr = null)
+        {
+            var wrapper = BuildListItem(text, rPr);
+            wrapper.PPr = new PPr {BuAutoNum = new BuAutoNum {Type = "arabicPeriod"}};
+            return wrapper;
+        }
+
+        private OpenXmlParagraphWrapper BuildParagraphLine(string text, RPr? rPr = null)
+        {
+            var wrapper = BuildListItem(text, rPr);
+            wrapper.PPr = new PPr { BuNone = new object() };
+            return wrapper;
+        }
+
+        private OpenXmlParagraphWrapper BuildListItem(string text, RPr? rPr = null)
         {
             var rs = new List<R>();
-            var r = new R { T = text };
+            var r = BuildR(text, rPr);
             rs.Add(r);
 
             OpenXmlParagraphWrapper wrapper = new()
             {
-                PPr = new PPr { BuAutoNum = new BuAutoNum { Type = "arabicPeriod" } },
                 R = rs
             };
             return wrapper;
+        }
+
+        private static R BuildR(string text, RPr? rPr = null)
+        {
+            return new R { RPr = rPr, T = text };
         }
     }
 }
