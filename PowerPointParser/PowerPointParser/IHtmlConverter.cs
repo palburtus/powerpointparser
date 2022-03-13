@@ -9,6 +9,6 @@ namespace PowerPointParser
 {
     public interface IHtmlConverter
     {
-        string? ConvertOpenXmlParagraphWrapperToHtml(Stack<OpenXmlParagraphWrapper?>? paragraphWrapper);
+        string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrapper);
     }
 }

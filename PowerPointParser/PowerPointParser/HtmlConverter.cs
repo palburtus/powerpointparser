@@ -9,19 +9,19 @@ namespace PowerPointParser
 {
     public class HtmlConverter : IHtmlConverter
     {
-        public string? ConvertOpenXmlParagraphWrapperToHtml(Stack<OpenXmlParagraphWrapper?>? paragraphWrappers)
+        public string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers)
         {
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
         }
 
-        public string? ConvertHtmlParagraphWrapperToHtml(Stack<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
+        public string? ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
         {
             if (paragraphWrappers == null) { return null; }
             
             StringBuilder sb = new StringBuilder();
             while (paragraphWrappers.Count > 0)
             {
-                var paragraphWrapper = paragraphWrappers.Pop();
+                var paragraphWrapper = paragraphWrappers.Dequeue();
 
                 if (paragraphWrapper?.R == null) return null;
                 if (paragraphWrapper.R.Count == 0) return null;

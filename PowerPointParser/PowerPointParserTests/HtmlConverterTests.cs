@@ -14,7 +14,7 @@ namespace PowerPointParser.Tests
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            Stack<OpenXmlParagraphWrapper?>? wrapperList = null;
+            Queue<OpenXmlParagraphWrapper?>? wrapperList = null;
 
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(wrapperList);
 
@@ -27,10 +27,10 @@ namespace PowerPointParser.Tests
             IHtmlConverter converter = new HtmlConverter();
 
             OpenXmlParagraphWrapper? wrapper = null;
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.IsNull(actual);
         }
@@ -41,10 +41,10 @@ namespace PowerPointParser.Tests
             IHtmlConverter converter = new HtmlConverter();
 
             OpenXmlParagraphWrapper wrapper = new ();
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.IsNull(actual);
         }
@@ -59,10 +59,10 @@ namespace PowerPointParser.Tests
                 R = new List<R>()
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.IsNull(actual);
         }
@@ -85,10 +85,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p>hello world</p>", actual);
         }
@@ -112,10 +112,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p><strong>hello world</strong></p>", actual);
         }
@@ -141,10 +141,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p><strong>hello:</strong> world</p>", actual);
         }
@@ -180,14 +180,14 @@ namespace PowerPointParser.Tests
                 R = rs2
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            Stack<OpenXmlParagraphWrapper?> stack2 = new();
-            stack2.Push(wrapper2);
+            Queue<OpenXmlParagraphWrapper?> queue2 = new();
+            queue2.Enqueue(wrapper2);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
-            actual += converter.ConvertOpenXmlParagraphWrapperToHtml(stack2);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+            actual += converter.ConvertOpenXmlParagraphWrapperToHtml(queue2);
 
             Assert.AreEqual("<p>hello</p><p>world</p>", actual);
         }
@@ -209,10 +209,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p>hello world</p>", actual);
         }
@@ -236,10 +236,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ul><li><strong>hello world</strong></li></ul>", actual);
         }
@@ -268,11 +268,11 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
-            stack.Push(wrapper2);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+            queue.Enqueue(wrapper2);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ul><li>hello world</li><li>hello world</li></ul>", actual);
         }
@@ -284,10 +284,10 @@ namespace PowerPointParser.Tests
 
             var wrapper = BuildOrderListItem("hello world");
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
         }
@@ -314,10 +314,10 @@ namespace PowerPointParser.Tests
                 R = rs
             };
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(wrapper);
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ol><li>hello world test</li></ol>", actual);
         }
@@ -327,12 +327,12 @@ namespace PowerPointParser.Tests
         {
             IHtmlConverter converter = new HtmlConverter();
 
-            Stack<OpenXmlParagraphWrapper?> stack = new();
-            stack.Push(BuildOrderListItem("hello world"));
-            stack.Push(BuildOrderListItem("goodbye world"));
-            stack.Push(BuildOrderListItem("test world"));
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world"));
+            queue.Enqueue(BuildOrderListItem("goodbye world"));
+            queue.Enqueue(BuildOrderListItem("test world"));
 
-            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ol><li>hello world</li><li>goodbye world</li><li>test world</li></ol>", actual);
         }
