@@ -296,7 +296,7 @@ namespace PowerPointParser.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByUnrderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByUnorderedListItems_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
 
@@ -311,6 +311,42 @@ namespace PowerPointParser.Tests
             var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ol><li>one</li><li>two</li><li>three</li></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedOrderedFollowedByUnorderedListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>one</li><li>two</li><ol><li>three</li></ol></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByNestedUnorderedListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three"));
+            queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>one</li><li>two</li><li>three</li></ol><ul><ul><li>hello world</li></ul><li>goodbye world</li><li>test world</li></ul>", actual);
         }
 
         private static OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)
