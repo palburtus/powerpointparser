@@ -208,10 +208,10 @@ namespace PowerPointParser.Tests
             IHtmlConverter converter = new HtmlConverter();
 
             var rs = new List<R>();
-            var rOne = new R {T = "hello "};
-            var rTwo = new R {T = "world"};
-            var rThree = new R {T = " "};
-            var rFour = new R {T = "test"};
+            var rOne = BuildR("hello");
+            var rTwo = BuildR(" world");
+            var rThree = BuildR(" ");
+            var rFour = BuildR("test");
 
             rs.Add(rOne);
             rs.Add(rTwo);
@@ -247,28 +247,76 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<ol><li>hello world</li><li>goodbye world</li><li>test world</li></ol>", actual);
         }
 
-        private OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null)
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnOrderListItems_ReturnsString()
         {
-            var wrapper = BuildListItem(text, rPr);
-            wrapper.PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } };
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item", level:1));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ul><li>nested item</li></ul><li>test world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedLastItemUnOrderListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item"));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><li>nested item</li><ul><li>test world</li></ul></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedFollowedByOrderedListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+            queue.Enqueue(BuildOrderListItem("hello world"));
+            queue.Enqueue(BuildOrderListItem("goodbye world"));
+            queue.Enqueue(BuildOrderListItem("test world"));
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><ol><li>hello world</li><li>goodbye world</li><li>test world</li></ol>", actual);
+        }
+
+        private static OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)
+        {
+            var wrapper = BuildLine(text, rPr);
+            wrapper.PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" }, Lvl = level};
             return wrapper;
         }
 
-        private OpenXmlParagraphWrapper BuildOrderListItem(string text, RPr? rPr = null)
+        private static OpenXmlParagraphWrapper BuildOrderListItem(string text, RPr? rPr = null, int level = 0)
         {
-            var wrapper = BuildListItem(text, rPr);
-            wrapper.PPr = new PPr {BuAutoNum = new BuAutoNum {Type = "arabicPeriod"}};
+            var wrapper = BuildLine(text, rPr);
+            wrapper.PPr = new PPr {BuAutoNum = new BuAutoNum {Type = "arabicPeriod"}, Lvl = level};
             return wrapper;
         }
 
-        private OpenXmlParagraphWrapper BuildParagraphLine(string text, RPr? rPr = null)
+        private static OpenXmlParagraphWrapper BuildParagraphLine(string text, RPr? rPr = null)
         {
-            var wrapper = BuildListItem(text, rPr);
+            var wrapper = BuildLine(text, rPr);
             wrapper.PPr = new PPr { BuNone = new object() };
             return wrapper;
         }
 
-        private OpenXmlParagraphWrapper BuildListItem(string text, RPr? rPr = null)
+        private static OpenXmlParagraphWrapper BuildLine(string text, RPr? rPr = null)
         {
             var rs = new List<R>();
             var r = BuildR(text, rPr);

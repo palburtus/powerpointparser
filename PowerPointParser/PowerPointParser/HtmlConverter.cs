@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PowerPointParser.Dto;
 
 namespace PowerPointParser
@@ -18,7 +16,7 @@ namespace PowerPointParser
         {
             if (paragraphWrappers == null) { return null; }
             
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             while (paragraphWrappers.Count > 0)
             {
                 var paragraphWrapper = paragraphWrappers.Dequeue();
@@ -37,64 +35,53 @@ namespace PowerPointParser
                 {
                     bool isOrderListItem = IsOrderedListItem(paragraphWrapper);
 
-                    if (IsFirstListItem(previous))
+                    if (IsFirstListItem(previous, paragraphWrapper))
                     {
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     }
 
                     sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
+                    
+                    if (IsEndOfNestedList(previous, paragraphWrapper))
+                    {
+                        sb.Append(isOrderListItem ? "</ol>" : "</ul>");
+                    }
+                    
                     sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
 
-                    
-                    if (IsLastListItem(previous))
+                    if (IsLastListItem(previous, paragraphWrapper))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
                 }
             }
-
             
-            
-                
-                
-                /* else
-                 {
-                    int indent = GetParagraphIndentLevel(paragraphWrapper);
-
-                     if (indent > currentIndentLevel)
-                     {
-                         sb.Append("<ul>");
-                         sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrapper, indent));
-                     }
-                     else if (indent < currentIndentLevel)
-                     {
-                         sb.Append("</ul>");
-                         sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrapper, indent));
-                     }
-                     else
-                     {
-                         sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
-                     }
-                 }*/
-            
-
             return sb.ToString();
         }
 
-        private bool IsLastListItem(OpenXmlParagraphWrapper? previous)
+        private static bool IsEndOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
         {
-            return previous == null;
+            return previous?.PPr?.Lvl < current?.PPr?.Lvl;
         }
 
-        private bool IsFirstListItem(OpenXmlParagraphWrapper? previous)
+        private static bool IsLastListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
         {
+            return IsListItem(current) && previous == null;
+        }
+
+        private static bool IsFirstListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
+        {
+            if (current?.PPr?.Lvl > previous?.PPr?.Lvl)
+            {
+                return true;
+            }
+
             return previous == null || !IsListItem(previous);
         }
 
-        private bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper)
+        private static bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper)
         {
-            if (paragraphWrapper == null) return false;
-            if (paragraphWrapper.PPr == null) return false;
+            if (paragraphWrapper?.PPr == null) return false;
 
             if (paragraphWrapper.PPr.BuAutoNum != null)
             {
@@ -109,21 +96,18 @@ namespace PowerPointParser
             return false;
         }
 
-        private string BuildInnerHtml(OpenXmlParagraphWrapper paragraphWrapper, bool isListItem)
+        private static string BuildInnerHtml(OpenXmlParagraphWrapper paragraphWrapper, bool isListItem)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append(!isListItem ? "<p>" : "<li>");
 
-            foreach (var r in paragraphWrapper.R!)
+            foreach (var r in paragraphWrapper.R!.Where(r => r.T != null))
             {
-                if (r.T != null)
-                {
-                    if (IsBold(r)) sb.Append("<strong>");
+                if (IsBold(r)) sb.Append("<strong>");
 
-                    sb.Append(r.T);
+                sb.Append(r.T);
 
-                    if (IsBold(r)) sb.Append("</strong>");
-                }
+                if (IsBold(r)) sb.Append("</strong>");
             }
 
             sb.Append(!isListItem ? "</p>" : "</li>");
@@ -131,24 +115,15 @@ namespace PowerPointParser
             return sb.ToString();
         }
 
-        private static int GetParagraphIndentLevel(OpenXmlParagraphWrapper paragraphWrapper)
+        private static bool IsOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
         {
-            return (paragraphWrapper.PPr?.Lvl ?? 0) + 1;
-        }
-
-        private bool IsOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
-        {
-            if (paragraphWrapper == null) return false;
-            if (paragraphWrapper.PPr == null) return false;
-            if (paragraphWrapper.PPr.BuAutoNum == null) return false;
-            if (paragraphWrapper.PPr.BuAutoNum.Type == null) return false;
+            if (paragraphWrapper?.PPr?.BuAutoNum?.Type == null) return false;
             return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
         }
 
-        private bool IsBold(R? r)
+        private static bool IsBold(R? r)
         {
-            if(r == null) return false;
-            if (r.RPr == null) return false;
+            if (r?.RPr == null) return false;
             return r.RPr.B == 1;
         }
     }

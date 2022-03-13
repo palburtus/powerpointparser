@@ -27,7 +27,7 @@ namespace PowerPointParser.Tests
         {
             var path = Path.Combine(_directory!, "TestDeckOne.pptx");
 
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(4, map.Keys.Count);
@@ -37,7 +37,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[2][0]!;
@@ -56,7 +56,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[3][1]!;
@@ -76,7 +76,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseBoldParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[4][0]!;
@@ -96,7 +96,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser( _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[5].Count);
@@ -144,7 +144,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[6].Count);
@@ -190,7 +190,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser(_logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[7].Count);
@@ -239,7 +239,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser( _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(4, map[8].Count);
@@ -321,7 +321,7 @@ namespace PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(new HtmlConverter(), _logger!.Object);
+            IParser parser = new Parser( _logger!.Object);
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(1, map[9].Count);

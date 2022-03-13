@@ -15,12 +15,10 @@ namespace PowerPointParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
-        private readonly IHtmlConverter _htmlConverter;
         private readonly ILogger _logger;
 
-        public Parser(IHtmlConverter htmlConverter, ILogger logger)
+        public Parser(ILogger logger)
         {
-            _htmlConverter = htmlConverter;
             _logger = logger;
         }
 
@@ -31,11 +29,11 @@ namespace PowerPointParser
             using PresentationDocument presentationDocument = PresentationDocument.Open(path, false);
             var presentationPart = presentationDocument.PresentationPart;
 
-            if (presentationPart == null) return slidesContentMap;
+            if (presentationPart == null) return slidesContentMap!;
 
             var presentation = presentationPart.Presentation;
 
-            if (presentation.SlideIdList == null) return slidesContentMap;
+            if (presentation.SlideIdList == null) return slidesContentMap!;
 
             var slideIds = presentation.SlideIdList.Elements<SlideId>();
 
@@ -52,12 +50,12 @@ namespace PowerPointParser
 
                     if (pNodesList != null)
                     {
-                        XmlSerializer xmlSerializer = new XmlSerializer(typeof(OpenXmlParagraphWrapper));
+                        var xmlSerializer = new XmlSerializer(typeof(OpenXmlParagraphWrapper));
                         foreach (XmlNode node in pNodesList)
                         {
                             try
                             {
-                                using StringReader stringReader = new StringReader(node.OuterXml);
+                                using StringReader stringReader = new(node.OuterXml);
                                 var wrapper = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
                                 openXmlParagraphWrappers.Add(wrapper);
                             }
@@ -78,15 +76,15 @@ namespace PowerPointParser
                 slideIndex++;
             }
 
-            return slidesContentMap;
+            return slidesContentMap!;
         }
 
-        private static NotesSlidePart? GetNotesSlidePart(PresentationPart presentationPart, SlideId? slideId)
+        private static NotesSlidePart? GetNotesSlidePart(OpenXmlPartContainer presentationPart, SlideId? slideId)
         {
             if (slideId == null) return null;
             if (slideId.RelationshipId == null) return null;
             
-            OpenXmlPart? openXmlPart = presentationPart.GetPartById(slideId.RelationshipId!);
+            var openXmlPart = presentationPart.GetPartById(slideId.RelationshipId!);
             
             SlidePart? slidePart = openXmlPart as SlidePart;
 
