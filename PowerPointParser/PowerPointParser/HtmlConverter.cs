@@ -37,14 +37,14 @@ namespace PowerPointParser
                 {
                     bool isOrderListItem = IsOrderedListItem(paragraphWrapper);
 
-                    if (IsFirstListItem(previous, paragraphWrapper))
-                    {
-                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                    }
-
                     if (IsListOrderTypeChanged(previous, paragraphWrapper))
                     {
                         sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
+                    }
+
+                    if (IsFirstListItem(previous, paragraphWrapper))
+                    {
+                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     }
 
                     sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
