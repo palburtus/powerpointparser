@@ -46,7 +46,7 @@ namespace PowerPointParser
                     sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
 
                     
-                    if (IsLastListItem(paragraphWrappers))
+                    if (IsLastListItem(previous))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
@@ -81,14 +81,14 @@ namespace PowerPointParser
             return sb.ToString();
         }
 
-        private static bool IsLastListItem(Stack<OpenXmlParagraphWrapper?> paragraphWrappers)
+        private bool IsLastListItem(OpenXmlParagraphWrapper? previous)
         {
-            return !paragraphWrappers.Any();
+            return previous == null;
         }
 
         private bool IsFirstListItem(OpenXmlParagraphWrapper? previous)
         {
-            return previous == null || IsListItem(previous);
+            return previous == null || !IsListItem(previous);
         }
 
         private bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper)
@@ -114,7 +114,7 @@ namespace PowerPointParser
             StringBuilder sb = new StringBuilder();
             sb.Append(!isListItem ? "<p>" : "<li>");
 
-            foreach (var r in paragraphWrapper.R)
+            foreach (var r in paragraphWrapper.R!)
             {
                 if (r.T != null)
                 {

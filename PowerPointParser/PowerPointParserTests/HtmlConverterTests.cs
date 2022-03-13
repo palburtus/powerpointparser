@@ -245,6 +245,39 @@ namespace PowerPointParser.Tests
         }
 
         [TestMethod()]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            var rs = new List<R>();
+            var r = new R
+            {
+                T = "hello world"
+            };
+            rs.Add(r);
+
+            OpenXmlParagraphWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } },
+                R = rs
+            };
+
+            OpenXmlParagraphWrapper wrapper2 = new()
+            {
+                PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" } },
+                R = rs
+            };
+
+            Stack<OpenXmlParagraphWrapper?> stack = new();
+            stack.Push(wrapper);
+            stack.Push(wrapper2);
+
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(stack);
+
+            Assert.AreEqual("<ul><li>hello world</li><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod()]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItem_ReturnsString()
         {
             IHtmlConverter converter = new HtmlConverter();
