@@ -295,6 +295,24 @@ namespace PowerPointParser.Tests
             Assert.AreEqual("<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><ol><li>one</li><li>two</li><li>three</li></ol>", actual);
         }
 
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByUnrderedListItems_ReturnsString()
+        {
+            IHtmlConverter converter = new HtmlConverter();
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three"));
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+            
+            var actual = converter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>one</li><li>two</li><li>three</li></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>", actual);
+        }
+
         private static OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)
         {
             var wrapper = BuildLine(text, rPr);

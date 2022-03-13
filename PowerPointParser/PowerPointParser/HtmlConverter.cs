@@ -54,14 +54,13 @@ namespace PowerPointParser
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
 
-                    if (IsLastListItem(previous, paragraphWrapper, next))
+                    if (IsLastListItem(paragraphWrapper, next))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
 
                     sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
-
-                    
+ 
                 }
             }
             
@@ -73,14 +72,15 @@ namespace PowerPointParser
             return previous?.PPr?.Lvl < current?.PPr?.Lvl;
         }
 
-        private static bool IsLastListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
+        private static bool IsLastListItem(OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
             return IsListItem(current) && next == null;
         }
 
         private static bool IsListOrderTypeChanged(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
         {
-            return IsUnOrderedListItem(previous) && IsOrderedListItem(current);
+            return IsUnOrderedListItem(previous) && IsOrderedListItem(current) ||
+                   IsOrderedListItem(previous) && IsUnOrderedListItem(current);
         }
 
         private static bool IsFirstListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
