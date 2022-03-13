@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using PowerPointParser.Dto;
 
@@ -20,6 +21,7 @@ namespace PowerPointParser
             while (paragraphWrappers.Count > 0)
             {
                 var paragraphWrapper = paragraphWrappers.Dequeue();
+                paragraphWrappers.TryPeek(out var next);
 
                 if (paragraphWrapper?.R == null) return null;
                 if (paragraphWrapper.R.Count == 0) return null;
@@ -51,13 +53,15 @@ namespace PowerPointParser
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
-                    
-                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
 
-                    if (IsLastListItem(previous, paragraphWrapper))
+                    if (IsLastListItem(previous, paragraphWrapper, next))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
+
+                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
+
+                    
                 }
             }
             
@@ -69,9 +73,9 @@ namespace PowerPointParser
             return previous?.PPr?.Lvl < current?.PPr?.Lvl;
         }
 
-        private static bool IsLastListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
+        private static bool IsLastListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
-            return IsListItem(current) && previous == null;
+            return IsListItem(current) && next == null;
         }
 
         private static bool IsListOrderTypeChanged(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
