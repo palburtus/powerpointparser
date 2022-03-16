@@ -20,46 +20,46 @@ namespace PowerPointParser
             StringBuilder sb = new();
             while (paragraphWrappers.Count > 0)
             {
-                var paragraphWrapper = paragraphWrappers.Dequeue();
+                var current = paragraphWrappers.Dequeue();
                 paragraphWrappers.TryPeek(out var next);
 
-                if (paragraphWrapper?.R == null) return null;
-                if (paragraphWrapper.R.Count == 0) return null;
+                if (current?.R == null) return null;
+                if (current.R.Count == 0) return null;
                 
-                bool isListItem = IsListItem(paragraphWrapper);
+                bool isListItem = IsListItem(current);
 
                 if (!isListItem)
                 {
-                    sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
-                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
+                    sb.Append(BuildInnerHtml(current, isListItem));
+                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, current));
                 }
                 else
                 {
-                    bool isOrderListItem = IsOrderedListItem(paragraphWrapper);
+                    bool isOrderListItem = IsOrderedListItem(current);
 
-                    if (IsListOrderTypeChanged(previous, paragraphWrapper))
+                    if (IsListOrderTypeChanged(previous, current))
                     {
                         sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
                     }
 
-                    if (IsFirstListItem(previous, paragraphWrapper))
+                    if (IsFirstListItem(previous, current))
                     {
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     }
 
-                    sb.Append(BuildInnerHtml(paragraphWrapper, isListItem));
+                    sb.Append(BuildInnerHtml(current, isListItem));
                     
-                    if (IsEndOfNestedList(previous, paragraphWrapper))
+                    if (IsEndOfNestedList(previous, current))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
 
-                    if (IsLastListItem(paragraphWrapper, next))
+                    if (IsLastListItem(current, next))
                     {
                         sb.Append(isOrderListItem ? "</ol>" : "</ul>");
                     }
 
-                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, paragraphWrapper));
+                    sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, current));
  
                 }
             }
