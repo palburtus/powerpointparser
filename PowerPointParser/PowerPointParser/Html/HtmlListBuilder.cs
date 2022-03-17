@@ -40,8 +40,17 @@ namespace PowerPointParser.Html
 
             sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
 
-            
             if (IsEndOfNestedList(previous, current, next))
+            {
+                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
+            }
+
+            if (IsListOrderTypeChanged(current, next) && current?.PPr?.Lvl == next?.PPr?.Lvl)
+            {
+                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
+            }
+            
+            if (IsListOrderTypeChanged(current, next) && current?.PPr?.Lvl > next?.PPr?.Lvl)
             {
                 sb.Append(isOrderListItem ? "</ol>" : "</ul>");
             }
@@ -49,6 +58,8 @@ namespace PowerPointParser.Html
             if (IsLastListItem(current, next))
             {
                 sb.Append(isOrderListItem ? "</ol>" : "</ul>");
+
+                
             }
 
             return sb.ToString();
@@ -73,6 +84,10 @@ namespace PowerPointParser.Html
 
         private bool IsStartOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
+            if (IsListOrderTypeChanged(previous, current))
+            {
+                return true;
+            }
 
             if (previous == null && current?.PPr?.Lvl > 0)
             {
@@ -84,6 +99,7 @@ namespace PowerPointParser.Html
 
         private bool IsEndOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
+            
 
             if (next == null && current?.PPr?.Lvl > 0)
             {
