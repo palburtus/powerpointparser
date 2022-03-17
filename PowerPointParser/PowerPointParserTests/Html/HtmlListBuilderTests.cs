@@ -52,6 +52,44 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void BuildList_OrderedPreviousNestedCurrentUnorderedNormalLastNormal_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var three = BuildOrderListItem("three", level: 1);
+            var four = BuildUnorderedListItem("hello world");
+            var five = BuildUnorderedListItem("goodbye world");
+
+            var actual = _builder.BuildList(three, four, five);
+
+            Assert.AreEqual("</ol><ul><li>hello world</li>", actual);
+        }
+
+        [TestMethod]
+        public void BuildList_UnOrderedPreviousCurrentLastNormal_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var four = BuildUnorderedListItem("hello world");
+            var five = BuildUnorderedListItem("goodbye world");
+            var six = BuildUnorderedListItem("test world");
+
+            var actual = _builder.BuildList(four, five, six);
+
+            Assert.AreEqual("<li>goodbye world</li>", actual);
+        }
+
+        [TestMethod]
+        public void BuildList_UnOrderedPreviousCurrentNormalLastNull_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var five = BuildUnorderedListItem("goodbye world");
+            var six = BuildUnorderedListItem("test world");
+
+            var actual = _builder.BuildList(five, six, null);
+
+            Assert.AreEqual("<li>test world</li></ul>", actual);
+        }
+        
+        [TestMethod]
         public void BuildList_OrderedPreviousNullCurrentNormalLastNormal_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -86,7 +124,34 @@ namespace PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(two, three, four);
 
-            Assert.AreEqual("<ol><li>three</li></ol></ol>", actual);
+            Assert.AreEqual("<ol><li>three</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void BuildList_NullPreviousOrderedCurrentNestedUnorderedLast_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var one = BuildOrderListItem("three", level: 1);
+            var two = BuildUnorderedListItem("hello world");
+
+            var actual = _builder.BuildList(one, two, null);
+
+            Assert.AreEqual("<li>hello world</li></ul>", actual);
+        }
+
+        //start example
+
+        [TestMethod]
+        public void BuildList_NullPreviousNestedUnorderedCurrentLast_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var two = BuildOrderListItem("one");
+            var three = BuildOrderListItem("two");
+
+
+            var actual = _builder.BuildList(null, two, three);
+
+            Assert.AreEqual("<ol><li>one</li>", actual);
         }
 
         [TestMethod]
@@ -117,6 +182,19 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void BuildList_NestedUnOrderedPreviousCurrentLast_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            var one = BuildUnorderedListItem("hello world", level: 1);
+            var two = BuildUnorderedListItem("goodbye world", level: 1);
+            var three = BuildUnorderedListItem("test world", level: 1);
+
+            var actual = _builder.BuildList(one, two, three);
+
+            Assert.AreEqual("<li>goodbye world</li>", actual);
+        }
+
+        [TestMethod]
         public void BuildList_NestedUnOrderedPreviousCurrentUnorderedLast_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -129,48 +207,19 @@ namespace PowerPointParser.Html.Tests
             Assert.AreEqual("<li>test world</li></ul>", actual);
         }
 
-        /*
-         * queue.Enqueue(BuildUnorderedListItem("goodbye world", level: 1));
-            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
-            queue.Enqueue(BuildOrderListItem("three"));
-         */
-
         [TestMethod]
-        public void BuildList_OrderedPreviousNestedCurrentUnorderedNormalLastNormal_ReturnsString()
+        public void BuildList_NestedUnOrderedPreviousCurrentNullLast_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
-            var three = BuildOrderListItem("three", level: 1);
-            var four = BuildUnorderedListItem("hello world");
-            var five = BuildUnorderedListItem("goodbye world");
+            var one = BuildUnorderedListItem("test world", level: 1);
+            var two = BuildOrderListItem("three");
             
-            var actual = _builder.BuildList(three, four, five);
 
-            Assert.AreEqual("<ul><li>hello world</li>", actual);
+            var actual = _builder.BuildList(one, two, null);
+
+            Assert.AreEqual("<li>three</li></ol>", actual);
         }
 
-        [TestMethod]
-        public void BuildList_UnOrderedPreviousCurrentLastNormal_ReturnsString()
-        {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
-            var four = BuildUnorderedListItem("hello world");
-            var five = BuildUnorderedListItem("goodbye world");
-            var six = BuildUnorderedListItem("test world");
-
-            var actual = _builder.BuildList(four, five, six);
-
-            Assert.AreEqual("<li>goodbye world</li>", actual);
-        }
-
-        [TestMethod]
-        public void BuildList_UnOrderedPreviousCurrentNormalLastNull_ReturnsString()
-        {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
-            var five = BuildUnorderedListItem("goodbye world");
-            var six = BuildUnorderedListItem("test world");
-
-            var actual = _builder.BuildList(five, six, null);
-
-            Assert.AreEqual("<li>test world</li></ul>", actual);
-        }
+       
     }
 }

@@ -10,7 +10,7 @@ namespace PowerPointParser.Html
     public class HtmlListBuilder : IHtmlListBuilder
     {
         private readonly IInnerHtmlBuilder _innerHtmlBuilder;
-
+       
         public HtmlListBuilder(IInnerHtmlBuilder innerHtmlBuilder)
         {
             _innerHtmlBuilder = innerHtmlBuilder;
@@ -21,12 +21,14 @@ namespace PowerPointParser.Html
         {
             StringBuilder sb = new();
             bool isOrderListItem = IsOrderedListItem(current);
+            bool isLastOrderTypeChange = IsListOrderTypeChanged(previous, current);
+            bool isNextOrderTypeChange = IsListOrderTypeChanged(current, next);
 
-            //if (IsListOrderTypeChanged(previous, current))
-            //{
-              //  sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
-            //}
 
+            if (isLastOrderTypeChange &&  isNotNested(next))
+            {
+                sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
+            }
 
             if (IsFirstListItem(current, previous)) 
             {
@@ -45,24 +47,19 @@ namespace PowerPointParser.Html
                 sb.Append(isOrderListItem ? "</ol>" : "</ul>");
             }
 
-            if (IsListOrderTypeChanged(current, next) && current?.PPr?.Lvl == next?.PPr?.Lvl)
-            {
-                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-            }
             
-            if (IsListOrderTypeChanged(current, next) && current?.PPr?.Lvl > next?.PPr?.Lvl)
-            {
-                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-            }
 
             if (IsLastListItem(current, next))
             {
                 sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-
-                
             }
 
             return sb.ToString();
+        }
+
+        private static bool isNotNested(OpenXmlParagraphWrapper? next)
+        {
+            return next?.PPr?.Lvl == 0;
         }
 
         public bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper)
@@ -84,11 +81,6 @@ namespace PowerPointParser.Html
 
         private bool IsStartOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
-            if (IsListOrderTypeChanged(previous, current))
-            {
-                return true;
-            }
-
             if (previous == null && current?.PPr?.Lvl > 0)
             {
                 return true;
@@ -99,8 +91,6 @@ namespace PowerPointParser.Html
 
         private bool IsEndOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
-            
-
             if (next == null && current?.PPr?.Lvl > 0)
             {
                 return true;
@@ -115,12 +105,7 @@ namespace PowerPointParser.Html
         }
 
         private bool IsFirstListItem(OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? previous)
-        {/*
-          * if (current?.PPr?.Lvl > previous?.PPr?.Lvl)
-            {
-                return true;
-            }
-          */
+        {
             return IsListItem(current) && previous == null;
         }
 

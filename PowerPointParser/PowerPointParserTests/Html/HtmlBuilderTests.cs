@@ -336,6 +336,23 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedTwoUnorderedInsideOrderedListItems_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two"));
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
+            queue.Enqueue(BuildOrderListItem("three"));
+
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>one</li><li>two</li><li>hello world</li><ul><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnorderedInsideOrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
