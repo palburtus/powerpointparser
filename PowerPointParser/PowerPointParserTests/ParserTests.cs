@@ -335,5 +335,17 @@ namespace PowerPointParser.Tests
             Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
         }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_ParseIndentFollowedByOrdered_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser(_logger!.Object);
+            var map = parser.ParseSpeakerNotes(_path!);
+
+            Assert.AreEqual(6, map[10].Count);
+
+            var actual = map[10];
+        }
     }
 }
