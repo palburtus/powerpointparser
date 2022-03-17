@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using PowerPointParser.Dto;
 
-namespace PowerPointParser
+namespace PowerPointParser.Html
 {
-    public class HtmlConverter : IHtmlConverter
+    public class HtmlBuilder : IHtmlBuilder
     {
+        private readonly IInnerHtmlBuilder _innerHtmlBuilder;
+
+        public HtmlBuilder(IInnerHtmlBuilder innerHtmlBuilder)
+        {
+            _innerHtmlBuilder = innerHtmlBuilder;
+        }
+
         public string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers)
         {
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
@@ -30,7 +35,7 @@ namespace PowerPointParser
 
                 if (!isListItem)
                 {
-                    sb.Append(BuildInnerHtml(current, isListItem));
+                    sb.Append(_innerHtmlBuilder.BuildInnerHtmlParagraph(current));
                     sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, current));
                 }
                 else
@@ -48,7 +53,7 @@ namespace PowerPointParser
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     }
 
-                    sb.Append(BuildInnerHtml(current, isListItem));
+                    sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
 
                     //TODO fix this
                     if (IsEndOfNestedList(previous, current, next))
@@ -118,25 +123,6 @@ namespace PowerPointParser
             return false;
         }
 
-        private static string BuildInnerHtml(OpenXmlParagraphWrapper paragraphWrapper, bool isListItem)
-        {
-            StringBuilder sb = new();
-            sb.Append(!isListItem ? "<p>" : "<li>");
-
-            foreach (var r in paragraphWrapper.R!.Where(r => r.T != null))
-            {
-                if (IsBold(r)) sb.Append("<strong>");
-
-                sb.Append(r.T);
-
-                if (IsBold(r)) sb.Append("</strong>");
-            }
-
-            sb.Append(!isListItem ? "</p>" : "</li>");
-
-            return sb.ToString();
-        }
-
         private static bool IsUnOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
         {
             if (paragraphWrapper?.PPr?.BuChar == null) return false;
@@ -149,10 +135,5 @@ namespace PowerPointParser
             return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
         }
 
-        private static bool IsBold(R? r)
-        {
-            if (r?.RPr == null) return false;
-            return r.RPr.B == 1;
-        }
     }
 }

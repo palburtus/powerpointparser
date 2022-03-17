@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using PowerPointParser.Dto;
 
-namespace PowerPointParser
+namespace PowerPointParser.Html
 {
-    public interface IHtmlConverter
+    public interface IHtmlBuilder
     {
         string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrapper);
     }
