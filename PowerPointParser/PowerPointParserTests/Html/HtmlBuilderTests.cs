@@ -255,6 +255,23 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnorderedListItems_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("one"));
+            queue.Enqueue(BuildUnorderedListItem("two"));
+            queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("three"));
+
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ul>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedFollowedByOrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -334,24 +351,5 @@ namespace PowerPointParser.Html.Tests
 
             Assert.AreEqual("<ol><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>", actual);
         }
-
-        [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnorderedListItems_ReturnsString()
-        {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
-            queue.Enqueue(BuildUnorderedListItem("one"));
-            queue.Enqueue(BuildUnorderedListItem("two"));
-            queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
-            queue.Enqueue(BuildUnorderedListItem("goodbye world", level: 1));
-            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
-            queue.Enqueue(BuildUnorderedListItem("three"));
-
-
-            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
-
-            Assert.AreEqual("<ul><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ul>", actual);
-        }
-
-        
     }
 }
