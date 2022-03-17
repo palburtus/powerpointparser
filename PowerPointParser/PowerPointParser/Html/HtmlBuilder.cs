@@ -6,10 +6,12 @@ namespace PowerPointParser.Html
 {
     public class HtmlBuilder : IHtmlBuilder
     {
+        private readonly IHtmlListBuilder _htmlListBuilder;
         private readonly IInnerHtmlBuilder _innerHtmlBuilder;
 
-        public HtmlBuilder(IInnerHtmlBuilder innerHtmlBuilder)
+        public HtmlBuilder(IHtmlListBuilder htmlListBuilder, IInnerHtmlBuilder innerHtmlBuilder)
         {
+            _htmlListBuilder = htmlListBuilder;
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
@@ -31,7 +33,7 @@ namespace PowerPointParser.Html
                 if (current?.R == null) return null;
                 if (current.R.Count == 0) return null;
                 
-                bool isListItem = IsListItem(current);
+                bool isListItem = _htmlListBuilder.IsListItem(current);
 
                 if (!isListItem)
                 {
@@ -40,99 +42,12 @@ namespace PowerPointParser.Html
                 }
                 else
                 {
-                    bool isOrderListItem = IsOrderedListItem(current);
-
-                    if (IsListOrderTypeChanged(previous, current))
-                    {
-                        sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
-                    }
-
-                    
-                    if (IsFirstListItem(previous, current) && !IsListOrderTypeChanged(previous, current))//TODO fix this
-                    {
-                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                    }
-
-                    sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
-
-                    //TODO fix this
-                    if (IsEndOfNestedList(previous, current, next))
-                    {
-                        sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-                    }
-
-                    if (IsLastListItem(current, next))
-                    {
-                        sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-                    }
-
+                    sb.Append(_htmlListBuilder.BuildList(previous, current, next));
                     sb.Append(ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, current));
- 
                 }
             }
             
             return sb.ToString();
-        }
-
-        private static bool IsEndOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
-        {
-            
-            if (next == null && current?.PPr?.Lvl > 0)
-            {
-                return true;
-            }
-
-            return current?.PPr?.Lvl > next?.PPr?.Lvl;
-        }
-
-        private static bool IsLastListItem(OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
-        {
-            return IsListItem(current) && next == null;
-        }
-
-        private static bool IsListOrderTypeChanged(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
-        {
-            return IsUnOrderedListItem(previous) && IsOrderedListItem(current) ||
-                   IsOrderedListItem(previous) && IsUnOrderedListItem(current);
-        }
-
-        private static bool IsFirstListItem(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
-        {
-            if (current?.PPr?.Lvl > previous?.PPr?.Lvl)
-            {
-                return true;
-            }
-
-            return previous == null || !IsListItem(previous);
-        }
-
-        private static bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper)
-        {
-            if (paragraphWrapper?.PPr == null) return false;
-
-            if (paragraphWrapper.PPr.BuAutoNum != null)
-            {
-                return paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
-            }
-
-            if (paragraphWrapper.PPr.BuChar != null)
-            {
-                return paragraphWrapper.PPr.BuChar.Char == "•";
-            }
-
-            return false;
-        }
-
-        private static bool IsUnOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
-        {
-            if (paragraphWrapper?.PPr?.BuChar == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuChar.Char == "•";
-        }
-
-        private static bool IsOrderedListItem(OpenXmlParagraphWrapper? paragraphWrapper)
-        {
-            if (paragraphWrapper?.PPr?.BuAutoNum?.Type == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
         }
 
     }

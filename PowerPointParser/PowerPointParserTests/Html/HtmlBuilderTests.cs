@@ -14,7 +14,8 @@ namespace PowerPointParser.Html.Tests
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
-            _htmlConverter = new HtmlBuilder(new InnerHtmlBuilder());
+            var innerHtmlBuilder = new InnerHtmlBuilder();
+            _htmlConverter = new HtmlBuilder(new HtmlListBuilder(innerHtmlBuilder), innerHtmlBuilder);
         }
 
         [TestMethod]
