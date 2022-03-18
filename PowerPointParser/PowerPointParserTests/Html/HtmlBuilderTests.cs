@@ -19,7 +19,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_WrapperListNull_ReturnsNull()
+        public void ConvertOpenXmlParagraphWrapperToHtml_WrapperListNull_ReturnsNull()
         {
             Queue<OpenXmlParagraphWrapper?>? wrapperList = null;
 
@@ -29,7 +29,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_WrapperNull_ReturnsNull()
+        public void ConvertOpenXmlParagraphWrapperToHtml_WrapperNull_ReturnsNull()
         {
             OpenXmlParagraphWrapper? wrapper = null;
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -41,7 +41,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_RNull_ReturnsNull()
+        public void ConvertOpenXmlParagraphWrapperToHtml_RNull_ReturnsNull()
         {
             OpenXmlParagraphWrapper wrapper = new();
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -53,7 +53,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_REmptyNull_ReturnsNull()
+        public void ConvertOpenXmlParagraphWrapperToHtml_REmptyNull_ReturnsNull()
         {
             OpenXmlParagraphWrapper wrapper = new()
             {
@@ -69,7 +69,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_ParagraphTag_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_ParagraphTag_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world"));
@@ -80,7 +80,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_BoldTag_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_BoldTag_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { B = 1 }));
@@ -91,7 +91,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_BoldAndNonBuildMix_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_BoldAndNonBuildMix_ReturnsString()
         {
             var rs = new List<R>
             {
@@ -114,7 +114,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_ConsecutiveParagraph_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_ConsecutiveParagraph_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello"));
@@ -129,7 +129,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OneLineInTwoRRecords_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_OneLineInTwoRRecords_ReturnsString()
         {
             var rs = new List<R>();
             var rOne = new R {T = "hello "};
@@ -152,7 +152,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItem_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedListItem_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { B = 1 }));
@@ -163,7 +163,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
@@ -175,7 +175,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItem_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_OrderedListItem_ReturnsString()
         {
             var wrapper = BuildOrderListItem("hello world");
 
@@ -188,7 +188,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_EmbeddedOrderedListItem_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_EmbeddedOrderedListItem_ReturnsString()
         {
             var rs = new List<R>();
             var rOne = BuildR("hello");
@@ -216,7 +216,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_OrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world"));
@@ -229,7 +229,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnOrderListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnOrderListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
@@ -242,7 +242,86 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedLastItemUnOrderListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_TwiceNestedUnOrderListItems_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item", level:1));
+            queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li></ul></ul><li>test world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TwiceTwoNestedUnOrderListItems_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("nested double two", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li></ul></ul><li>test world</li></ul>", actual);
+        }
+
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TwiceNestedFollowedBySingleNested_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("nested double two", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li></ul><li>test world</li></ul></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TripleNested_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildOrderListItem("nested item", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("nested double two", level: 2));
+            queue.Enqueue(BuildOrderListItem("three nested one", level: 3));
+            queue.Enqueue(BuildOrderListItem("three nested two", level: 3));
+            queue.Enqueue(BuildOrderListItem("test world", level: 1));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ol><li>nested item</li><ul><li>nested double</li><li>nested double two</li><ol><li>three nested one</li><li>three nested two</li></ol></ul><li>test world</li></ol></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_OrderedNestUnorderedNestOrdered_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("nested double two", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("three nested one", level: 3));
+            queue.Enqueue(BuildUnorderedListItem("three nested two", level: 3));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li><ul><li>three nested one</li><li>three nested two</li></ul></ul><li>test world</li></ul></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedLastItemUnOrderListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
@@ -255,7 +334,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnorderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
@@ -272,7 +351,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_UnorderedFollowedByOrderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedFollowedByOrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
@@ -288,7 +367,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByUnorderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_OrderedFollowedByUnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
@@ -304,7 +383,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedOrderedFollowedByUnorderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedOrderedFollowedByUnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
@@ -320,7 +399,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_OrderedFollowedByNestedUnorderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_OrderedFollowedByNestedUnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
@@ -336,7 +415,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedTwoUnorderedInsideOrderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwoUnorderedInsideOrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
@@ -353,7 +432,7 @@ namespace PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtmlTest_NestedUnorderedInsideOrderedListItems_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnorderedInsideOrderedListItems_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));

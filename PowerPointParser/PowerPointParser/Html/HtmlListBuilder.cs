@@ -16,6 +16,9 @@ namespace PowerPointParser.Html
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
+        Stack<string> _closingListBracketsStack = new Stack<string>();
+        private string _closingBracket;
+
         public string BuildList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current,
             OpenXmlParagraphWrapper? next)
         {
@@ -25,39 +28,48 @@ namespace PowerPointParser.Html
             bool isNextOrderTypeChange = IsListOrderTypeChanged(current, next);
 
 
-            if (isLastOrderTypeChange &&  isNotNested(next))
+            if (isLastOrderTypeChange &&  IsNotNested(next))
             {
                 sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
+                _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
             }
 
             if (IsFirstListItem(current, previous)) 
             {
                 sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
             }
 
             if (IsStartOfNestedList(previous, current, next))
             {
                 sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
             }
 
             sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
 
             if (IsEndOfNestedList(previous, current, next))
             {
-                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
-            }
+                int nextLevel = next !=null ? next.PPr!.Lvl : 0;
 
-            
+                for (int i = nextLevel; i < current.PPr?.Lvl; i++)
+                {
+                    if (_closingListBracketsStack.Count > 0)
+                    {
+                        sb.Append(_closingListBracketsStack.Pop());
+                    }
+                }
+            }
 
             if (IsLastListItem(current, next))
             {
-                sb.Append(isOrderListItem ? "</ol>" : "</ul>");
+                sb.Append(_closingBracket);
             }
 
             return sb.ToString();
         }
 
-        private static bool isNotNested(OpenXmlParagraphWrapper? next)
+        private static bool IsNotNested(OpenXmlParagraphWrapper? next)
         {
             return next?.PPr?.Lvl == 0;
         }

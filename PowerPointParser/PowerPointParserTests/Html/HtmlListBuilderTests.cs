@@ -86,7 +86,7 @@ namespace PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(five, six, null);
 
-            Assert.AreEqual("<li>test world</li></ul>", actual);
+            Assert.AreEqual("<li>test world</li></ol>", actual);
         }
         
         [TestMethod]
@@ -136,10 +136,8 @@ namespace PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, null);
 
-            Assert.AreEqual("<li>hello world</li></ul>", actual);
+            Assert.AreEqual("<li>hello world</li></ol>", actual);
         }
-
-        //start example
 
         [TestMethod]
         public void BuildList_NullPreviousNestedUnorderedCurrentLast_ReturnsString()
@@ -204,7 +202,7 @@ namespace PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, three);
 
-            Assert.AreEqual("<li>test world</li></ul>", actual);
+            Assert.AreEqual("<li>test world</li>", actual);
         }
 
         [TestMethod]
@@ -217,7 +215,7 @@ namespace PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, null);
 
-            Assert.AreEqual("<li>three</li></ol>", actual);
+            Assert.AreEqual("<li>three</li>", actual);
         }
 
        
