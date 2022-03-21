@@ -1,12 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+	  <VersionPrefix>0.1.0</VersionPrefix>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <TargetFramework>net6.0</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RootNamespace>Aaks.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <Authors>Patrick Alburtus</Authors>
+    <PackageId>Aaks$(AssemblyName)</PackageId>
+    <RepositoryUrl>https://github.com/palburtus/powerpointparser</RepositoryUrl>
+    <AssemblyName>Aaks$(MSBuildProjectName)</AssemblyName>
+    <PackageProjectUrl>https://github.com/palburtus/powerpointparser#readme</PackageProjectUrl>
+    <PackageTags>office, xml, powerpoint</PackageTags>
+    <PackageReleaseNotes>Beta-Release </PackageReleaseNotes>
+    <Description>Library for Parsing .pptx Speaker Notes Speaker Notes can be parsed converted to HTML</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>PowerpointHtmlICon.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\PowerpointHtmlICon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
