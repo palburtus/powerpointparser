@@ -1,9 +1,9 @@
 ﻿using System;
 
 using System.Collections.Generic;
-using PowerPointParser.Dto;
+using Aaks.PowerPointParser.Dto;
 
-namespace PowerPointParser
+namespace Aaks.PowerPointParser
 {
     public interface IParser
     {

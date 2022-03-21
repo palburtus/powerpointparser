@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using PowerPointParser.Dto;
+using Aaks.PowerPointParser.Dto;
 
-namespace PowerPointParser.Html
+namespace Aaks.PowerPointParser.Html
 {
     public class HtmlBuilder : IHtmlBuilder
     {

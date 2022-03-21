@@ -4,12 +4,12 @@ using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using Microsoft.Extensions.Logging;
-using PowerPointParser.Dto;
+using Aaks.PowerPointParser.Dto;
 using System.IO;
 using System;
 using System.Collections.Generic;
 
-namespace PowerPointParser
+namespace Aaks.PowerPointParser
 {
     public class Parser : IParser
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using PowerPointParser.Dto;
+using Aaks.PowerPointParser.Dto;
 using PowerPointParserTests.Html;
 
 // ReSharper disable once CheckNamespace - Test namespaces should match production
-namespace PowerPointParser.Html.Tests
+namespace Aaks.PowerPointParser.Html.Tests
 {
     [TestClass]
     public class HtmlBuilderTests : BaseHtmlTests

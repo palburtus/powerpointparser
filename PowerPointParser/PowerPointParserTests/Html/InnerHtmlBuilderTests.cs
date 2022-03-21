@@ -1,14 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointParser.Html;
+using Aaks.PowerPointParser.Html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PowerPointParser.Dto;
+using Aaks.PowerPointParser.Dto;
 using PowerPointParserTests.Html;
 
-namespace PowerPointParser.Html.Tests
+namespace Aaks.PowerPointParser.Html.Tests
 {
     [TestClass]
     public class InnerHtmlBuilderTests : BaseHtmlTests

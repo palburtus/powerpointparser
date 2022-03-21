@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 
 // ReSharper disable once CheckNamespace - Test namespaces should match production
-namespace PowerPointParser.Tests
+namespace Aaks.PowerPointParser.Tests
 {
     [TestClass]
     public class ParserTests

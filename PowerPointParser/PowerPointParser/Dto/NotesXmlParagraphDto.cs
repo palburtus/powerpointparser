@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace PowerPointParser.Dto
+namespace Aaks.PowerPointParser.Dto
 {
 	[XmlRoot(ElementName = "spcPts")]
     public class SpcPts
