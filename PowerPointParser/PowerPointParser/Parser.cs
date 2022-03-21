@@ -15,12 +15,6 @@ namespace Aaks.PowerPointParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
-        private readonly ILogger _logger;
-
-        public Parser(ILogger logger)
-        {
-            _logger = logger;
-        }
 
         public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path)
         {
@@ -61,12 +55,12 @@ namespace Aaks.PowerPointParser
                             }
                             catch (InvalidOperationException ex)
                             {
-                                _logger.Log(LogLevel.Error, ex, "Slide Note Deserialization Failed");
+                                Console.WriteLine($"{ex.Message} Slide Note Deserialization Failed");
+                                
                             }
                             catch (Exception ex)
                             {
-                                if (ex != null) _logger.Log(LogLevel.Critical, ex, ex.Message);
-                                _logger.Log(LogLevel.Critical, ex, "Unknown Exception Occurred");
+                                Console.WriteLine($"{ex.Message} Unknown Exception Occurred");
                             }    
                         }
                     }
