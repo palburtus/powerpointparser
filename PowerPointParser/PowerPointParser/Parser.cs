@@ -3,7 +3,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
-using Microsoft.Extensions.Logging;
 using Aaks.PowerPointParser.Dto;
 using System.IO;
 using System;
@@ -15,20 +14,27 @@ namespace Aaks.PowerPointParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
-        private readonly ILogger _logger;
-
-        public Parser(ILogger logger)
+        public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
         {
-            _logger = logger;
-        }
 
+            using var presentationDocument = PresentationDocument.Open(memoryStream, false);
+            var slidesContentMap = ParseSpeakerNotes(presentationDocument);
+            return slidesContentMap;
+
+        }
         public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path)
         {
+            
+            using var presentationDocument = PresentationDocument.Open(path, false);
+            var slidesContentMap = ParseSpeakerNotes(presentationDocument);
+            return slidesContentMap;
+
+        }
+
+        private IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
+        {
             var slidesContentMap = new Dictionary<int, IList<OpenXmlParagraphWrapper>>();
-
-            using PresentationDocument presentationDocument = PresentationDocument.Open(path, false);
             var presentationPart = presentationDocument.PresentationPart;
-
             if (presentationPart == null) return slidesContentMap!;
 
             var presentation = presentationPart.Presentation;
@@ -61,24 +67,23 @@ namespace Aaks.PowerPointParser
                             }
                             catch (InvalidOperationException ex)
                             {
-                                _logger.Log(LogLevel.Error, ex, "Slide Note Deserialization Failed");
+                                Console.WriteLine($"{ex.Message} Slide Note Deserialization Failed");
+
                             }
                             catch (Exception ex)
                             {
-                                if (ex != null) _logger.Log(LogLevel.Critical, ex, ex.Message);
-                                _logger.Log(LogLevel.Critical, ex, "Unknown Exception Occurred");
-                            }    
+                                Console.WriteLine($"{ex.Message} Unknown Exception Occurred");
+                            }
                         }
                     }
                 }
-                
+
                 slidesContentMap.Add(slideIndex, openXmlParagraphWrappers);
                 slideIndex++;
             }
 
             return slidesContentMap!;
         }
-
         private static NotesSlidePart? GetNotesSlidePart(OpenXmlPartContainer presentationPart, SlideId? slideId)
         {
             if (slideId == null) return null;

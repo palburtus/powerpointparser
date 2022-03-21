@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 // ReSharper disable once CheckNamespace - Test namespaces should match production
 namespace Aaks.PowerPointParser.Tests
@@ -11,14 +9,13 @@ namespace Aaks.PowerPointParser.Tests
     {
         private static string? _directory;
         private static string? _path;
-        private static Mock<ILogger>? _logger;
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
             _directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             _path = Path.Combine(_directory!, "TestDeckParagraph.pptx");
-            _logger = new Mock<ILogger>();
+            
         }
 
         [TestMethod]
@@ -27,7 +24,7 @@ namespace Aaks.PowerPointParser.Tests
         {
             var path = Path.Combine(_directory!, "TestDeckOne.pptx");
 
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(4, map.Keys.Count);
@@ -37,7 +34,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[2][0]!;
@@ -56,7 +53,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[3][1]!;
@@ -76,7 +73,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseBoldParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[4][0]!;
@@ -96,7 +93,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser( _logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[5].Count);
@@ -144,7 +141,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[6].Count);
@@ -190,7 +187,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[7].Count);
@@ -239,7 +236,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser( _logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(4, map[8].Count);
@@ -321,7 +318,7 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser( _logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(1, map[9].Count);
@@ -340,12 +337,62 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseIndentFollowedByOrdered_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser(_logger!.Object);
+            IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(6, map[10].Count);
 
             var actual = map[10];
+        }
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void Parse_FromMemoryStreamParseUnorderedList_ReturnsIntWrapperMap()
+        {
+            using var memoryStream = new MemoryStream();
+            using var fileStream = File.OpenRead(_path!);
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+
+            var parser = new Parser();
+            var map = parser.ParseSpeakerNotes(memoryStream);
+
+            Assert.AreEqual(3, map[5].Count);
+
+            var actualOne = map[5][0]!;
+
+            Assert.IsNull(actualOne.A);
+            Assert.IsNull(actualOne.Text);
+            Assert.AreEqual(1, actualOne.R!.Count);
+            Assert.AreEqual(0, actualOne.PPr!.Lvl);
+            Assert.AreEqual("•", actualOne.PPr!.BuChar!.Char);
+            Assert.AreEqual("Unordered item 1", actualOne.R![0].T);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.B);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+
+            var actualTwo = map[5][1]!;
+
+            Assert.IsNull(actualTwo.A);
+            Assert.IsNull(actualTwo.Text);
+            Assert.AreEqual(1, actualTwo.R!.Count);
+            Assert.AreEqual(0, actualTwo.PPr!.Lvl);
+            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
+            Assert.AreEqual("Unordered item 2", actualTwo.R![0].T);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
+            Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
+
+            var actualThree = map[5][2]!;
+
+            Assert.IsNull(actualThree.A);
+            Assert.IsNull(actualThree.Text);
+            Assert.AreEqual(1, actualThree.R!.Count);
+            Assert.AreEqual(0, actualThree.PPr!.Lvl);
+            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
+            Assert.AreEqual("Unordered item 3", actualThree.R![0].T);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.B);
+            Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
         }
     }
 }
