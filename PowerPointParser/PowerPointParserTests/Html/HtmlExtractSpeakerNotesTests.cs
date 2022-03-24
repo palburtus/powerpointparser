@@ -12,14 +12,14 @@ public class HtmlExtractSpeakerNotesTests
 {
     private readonly string _directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
     protected const string ExpectedTestDeckParagraph = @"<p>This note is just a paragraph</p><p>This note is just a paragraph</p><p>And this is a second paragraph</p><p><strong>This is a bold paragraph</strong></p><li>Unordered item 1</li><li>Unordered item 2</li><li>Unordered item 3</li><li>Indent Unordered item 1</li><ul><li>Indent Unordered item 2</li><ul><li>Indent Unordered item 3</li></ul></ul></ul><ol><li>Ordered one</li><li>Ordered two</li><li>Ordered three</li><li>Indent Ordered One</li><ol><li>Indent Ordered One One</li><ol><li>Indent Order One OneOne</li></ol></ol><li>Indent Ordered Three</li><p>Here a link: https://www.google.com/</p><li>Un</li><li>Order</li><li>List</li></ul><ol><li>Followed </li><li>by </li><li>Ordered</li></ol>";
-    protected Dictionary<int, string> ExpectedTestDeckOneDict2 = new Dictionary<int, string>()
+    protected Dictionary<int, string> ExpectedTestDeckOneDict = new()
     {
         {1, "<p>Intro Slide </p><p><strong>Test</strong></p><p><strong>One</strong></p><p><strong>Two</strong></p><li><strong>Order one</strong></li><li><strong>Order two</strong></li><li><strong>Order three</strong></li><p><strong>Here is a note that is </strong>not bold</p>"},
         {2, "<p>Ul 1</p><p>Ul 2</p><p>ul3</p>"},
         {3,  "<p>Ask devs for other examples</p>"},
         {4,"<ol><li>Ol 1</li><li>Ol2</li><li>ol3</li></ol>"}
     };
-    protected Dictionary<int, string> ExpectedTestDeckParagraphDict2 = new Dictionary<int, string>()
+    protected Dictionary<int, string> ExpectedTestDeckParagraphDict = new()
     {
         {1,  ""},
         {2,  "<p>This note is just a paragraph</p>"},
@@ -71,8 +71,8 @@ public class HtmlExtractSpeakerNotesTests
         File.Exists(filePath).Should().Be(true); 
         var expectedDict = new Dictionary<string, Dictionary<int, string>>()
         {
-            {"TestDeckOne.pptx", ExpectedTestDeckOneDict2 },
-            {"TestDeckParagraph.pptx", ExpectedTestDeckParagraphDict2}
+            {"TestDeckOne.pptx", ExpectedTestDeckOneDict },
+            {"TestDeckParagraph.pptx", ExpectedTestDeckParagraphDict}
         };
         
 
