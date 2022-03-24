@@ -15,23 +15,24 @@ namespace Aaks.PowerPointParser.Html
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
-        public string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers)
+        public string ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers)
         {
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
         }
 
-        private string? ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
+        private string ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
         {
-            if (paragraphWrappers == null) { return null; }
-            
             StringBuilder sb = new();
+            if (paragraphWrappers == null) { return sb.ToString(); }
+            
+            
             while (paragraphWrappers.Count > 0)
             {
                 var current = paragraphWrappers.Dequeue();
                 paragraphWrappers.TryPeek(out var next);
 
-                if (current?.R == null) return null;
-                if (current.R.Count == 0) return null;
+                if (current?.R == null) { return sb.ToString(); };
+                if (current.R.Count == 0) { return sb.ToString(); };
                 
                 bool isListItem = _htmlListBuilder.IsListItem(current);
 
