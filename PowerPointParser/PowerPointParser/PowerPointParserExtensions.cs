@@ -16,4 +16,13 @@ public static class PowerPointParserExtensions
         }
         return openXmlParagraphWrappers;
     }
+    public static Queue<OpenXmlParagraphWrapper> ToQueue(this IList<OpenXmlParagraphWrapper> items)
+    {
+        Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
+        foreach (var current in items)
+        {
+            openXmlParagraphWrappers.Enqueue(current!);
+        }
+        return openXmlParagraphWrappers;
+    }
 }
