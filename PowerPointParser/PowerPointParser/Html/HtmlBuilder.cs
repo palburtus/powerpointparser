@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Aaks.PowerPointParser.Dto;
 
@@ -19,7 +20,18 @@ namespace Aaks.PowerPointParser.Html
         {
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
         }
-
+        public Dictionary<int, string> ConvertOpenXmlParagraphWrapperToHtml(IDictionary<int, IList<OpenXmlParagraphWrapper?>> paragraphWrappers)
+        {
+            
+            var speakerNotes = new Dictionary<int, string>();
+            foreach (var (key, list) in paragraphWrappers)
+            {
+                var openXmlParagraphWrappers = list!.ToQueue();
+                var htmlParagraph = ConvertHtmlParagraphWrapperToHtml(openXmlParagraphWrappers!, null);
+                speakerNotes[key] = htmlParagraph;
+            }
+            return speakerNotes;
+        }
         private string ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlParagraphWrapper?>? paragraphWrappers, OpenXmlParagraphWrapper? previous)
         {
             StringBuilder sb = new();
@@ -50,6 +62,7 @@ namespace Aaks.PowerPointParser.Html
             
             return sb.ToString();
         }
+
 
     }
 }
