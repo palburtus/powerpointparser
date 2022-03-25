@@ -448,6 +448,27 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             Assert.AreEqual("<ol><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>", actual);
         }
-       
+
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingAlternatingOrderEveryTwo_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one"));
+            queue.Enqueue(BuildOrderListItem("two", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("three", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("four", level: 3));
+            queue.Enqueue(BuildOrderListItem("five", level: 4));
+            queue.Enqueue(BuildOrderListItem("six", level: 5));
+            queue.Enqueue(BuildUnorderedListItem("seven", level: 6));
+            queue.Enqueue(BuildUnorderedListItem("eight", level: 7));
+            queue.Enqueue(BuildOrderListItem("nine", level: 8));
+            queue.Enqueue(BuildOrderListItem("ten", level: 9));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>one</li><ol><li>two</li><ul><li>three</li><ul><li>four</li><ol><li>five</li><ol><li>six</li><ul><li>seven</li><ul><li>eight</li><ol><li>nine</li><ol><li>ten</li></ol></ol></ul></ul></ol></ol></ul></ul></ol></ol>", actual);
+        }
+
     }
 }
