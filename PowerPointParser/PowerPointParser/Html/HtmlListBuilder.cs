@@ -27,11 +27,18 @@ namespace Aaks.PowerPointParser.Html
             bool isLastOrderTypeChange = IsListOrderTypeChanged(previous, current);
             bool isNextOrderTypeChange = IsListOrderTypeChanged(current, next);
 
-
-            if (isLastOrderTypeChange &&  IsNotNested(next))
+            if (isLastOrderTypeChange)
             {
-                sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
-                _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                if (IsNotNested(next))
+                {
+                    sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
+                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                }else if (IsLastListItem(current, next) && isLastOrderTypeChange && IsNotNested(previous))
+                {
+                    sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
+                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                }
+                
             }
 
             if (IsFirstListItem(current, previous)) 
@@ -47,6 +54,15 @@ namespace Aaks.PowerPointParser.Html
             }
 
             sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
+
+
+            //if (isLastOrderTypeChange && isNextOrderTypeChange && IsNotNested(next))
+            //{
+            //    if (_closingListBracketsStack.Count > 0)
+            //    {
+            //        sb.Append(_closingListBracketsStack.Pop());
+            //    }
+            //}
 
             if (IsEndOfNestedList(previous, current, next))
             {
