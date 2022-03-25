@@ -50,6 +50,20 @@ namespace Aaks.PowerPointParser.Tests
         }
 
         [TestMethod]
+        [DeploymentItem("TestData/TestThree.pptx")]
+        public void Parse_ParseAlternativeFormat_ReturnsIntWrappermap()
+        {
+            var path = Path.Combine(_directory!, "TestThree.pptx");
+            IParser parser = new Parser();
+
+            var map = parser.ParseSpeakerNotes(path!);
+
+            var actual = map[3][1]!;
+
+            Assert.IsNull(actual.A);
+        }
+
+        [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
         {
