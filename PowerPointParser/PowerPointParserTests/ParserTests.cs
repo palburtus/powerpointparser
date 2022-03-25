@@ -58,9 +58,10 @@ namespace Aaks.PowerPointParser.Tests
 
             var map = parser.ParseSpeakerNotes(path!);
 
-            var actual = map[3][1]!;
+            var actual = map[8][0]!;
 
-            Assert.IsNull(actual.A);
+            Assert.AreEqual("Caricas", actual.R![0].T);
+            
         }
 
         [TestMethod]
