@@ -29,18 +29,31 @@ namespace Aaks.PowerPointParser.Html
 
             if (isLastOrderTypeChange)
             {
-                if (IsNotNested(next))
+                if (next == null && _closingListBracketsStack.Count > 1)
                 {
-                    if (_closingListBracketsStack.Count > 0)
+                    if (previous?.PPr?.Lvl < current.PPr?.Lvl)
                     {
                         sb.Append(_closingListBracketsStack.Pop());
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                         _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
                     }
-                    
-                    //sb.Append(isOrderListItem ? "</ul><ol>" : "</ol><ul>");
-                    //_closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                } 
+                    else if(previous?.PPr?.Lvl == current.PPr?.Lvl)
+                    {
+                        sb.Append(_closingListBracketsStack.Pop());
+                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                        _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                    } 
+                }
+                else if (IsNotNested(next))
+                {
+                    sb.Append(_closingListBracketsStack.Pop());
+                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                        _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                }
+                
             }
 
             if (IsFirstListItem(current, previous)) 
