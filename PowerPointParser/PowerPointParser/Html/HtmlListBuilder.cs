@@ -29,7 +29,23 @@ namespace Aaks.PowerPointParser.Html
 
             if (isLastOrderTypeChange)
             {
-                if (next == null && _closingListBracketsStack.Count > 1)
+
+                if (IsNotNested(next))
+                {
+                    sb.Append(_closingListBracketsStack.Pop());
+                    sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                    _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                }else if (IsLastListItemForLevel(previous, current, next))
+                {
+                    sb.Append(_closingListBracketsStack.Pop());
+                    sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                    _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                }
+                
+
+                /*if (next == null && _closingListBracketsStack.Count > 1)
                 {
                     if (previous?.PPr?.Lvl < current.PPr?.Lvl)
                     {
@@ -52,12 +68,13 @@ namespace Aaks.PowerPointParser.Html
                         sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                         _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                         _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                }
-                
+                }*/
+
             }
 
             if (IsFirstListItem(current, previous)) 
             {
+                _closingListBracketsStack = new Stack<string>();
                 sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                 _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                 _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
@@ -90,6 +107,24 @@ namespace Aaks.PowerPointParser.Html
             }
 
             return sb.ToString();
+        }
+
+        private bool IsLastListItemForLevel(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current, OpenXmlParagraphWrapper? next)
+        {
+            if (next == null && current.PPr?.Lvl == previous?.PPr?.Lvl) return true;
+
+            if (next != null && IsListOrderTypeChanged(previous, current) &&
+                IsListOrderTypeChanged(current, next) &&
+                 current.PPr?.Lvl == previous.PPr?.Lvl) return true;
+
+
+            if (next != null && 
+                IsListOrderTypeChanged(previous, current) && 
+                IsListOrderTypeChanged(current, next) &&
+                previous?.PPr?.Lvl < current.PPr?.Lvl) return false;
+
+            
+            return false;
         }
 
         private static bool IsNotNested(OpenXmlParagraphWrapper? next)
