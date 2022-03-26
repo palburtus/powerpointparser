@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Aaks.PowerPointParser.Dto;
 
 namespace Aaks.PowerPointParser.Html
@@ -18,7 +19,7 @@ namespace Aaks.PowerPointParser.Html
             {
                 if (IsBold(r)) sb.Append("<strong>");
 
-                sb.Append(r.T);
+                sb.Append(HttpUtility.HtmlEncode(r.T));
 
                 if (IsBold(r)) sb.Append("</strong>");
             }
@@ -37,7 +38,7 @@ namespace Aaks.PowerPointParser.Html
             {
                 if (IsBold(r)) sb.Append("<strong>");
 
-                sb.Append(r.T);
+                sb.Append(HttpUtility.HtmlEncode(r.T));
 
                 if (IsBold(r)) sb.Append("</strong>");
             }
