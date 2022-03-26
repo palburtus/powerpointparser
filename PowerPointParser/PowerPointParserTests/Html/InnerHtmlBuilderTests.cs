@@ -73,25 +73,5 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             Assert.AreEqual("<li>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</li>", result);
         }
-
-        [TestMethod]
-        public void BuildInnerHtmlParagraph_SpecialCharacters_ReturnsString()
-        {
-            IInnerHtmlBuilder innerHtmlBuilder = new InnerHtmlBuilder();
-            var current = BuildParagraphLine("ƒ(x) ∀ y");
-            var result = innerHtmlBuilder.BuildInnerHtmlParagraph(current);
-
-            Assert.AreEqual("<p>&#402;(x) &#8704; y</p>", result);
-        }
-
-        [TestMethod]
-        public void BuildInnerHtmlListItem_SpecailCharacters_ReturnsString()
-        {
-            IInnerHtmlBuilder innerHtmlBuilder = new InnerHtmlBuilder();
-            var current = BuildParagraphLine("\"hello & world <one> 'two' \"");
-            var result = innerHtmlBuilder.BuildInnerHtmlListItem(current);
-
-            Assert.AreEqual("<li>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</li>", result);
-        }
     }
 }
