@@ -324,7 +324,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one<ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></li></ul>", actual);
+            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></li></ul>", actual);
 
         }
 
@@ -473,6 +473,23 @@ namespace Aaks.PowerPointParser.Html.Tests
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ol><li>one</li><li>two</li><li>hello world</li><ul><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AllNestedTwoUnorderedInsideOrderedListItems_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("one", level: 1));
+            queue.Enqueue(BuildOrderListItem("two", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world", level: 2));
+            queue.Enqueue(BuildUnorderedListItem("test world", level: 2));
+            queue.Enqueue(BuildOrderListItem("three", level: 1));
+
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><ol><li>one</li><li>two</li><li>hello world</li><ul><li>goodbye world</li><li>test world</li></ul><li>three</li></ol></ol>", actual);
         }
 
         [TestMethod]
