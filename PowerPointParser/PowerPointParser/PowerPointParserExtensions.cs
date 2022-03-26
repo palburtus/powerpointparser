@@ -12,7 +12,7 @@ public static class PowerPointParserExtensions
         var xmlParagraphWrappers = items.Select(x => x.Value).SelectMany(y => y).ToList();
         foreach (var openXmlParagraphWrapper in xmlParagraphWrappers)
         {
-            openXmlParagraphWrappers.Enqueue(openXmlParagraphWrapper!);
+            openXmlParagraphWrappers.Enqueue(openXmlParagraphWrapper);
         }
         return openXmlParagraphWrappers;
     }
@@ -21,7 +21,7 @@ public static class PowerPointParserExtensions
         Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
         foreach (var current in items)
         {
-            openXmlParagraphWrappers.Enqueue(current!);
+            openXmlParagraphWrappers.Enqueue(current);
         }
         return openXmlParagraphWrappers;
     }

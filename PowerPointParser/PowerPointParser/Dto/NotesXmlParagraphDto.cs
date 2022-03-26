@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Aaks.PowerPointParser.Dto
@@ -20,7 +16,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlElement(ElementName = "spcPts")]
-        public SpcPts SpcPts { get; set; }
+        public SpcPts? SpcPts { get; set; }
     }
 
     [XmlRoot(ElementName = "spcAft")]
@@ -28,7 +24,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlElement(ElementName = "spcPts")]
-        public SpcPts SpcPts { get; set; }
+        public SpcPts? SpcPts { get; set; }
     }
 
     [XmlRoot(ElementName = "pPr")]
@@ -36,10 +32,10 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlElement(ElementName = "spcBef")]
-        public SpcBef SpcBef { get; set; }
+        public SpcBef? SpcBef { get; set; }
 
         [XmlElement(ElementName = "spcAft")]
-        public SpcAft SpcAft { get; set; }
+        public SpcAft? SpcAft { get; set; }
 
         [XmlElement(ElementName = "buNone")]
         public object? BuNone { get; set; }
@@ -63,7 +59,7 @@ namespace Aaks.PowerPointParser.Dto
         public int Indent { get; set; }
 
         [XmlAttribute(AttributeName = "algn")]
-        public string Algn { get; set; }
+        public string? Algn { get; set; }
 
         [XmlAttribute(AttributeName = "rtl")]
         public int Rtl { get; set; }
@@ -74,7 +70,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlAttribute(AttributeName = "typeface")]
-        public string Typeface { get; set; }
+        public string? Typeface { get; set; }
     }
 
     [XmlRoot(ElementName = "buChar")]
@@ -82,7 +78,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlAttribute(AttributeName = "char")]
-        public string Char { get; set; }
+        public string? Char { get; set; }
     }
 
     [XmlRoot(ElementName = "buAutoNum")]
@@ -98,7 +94,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlAttribute(AttributeName = "lang")]
-        public string Lang { get; set; }
+        public string? Lang { get; set; }
 
         [XmlAttribute(AttributeName = "b")]
         public int B { get; set; }
@@ -129,9 +125,9 @@ namespace Aaks.PowerPointParser.Dto
         public List<R>? R { get; set; }
 
         [XmlAttribute(AttributeName = "a")]
-        public string A { get; set; }
+        public string? A { get; set; }
 
         [XmlText]
-        public string Text { get; set; }
+        public string? Text { get; set; }
     }
 }

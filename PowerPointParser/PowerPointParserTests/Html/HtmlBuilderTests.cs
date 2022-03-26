@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Text;
 using Aaks.PowerPointParser.Dto;
 using FluentAssertions;
 using PowerPointParserTests.Html;
@@ -11,7 +10,7 @@ namespace Aaks.PowerPointParser.Html.Tests
     [TestClass]
     public class HtmlBuilderTests : BaseHtmlTests
     {
-        private static IHtmlBuilder _htmlConverter;
+        private static IHtmlBuilder _htmlConverter = null!;
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Aaks.PowerPointParser.Dto;
 
 namespace Aaks.PowerPointParser.Html
@@ -16,8 +13,8 @@ namespace Aaks.PowerPointParser.Html
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
-        Stack<string> _closingListBracketsStack = new Stack<string>();
-        private string _closingBracket;
+        Stack<string> _closingListBracketsStack = new();
+        private string? _closingBracket;
 
         public string BuildList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current,
             OpenXmlParagraphWrapper? next)
@@ -25,8 +22,7 @@ namespace Aaks.PowerPointParser.Html
             StringBuilder sb = new();
             bool isOrderListItem = IsOrderedListItem(current);
             bool isLastOrderTypeChange = IsListOrderTypeChanged(previous, current);
-            bool isNextOrderTypeChange = IsListOrderTypeChanged(current, next);
-
+           
             if (isLastOrderTypeChange)
             {
 
@@ -53,7 +49,7 @@ namespace Aaks.PowerPointParser.Html
                 _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
             }
 
-            if (IsStartOfNestedList(previous, current, next))
+            if (IsStartOfNestedList(previous, current))
             {
                 sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                 _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
@@ -61,7 +57,7 @@ namespace Aaks.PowerPointParser.Html
 
             sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
 
-            if (IsEndOfNestedList(previous, current, next))
+            if (IsEndOfNestedList(current, next))
             {
                 int nextLevel = next !=null ? next.PPr!.Lvl : 0;
 
@@ -123,7 +119,7 @@ namespace Aaks.PowerPointParser.Html
             return false;
         }
 
-        private bool IsStartOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
+        private bool IsStartOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current)
         {
             if (previous == null && current?.PPr?.Lvl > 0)
             {
@@ -133,7 +129,7 @@ namespace Aaks.PowerPointParser.Html
             return current?.PPr?.Lvl > previous?.PPr?.Lvl;
         }
 
-        private bool IsEndOfNestedList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
+        private bool IsEndOfNestedList(OpenXmlParagraphWrapper? current, OpenXmlParagraphWrapper? next)
         {
             if ((next == null || !IsListItem(next)) && current?.PPr?.Lvl > 0)
             {

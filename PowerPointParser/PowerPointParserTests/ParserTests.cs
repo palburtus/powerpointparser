@@ -51,12 +51,12 @@ namespace Aaks.PowerPointParser.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestThree.pptx")]
-        public void Parse_ParseAlternativeFormat_ReturnsIntWrappermap()
+        public void Parse_ParseAlternativeFormat_ReturnsIntWrapperMap()
         {
             var path = Path.Combine(_directory!, "TestThree.pptx");
             IParser parser = new Parser();
 
-            var map = parser.ParseSpeakerNotes(path!);
+            var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[8][0]!;
 
@@ -358,7 +358,10 @@ namespace Aaks.PowerPointParser.Tests
             Assert.AreEqual(6, map[10].Count);
 
             var actual = map[10];
+            Assert.AreEqual("Un", actual[0]!.R![0].T);
+
         }
+
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_FromMemoryStreamParseUnorderedList_ReturnsIntWrapperMap()

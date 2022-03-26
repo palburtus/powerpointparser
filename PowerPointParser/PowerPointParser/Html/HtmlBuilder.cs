@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Aaks.PowerPointParser.Dto;
 
@@ -43,8 +42,8 @@ namespace Aaks.PowerPointParser.Html
                 var current = paragraphWrappers.Dequeue();
                 paragraphWrappers.TryPeek(out var next);
 
-                if (current?.R == null) { return sb.ToString(); };
-                if (current.R.Count == 0) { return sb.ToString(); };
+                if (current?.R == null) { return sb.ToString(); }
+                if (current.R.Count == 0) { return sb.ToString(); }
                 
                 bool isListItem = _htmlListBuilder.IsListItem(current);
 

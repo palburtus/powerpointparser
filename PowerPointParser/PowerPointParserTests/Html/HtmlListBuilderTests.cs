@@ -1,11 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Aaks.PowerPointParser.Html;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Aaks.PowerPointParser.Dto;
 using PowerPointParserTests.Html;
 
 namespace Aaks.PowerPointParser.Html.Tests
@@ -13,15 +6,13 @@ namespace Aaks.PowerPointParser.Html.Tests
     [TestClass]
     public class HtmlListBuilderTests : BaseHtmlTests
     {
-        private static IHtmlListBuilder _builder;
+        private static IHtmlListBuilder _builder = null!;
 
         [ClassInitialize]
         public static void ClassSetup(TestContext context)
         {
             var innerHtmlBuilder = new InnerHtmlBuilder();
             _builder = new HtmlListBuilder(innerHtmlBuilder);
-
-
         }
 
         [TestMethod]
@@ -54,7 +45,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousNestedCurrentUnorderedNormalLastNormal_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var three = BuildOrderListItem("three", level: 1);
             var four = BuildUnorderedListItem("hello world");
             var five = BuildUnorderedListItem("goodbye world");
@@ -67,7 +57,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_UnOrderedPreviousCurrentLastNormal_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var four = BuildUnorderedListItem("hello world");
             var five = BuildUnorderedListItem("goodbye world");
             var six = BuildUnorderedListItem("test world");
@@ -80,7 +69,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_UnOrderedPreviousCurrentNormalLastNull_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var five = BuildUnorderedListItem("goodbye world");
             var six = BuildUnorderedListItem("test world");
 
@@ -92,7 +80,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousNullCurrentNormalLastNormal_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildOrderListItem("one");
             var two = BuildOrderListItem("two");
             
@@ -104,7 +91,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousNormalCurrentNormalLastNested_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildOrderListItem("one");
             var two = BuildOrderListItem("two");
             var three = BuildOrderListItem("three", level: 1);
@@ -117,7 +103,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousNormalCurrentNestedLastNormal_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var two = BuildOrderListItem("two");
             var three = BuildOrderListItem("three", level: 1);
             var four = BuildUnorderedListItem("hello world");
@@ -130,7 +115,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_NullPreviousOrderedCurrentNestedUnorderedLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildOrderListItem("three", level: 1);
             var two = BuildUnorderedListItem("hello world");
 
@@ -142,7 +126,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_NullPreviousNestedUnorderedCurrentLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var two = BuildOrderListItem("one");
             var three = BuildOrderListItem("two");
 
@@ -155,7 +138,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousCurrentNestedUnorderedLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildOrderListItem("one");
             var two = BuildOrderListItem("two");
             var three = BuildUnorderedListItem("hello world", level: 1);
@@ -169,7 +151,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_OrderedPreviousNestedUnorderedCurrentLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildOrderListItem("two");
             var two = BuildUnorderedListItem("hello world", level: 1);
             var three = BuildUnorderedListItem("goodbye world", level: 1);
@@ -182,7 +163,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_NestedUnOrderedPreviousCurrentLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildUnorderedListItem("hello world", level: 1);
             var two = BuildUnorderedListItem("goodbye world", level: 1);
             var three = BuildUnorderedListItem("test world", level: 1);
@@ -195,7 +175,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_NestedUnOrderedPreviousCurrentUnorderedLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildUnorderedListItem("goodbye world", level: 1);
             var two = BuildUnorderedListItem("test world", level: 1);
             var three = BuildOrderListItem("three");
@@ -208,11 +187,9 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void BuildList_NestedUnOrderedPreviousCurrentNullLast_ReturnsString()
         {
-            Queue<OpenXmlParagraphWrapper?> queue = new();
             var one = BuildUnorderedListItem("test world", level: 1);
             var two = BuildOrderListItem("three");
             
-
             var actual = _builder.BuildList(one, two, null);
 
             Assert.AreEqual("<li>three</li>", actual);
