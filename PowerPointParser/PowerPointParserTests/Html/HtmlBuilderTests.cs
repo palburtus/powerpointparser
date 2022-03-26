@@ -324,7 +324,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></ul></ol>", actual);
+            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></ul>", actual);
 
         }
 
@@ -801,7 +801,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></ol></ol></ol></ol></ol></ol></ol></ol></ol>", actual);
+            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three</li><ol><li>four</li></ol><ul><li>four four</li></ul><ol><li>four four four</li></ol><ul><li>four four four four</li><ol><li>five</li></ol><ul><li>five five</li></ul><ol><li>five five five</li></ol><ul><li>five five five five</li><ol><li>six</li></ol><ul><li>six six</li></ul><ol><li>six six six six</li></ol><ul><li>six six six six six</li><ol><li>seven</li></ol><ul><li>seven seven</li></ul><ol><li>seven seven seven</li></ol><ul><li>seven seven seven seven</li><ol><li>eight</li></ol><ul><li>eight eight</li></ul><ol><li>eight eight eight</li></ol><ul><li>eight eight eight eight</li><ol><li>nine</li></ol><ul><li>nine nine</li></ul><ol><li>nine nine nine</li></ol><ul><li>nine nine nine nine</li><ol><li>ten</li></ol><ul><li>ten ten</li></ul><ol><li>ten ten ten</li></ol><ul><li>ten ten ten ten</li></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul>", actual);
         }
     }
 }

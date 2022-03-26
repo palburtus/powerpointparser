@@ -43,33 +43,6 @@ namespace Aaks.PowerPointParser.Html
                     _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                     _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
                 }
-                
-
-                /*if (next == null && _closingListBracketsStack.Count > 1)
-                {
-                    if (previous?.PPr?.Lvl < current.PPr?.Lvl)
-                    {
-                        sb.Append(_closingListBracketsStack.Pop());
-                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                        _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                    }
-                    else if(previous?.PPr?.Lvl == current.PPr?.Lvl)
-                    {
-                        sb.Append(_closingListBracketsStack.Pop());
-                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                        _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                    } 
-                }
-                else if (IsNotNested(next))
-                {
-                    sb.Append(_closingListBracketsStack.Pop());
-                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                        _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                }*/
-
             }
 
             if (IsFirstListItem(current, previous)) 
@@ -115,13 +88,14 @@ namespace Aaks.PowerPointParser.Html
 
             if (next != null && IsListOrderTypeChanged(previous, current) &&
                 IsListOrderTypeChanged(current, next) &&
-                 current.PPr?.Lvl == previous.PPr?.Lvl) return true;
+                current.PPr?.Lvl == previous?.PPr?.Lvl) return true;
 
 
             if (next != null && 
                 IsListOrderTypeChanged(previous, current) && 
                 IsListOrderTypeChanged(current, next) &&
-                previous?.PPr?.Lvl < current.PPr?.Lvl) return false;
+                IsListOrderTypeChanged(previous, next) &&
+                previous?.PPr?.Lvl < current.PPr?.Lvl) return true;
 
             
             return false;
