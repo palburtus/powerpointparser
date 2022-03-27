@@ -2,27 +2,29 @@
 using System.Linq;
 using Aaks.PowerPointParser.Dto;
 
-namespace Aaks.PowerPointParser;
-
-public static class PowerPointParserExtensions
+namespace Aaks.PowerPointParser
 {
-    public static Queue<OpenXmlParagraphWrapper> ToQueue(this IDictionary<int, IList<OpenXmlParagraphWrapper>> items)
+
+    public static class PowerPointParserExtensions
     {
-        Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
-        var xmlParagraphWrappers = items.Select(x => x.Value).SelectMany(y => y).ToList();
-        foreach (var openXmlParagraphWrapper in xmlParagraphWrappers)
+        public static Queue<OpenXmlParagraphWrapper> ToQueue(this IDictionary<int, IList<OpenXmlParagraphWrapper>> items)
         {
-            openXmlParagraphWrappers.Enqueue(openXmlParagraphWrapper);
+            Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
+            var xmlParagraphWrappers = items.Select(x => x.Value).SelectMany(y => y).ToList();
+            foreach (var openXmlParagraphWrapper in xmlParagraphWrappers)
+            {
+                openXmlParagraphWrappers.Enqueue(openXmlParagraphWrapper);
+            }
+            return openXmlParagraphWrappers;
         }
-        return openXmlParagraphWrappers;
-    }
-    public static Queue<OpenXmlParagraphWrapper> ToQueue(this IList<OpenXmlParagraphWrapper> items)
-    {
-        Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
-        foreach (var current in items)
+        public static Queue<OpenXmlParagraphWrapper> ToQueue(this IList<OpenXmlParagraphWrapper> items)
         {
-            openXmlParagraphWrappers.Enqueue(current);
+            Queue<OpenXmlParagraphWrapper> openXmlParagraphWrappers = new();
+            foreach (var current in items)
+            {
+                openXmlParagraphWrappers.Enqueue(current);
+            }
+            return openXmlParagraphWrappers;
         }
-        return openXmlParagraphWrappers;
     }
 }
