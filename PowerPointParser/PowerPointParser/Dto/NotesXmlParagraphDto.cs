@@ -99,6 +99,9 @@ namespace Aaks.PowerPointParser.Dto
         [XmlAttribute(AttributeName = "b")]
         public int B { get; set; }
 
+        [XmlAttribute(AttributeName = "i")]
+        public int I { get; set; }
+
         [XmlAttribute(AttributeName = "dirty")]
         public int Dirty { get; set; }
     }

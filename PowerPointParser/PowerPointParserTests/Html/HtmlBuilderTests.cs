@@ -92,6 +92,17 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ItalicTag_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", new RPr { I = 1 }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><i>hello world</i></p>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_BoldAndNonBuildMix_ReturnsString()
         {
             var rs = new List<R>
@@ -112,6 +123,29 @@ namespace Aaks.PowerPointParser.Html.Tests
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p><strong>hello:</strong> world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ItalicAndNonItalicMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello:", new RPr {I = 1}),
+                BuildR(" world")
+            };
+
+            OpenXmlParagraphWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs
+            };
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><i>hello:</i> world</p>", actual);
         }
 
         [TestMethod]
@@ -193,7 +227,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedListItem_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_StrongUnorderedListItem_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr {B = 1}));
@@ -201,6 +235,17 @@ namespace Aaks.PowerPointParser.Html.Tests
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<ul><li><strong>hello world</strong></li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ItalicUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { I = 1 }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li><i>hello world</i></li></ul>", actual);
         }
 
         [TestMethod]

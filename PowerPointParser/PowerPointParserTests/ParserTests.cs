@@ -105,6 +105,27 @@ namespace Aaks.PowerPointParser.Tests
         }
 
         [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseItalicParagraph_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actual = map[1][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNotNull(actual.PPr);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual("This is an italic paragraph", actual.R![0].T);
+            Assert.AreEqual(1, actual.R![0].RPr!.I);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+        }
+
+        [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
