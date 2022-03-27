@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPointParser", "PowerPo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerPointParserTests", "PowerPointParserTests\PowerPointParserTests.csproj", "{11037A9C-A38C-4067-AC5B-CB1898DE18BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmlGenerationClient", "HtmlGenerationClient\HtmlGenerationClient.csproj", "{45C99A99-C4BD-4E32-BCB6-3B0EC3DBC6F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11037A9C-A38C-4067-AC5B-CB1898DE18BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C99A99-C4BD-4E32-BCB6-3B0EC3DBC6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C99A99-C4BD-4E32-BCB6-3B0EC3DBC6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C99A99-C4BD-4E32-BCB6-3B0EC3DBC6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C99A99-C4BD-4E32-BCB6-3B0EC3DBC6F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
