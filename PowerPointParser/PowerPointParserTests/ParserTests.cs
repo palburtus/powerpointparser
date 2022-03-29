@@ -136,11 +136,11 @@ namespace Aaks.PowerPointParser.Tests
             var actual = map[2][0]!;
 
             Assert.IsNull(actual.A);
-            Assert.IsNotNull(actual.PPr);
+            Assert.IsNull(actual.PPr);
             Assert.IsNull(actual.Text);
             Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This is underline", actual.R![0].T);
-            Assert.AreEqual(1, actual.R![0].RPr!.I);
+            Assert.AreEqual("This is underlined", actual.R![0].T);
+            Assert.AreEqual("sng", actual.R![0].RPr!.U);
             Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
 
