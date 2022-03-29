@@ -10,6 +10,7 @@ namespace Aaks.PowerPointParser.Html
        
         public HtmlListBuilder(IInnerHtmlBuilder innerHtmlBuilder)
         {
+            _closingListBracketsStack = new Stack<string>();
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
@@ -43,7 +44,6 @@ namespace Aaks.PowerPointParser.Html
 
             if (IsFirstListItem(current, previous)) 
             {
-                _closingListBracketsStack = new Stack<string>();
                 sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                 _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                 _closingBracket = isOrderListItem ? "</ol>" : "</ul>";

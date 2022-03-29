@@ -43,18 +43,6 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void BuildList_OrderedPreviousNestedCurrentUnorderedNormalLastNormal_ReturnsString()
-        {
-            var three = BuildOrderListItem("three", level: 1);
-            var four = BuildUnorderedListItem("hello world");
-            var five = BuildUnorderedListItem("goodbye world");
-
-            var actual = _builder.BuildList(three, four, five);
-
-            Assert.AreEqual("</ol><ul><li>hello world</li>", actual);
-        }
-
-        [TestMethod]
         public void BuildList_UnOrderedPreviousCurrentLastNormal_ReturnsString()
         {
             var four = BuildUnorderedListItem("hello world");
@@ -72,9 +60,9 @@ namespace Aaks.PowerPointParser.Html.Tests
             var five = BuildUnorderedListItem("goodbye world");
             var six = BuildUnorderedListItem("test world");
 
-            var actual = _builder.BuildList(five, six, null);
+            var actual = new HtmlListBuilder(new InnerHtmlBuilder()).BuildList(five, six, null);
 
-            Assert.AreEqual("<li>test world</li></ol>", actual);
+            Assert.AreEqual("<li>test world</li>", actual);
         }
         
         [TestMethod]
@@ -171,30 +159,5 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             Assert.AreEqual("<li>goodbye world</li>", actual);
         }
-
-        [TestMethod]
-        public void BuildList_NestedUnOrderedPreviousCurrentUnorderedLast_ReturnsString()
-        {
-            var one = BuildUnorderedListItem("goodbye world", level: 1);
-            var two = BuildUnorderedListItem("test world", level: 1);
-            var three = BuildOrderListItem("three");
-
-            var actual = _builder.BuildList(one, two, three);
-
-            Assert.AreEqual("<li>test world</li>", actual);
-        }
-
-        [TestMethod]
-        public void BuildList_NestedUnOrderedPreviousCurrentNullLast_ReturnsString()
-        {
-            var one = BuildUnorderedListItem("test world", level: 1);
-            var two = BuildOrderListItem("three");
-            
-            var actual = _builder.BuildList(one, two, null);
-
-            Assert.AreEqual("<li>three</li>", actual);
-        }
-
-       
     }
 }
