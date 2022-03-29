@@ -1,4 +1,4 @@
-name: CI
+name: Unit Test Runner
 
 on:
   push:
@@ -27,5 +27,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: dotnet-results-${6.0.x}
-        path: TestResults=-${6.0.x
+        path: TestResults=-${6.0.x}
       if: ${{ always() }}
