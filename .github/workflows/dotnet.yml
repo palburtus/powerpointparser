@@ -5,8 +5,8 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-    - '**/PowerPointParser.cs'
-    - '**/PowerPointParser.csproj'
+    - '**.cs'
+    - '**.csproj'
 
 env:
   DOTNET_VERSION: '6.0' # The .NET SDK version to use
