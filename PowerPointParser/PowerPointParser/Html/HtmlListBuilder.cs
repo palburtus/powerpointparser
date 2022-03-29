@@ -59,7 +59,7 @@ namespace Aaks.PowerPointParser.Html
 
             if (IsEndOfNestedList(current, next))
             {
-                int nextLevel = next !=null ? next.PPr!.Lvl : 0;
+                int nextLevel = GetNextNestingLevel(next);
 
                 for (int i = nextLevel; i < current.PPr?.Lvl; i++)
                 {
@@ -76,6 +76,11 @@ namespace Aaks.PowerPointParser.Html
             }
 
             return sb.ToString();
+        }
+
+        private static int GetNextNestingLevel(OpenXmlParagraphWrapper? next)
+        {
+            return next is {PPr: { }} ? next.PPr!.Lvl : 0;
         }
 
         private bool IsLastListItemForLevel(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current, OpenXmlParagraphWrapper? next)
