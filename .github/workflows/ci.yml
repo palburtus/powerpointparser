@@ -34,7 +34,7 @@ jobs:
         report_title: Unit Tests
         github_token: ${{ secrets.GITHUB_TOKEN }}
         gist_name: power_point_parser_tests.md
-        gist_badge_label: 'Unit Tests: %Counters_passed%/%Counters_total%'
+        gist_badge_label: 'Tests: %Counters_passed%/%Counters_total%'
         gist_token: ${{ secrets.GIST_TOKEN }}
 
 
