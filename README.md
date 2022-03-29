@@ -1,4 +1,5 @@
 # PowerPoint HTML Generator
+![tests](https://gist.githubusercontent.com/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/67b45a3840ad7fe2427a5aa2b26f22e08476ebe1/power_point_parser_tests.md_badge.svg)
 ![version](https://img.shields.io/nuget/vpre/AaksPowerPointParser)
 ![issues](https://img.shields.io/github/issues/palburtus/powerpointparser)
 ![license](https://img.shields.io/github/license/palburtus/powerpointparser)
