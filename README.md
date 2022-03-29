@@ -10,7 +10,7 @@ This libary uses OpenXML to parse Powerpoint Documents and generates the equivil
 
 ## Available On Nuget
 ```
-PN > Install-Package AaksPowerPointParser
+PM > Install-Package AaksPowerPointParser
 ```
 
 https://www.nuget.org/packages/AaksPowerPointParser
