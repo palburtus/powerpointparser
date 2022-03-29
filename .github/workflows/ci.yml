@@ -1,4 +1,4 @@
-name: .NET
+name: CI
 
 on:
   push:
@@ -26,5 +26,16 @@ jobs:
       run: dotnet build ./PowerPointParser --no-restore
     - name: Test 
       run: dotnet test ./PowerPointParser --no-build --verbosity normal
+    - name: dotnet-tests-report
+      uses: zyborg/dotnet-tests-report@v1.4.4
+      with:
+        project_path: ./PowerPointParser/PowerPointParserTests
+        report_name: project_unit_tests
+        report_title: Unit Tests
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        gist_name: power_point_parser_tests.md
+        gist_badge_label: 'Unit Tests: %Counters_passed%/%Counters_total%'
+        gist_token: ${{ secrets.GIST_TOKEN }}
+
 
     
