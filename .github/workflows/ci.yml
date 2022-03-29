@@ -19,6 +19,9 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore ./PowerPointParser
-    - name: Build ./PowerPointParser
-      run: dotnet build --no-restore
+    - name: Build 
+      run: dotnet ./PowerPointParser build --no-restore
+    - name: Test 
+      run: dotnet test ./PowerPointParser --no-build --verbosity normal
+
     
