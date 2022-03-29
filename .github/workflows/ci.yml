@@ -20,7 +20,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ./PowerPointParser
     - name: Build 
-      run: dotnet ./PowerPointParser build --no-restore
+      run: dotnet build ./PowerPointParser --no-restore
     - name: Test 
       run: dotnet test ./PowerPointParser --no-build --verbosity normal
 
