@@ -512,6 +512,36 @@ namespace Aaks.PowerPointParser.Html.Tests
                 actual);
         }
 
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedListTypeChangeAfterFirstItem_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("It supports"));
+            queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
+            queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 1));
+            queue.Enqueue(BuildOrderListItem("And", level: 1));
+            queue.Enqueue(BuildOrderListItem("Ordered Lists", level: 1));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>It supports</li><li>Un-ordered lists</li><ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwoListTypeChangeAfterFirstItem_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("It supports"));
+            queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
+            queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 2));
+            queue.Enqueue(BuildOrderListItem("And", level: 2));
+            queue.Enqueue(BuildOrderListItem("Ordered Lists", level: 2));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>It supports</li><li>Un-ordered lists</li><ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></ul>", actual);
+        }
+
 
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwiceNestedFollowedBySingleNested_ReturnsString()
@@ -603,7 +633,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li><li>one one one</li><ol><li>two</li><li>two two</li><li>two two two two</li></ol></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>", actual);
+            Assert.AreEqual("<ol><li>one</li></ol><ul><li>one one</li><li>one one one</li><ol><li>two</li></ol><ul><li>two two</li><li>two two two two</li></ul></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>", actual);
 
         }
 

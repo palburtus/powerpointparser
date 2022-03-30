@@ -7,7 +7,6 @@ namespace Aaks.PowerPointParser.Html
     public class HtmlListBuilder : IHtmlListBuilder
     {
         private readonly Stack<string> _closingListBracketsStack;
-        private string? _closingBracket;
 
         private readonly IInnerHtmlBuilder _innerHtmlBuilder;
        
@@ -27,26 +26,37 @@ namespace Aaks.PowerPointParser.Html
             if (isLastOrderTypeChange)
             {
 
-                if (IsNotNested(next))
+                if (IsNotNested(next) || IsLastListItemForLevel(previous, current, next))
                 {
                     sb.Append(_closingListBracketsStack.Pop());
                     sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
-                }else if (IsLastListItemForLevel(previous, current, next))
+                }
+                else if(previous?.PPr?.Lvl == current.PPr?.Lvl && current.PPr?.Lvl == next?.PPr?.Lvl)
                 {
                     sb.Append(_closingListBracketsStack.Pop());
                     sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                    _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
                 }
             }
 
-            if (IsFirstListItem(current, previous)) 
+            if (IsFirstListItem(current, previous))
             {
-                sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
-                _closingBracket = isOrderListItem ? "</ol>" : "</ul>";
+                int previousLevel = GetPreviousNestingLevel(previous);
+                int currentLevel = GetCurrentNestingLevel(current);
+                if (previousLevel < currentLevel)
+                {
+                    for (int i = previousLevel; i < current.PPr?.Lvl; i++)
+                    {
+                        sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                        _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                    }
+                }
+                else
+                {
+                    sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                    _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                }
             }
 
             if (IsStartOfNestedList(previous, current))
@@ -72,15 +82,31 @@ namespace Aaks.PowerPointParser.Html
 
             if (IsLastListItem(current, next))
             {
-                sb.Append(_closingBracket);
+                for (int i = 0; i < _closingListBracketsStack.Count; i++)
+                {
+                    if (_closingListBracketsStack.Count > 0)
+                    {
+                        sb.Append(_closingListBracketsStack.Pop());
+                    }
+                }
             }
 
             return sb.ToString();
         }
 
-        private static int GetNextNestingLevel(OpenXmlParagraphWrapper? next)
+        private int GetCurrentNestingLevel(OpenXmlParagraphWrapper current)
+        {
+            return current is { PPr: { } } ? current.PPr!.Lvl : 0; ;
+        }
+
+        private int GetNextNestingLevel(OpenXmlParagraphWrapper? next)
         {
             return next is {PPr: { }} ? next.PPr!.Lvl : 0;
+        }
+
+        private int GetPreviousNestingLevel(OpenXmlParagraphWrapper? previous)
+        {
+            return previous is {PPr: { }} ? previous.PPr!.Lvl : 0;
         }
 
         private bool IsLastListItemForLevel(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current, OpenXmlParagraphWrapper? next)
