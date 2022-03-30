@@ -9,6 +9,27 @@ Speaker Notes can be parsed converted to HTML
 
 This libary uses OpenXML to parse Powerpoint Documents and generates the equivilant html markup as an output.
 
+#### Sample Powerpoint Speaker Notes
+<img src="/blob/SamplePowerpointInput.png" alt="power point example" width="600"/>
+
+#### Generates This HTML
+```
+<p>
+  Here is an example of a supported speaker note.  <strong>It can be bold,  </strong><i>italic,</i><u>underlined, </u>
+</p>
+<ul>
+  <li>It supports </li>
+  <li>Un-order lists</li>
+  <ul>
+    <li>Nested Lists</li>
+  </ul>
+  <ol>
+    <li>And</li>
+    <li>Ordered Lists</li>
+  </ol>
+</ul>
+```
+
 ## Available On Nuget
 ```
 PM > Install-Package AaksPowerPointParser
