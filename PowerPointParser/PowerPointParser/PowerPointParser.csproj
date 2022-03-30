@@ -17,11 +17,11 @@
     <PackageReleaseNotes>Fix bug for getting nested indent level from null object</PackageReleaseNotes>
     <Description>Library for Parsing .pptx Speaker Notes that can be converted to HTML</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageIcon>PowerpointHtmlICon.png</PackageIcon>
+    <PackageIcon>nuget_icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\PowerpointHtmlICon.png">
+    <None Include="..\..\assets\nuget_icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

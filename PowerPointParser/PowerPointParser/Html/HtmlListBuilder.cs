@@ -6,6 +6,9 @@ namespace Aaks.PowerPointParser.Html
 {
     public class HtmlListBuilder : IHtmlListBuilder
     {
+        private readonly Stack<string> _closingListBracketsStack;
+        private string? _closingBracket;
+
         private readonly IInnerHtmlBuilder _innerHtmlBuilder;
        
         public HtmlListBuilder(IInnerHtmlBuilder innerHtmlBuilder)
@@ -13,9 +16,6 @@ namespace Aaks.PowerPointParser.Html
             _closingListBracketsStack = new Stack<string>();
             _innerHtmlBuilder = innerHtmlBuilder;
         }
-
-        Stack<string> _closingListBracketsStack = new();
-        private string? _closingBracket;
 
         public string BuildList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current,
             OpenXmlParagraphWrapper? next)

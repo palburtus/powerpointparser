@@ -36,15 +36,23 @@ namespace Aaks.PowerPointParser.Html
             {
 
                 if (IsBold(r)) sb.Append("<strong>");
+                if (IsUnderlined(r)) sb.Append("<u>");
                 if (IsItalic(r)) sb.Append("<i>");
 
                 sb.Append(HttpUtility.HtmlEncode(r.T));
 
                 if (IsItalic(r)) sb.Append("</i>");
+                if (IsUnderlined(r)) sb.Append("</u>");
                 if (IsBold(r)) sb.Append("</strong>");
             }
 
             return sb.ToString();
+        }
+
+        private static bool IsUnderlined(R? r)
+        {
+            if (r?.RPr == null) return false;
+            return r.RPr.U == "sng";
         }
 
         private static bool IsBold(R? r)

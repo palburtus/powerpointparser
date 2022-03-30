@@ -103,6 +103,17 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_UnderlineTag_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", new RPr { U = "sng" }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><u>hello world</u></p>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrongItalicTag_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
@@ -111,6 +122,17 @@ namespace Aaks.PowerPointParser.Html.Tests
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
             Assert.AreEqual("<p><strong><i>hello world</i></strong></p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_StrongUnderlinedItalicTag_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", new RPr { I = 1, B = 1, U = "sng" }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><strong><u><i>hello world</i></u></strong></p>", actual);
         }
 
 
@@ -161,6 +183,29 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_UnderlinedAndNonUnderlinedMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello:", new RPr {U = "sng"}),
+                BuildR(" world")
+            };
+
+            OpenXmlParagraphWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs
+            };
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><u>hello:</u> world</p>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ItalicAndBoldMix_ReturnsString()
         {
             var rs = new List<R>
@@ -207,13 +252,12 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtml_ItalicAndBoldNormalMix_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_BoldItalicUnderLineMix_ReturnsString()
         {
             var rs = new List<R>
             {
-                BuildR("hello", new RPr {I = 1}),
-                BuildR(" and"),
-                BuildR(" world", new RPr {B = 1})
+                BuildR("hello:", new RPr {I = 1, B = 1, U = "sng"}),
+                BuildR(" world")
             };
 
             OpenXmlParagraphWrapper wrapper = new()
@@ -227,7 +271,33 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<p><i>hello</i> and<strong> world</strong></p>", actual);
+            Assert.AreEqual("<p><strong><u><i>hello:</i></u></strong> world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ItalicUnderlinedAndBoldNormalMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello", new RPr {I = 1}),
+                BuildR(" and"),
+                BuildR(" world", new RPr {B = 1}),
+                BuildR(" or"),
+                BuildR(" one", new RPr {U = "sng"})
+            };
+
+            OpenXmlParagraphWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object() },
+                R = rs
+            };
+
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p><i>hello</i> and<strong> world</strong> or<u> one</u></p>", actual);
         }
 
         [TestMethod]
