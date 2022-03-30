@@ -1,7 +1,9 @@
 # PowerPoint HTML Generator
-![tests](https://gist.githubusercontent.com/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/0688df37a82deb005be7810e690c9c320e61fb37/power_point_parser_tests.md_badge.svg)
+![tests](https://raw.githubusercontent.com/gist/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/35f077152fb4d2f5545417cf6a7f90f0e847df95/power_point_parser_tests.md_badge.svg)
 ![version](https://img.shields.io/nuget/vpre/AaksPowerPointParser)
 ![issues](https://img.shields.io/github/issues/palburtus/powerpointparser)
+![dotnet](https://img.shields.io/badge/.NET-6.0-blue)
+![csharp](https://img.shields.io/badge/C%23-10.0-blue)
 ![license](https://img.shields.io/github/license/palburtus/powerpointparser)
 
 **Library for Parsing *.pptx* Speaker Notes**
@@ -45,6 +47,14 @@ If you are unfamiliar on server-side concerns and Office automation, Microsoft h
 
 **HtmlGenerationClinet**
 Included in this project is a simple console application design to demo this functinality.  You will be promoted for the absolute path of any .pptx file on your local system and a randomly named .html file equivilant will be generated on your desktop.  
+
+Enter the absolute path of your _.pptx_ file in the console window
+
+<img src="/blob/commandline.png" alt="power point example" width="400"/>
+
+And a timestamped _.html_ file with some basic styling will be created saved to your desktop 
+
+<img src="/blob/SampleHtmlOutput.png" alt="power point example" width="400"/>
 
 ## License
 
