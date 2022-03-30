@@ -332,6 +332,175 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphCenter_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr{Algn = "ctr"}));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p style=\"text-align: center;\">hello world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphRight_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr { Algn = "r" }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p style=\"text-align: right;\">hello world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphJustify_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr { Algn = "just" }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p style=\"text-align: justify;\">hello world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemCenter_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", align: "ctr"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li style=\"text-align: center;\">hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemRight_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", align: "r"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li style=\"text-align: right;\">hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemJustify_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", align: "just"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li style=\"text-align: justify;\">hello world</li></ol>", actual);
+        }
+
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemCenter_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", align: "ctr"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li style=\"text-align: center;\">hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemRight_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", align: "r"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li style=\"text-align: right;\">hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemJustify_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", align: "just"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li style=\"text-align: justify;\">hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_BoldItalicUnderLineStrikeAlignRightMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello:", new RPr {I = 1, B = 1, U = "sng", Strike = "sngStrike"}),
+                BuildR(" world")
+            };
+
+            OpenXmlTextWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object(), Algn = "r"},
+                R = rs
+            };
+
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<p style=\"text-align: right;\"><strong><u><i><del>hello:</del></i></u></strong> world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_UlBoldItalicUnderLineStrikeAlignCenterMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello:", new RPr {I = 1, B = 1, U = "sng", Strike = "sngStrike"}),
+                BuildR(" world")
+            };
+
+            OpenXmlTextWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object(), Algn = "ctr", BuChar = new BuChar { Char = "•" } },
+                R = rs
+            };
+
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li style=\"text-align: center;\"><strong><u><i><del>hello:</del></i></u></strong> world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_OlBoldItalicUnderLineStrikeAlignJustifyMix_ReturnsString()
+        {
+            var rs = new List<R>
+            {
+                BuildR("hello:", new RPr {I = 1, B = 1, U = "sng", Strike = "sngStrike"}),
+                BuildR(" world")
+            };
+
+            OpenXmlTextWrapper wrapper = new()
+            {
+                PPr = new PPr { BuNone = new object(), Algn = "just", BuAutoNum = new BuAutoNum { Type = "arabicPeriod" } },
+                R = rs
+            };
+
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(wrapper);
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li style=\"text-align: justify;\"><strong><u><i><del>hello:</del></i></u></strong> world</li></ol>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ItalicUnderlinedAndBoldNormalMix_ReturnsString()
         {
             var rs = new List<R>
@@ -357,8 +526,6 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             Assert.AreEqual("<p><i>hello</i> and<strong> world</strong> or<u> one</u><del> not</del></p>", actual);
         }
-
-        //sngStrike
 
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ConsecutiveParagraph_ReturnsString()

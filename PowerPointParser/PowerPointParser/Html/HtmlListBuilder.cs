@@ -29,21 +29,21 @@ namespace Aaks.PowerPointParser.Html
                 if (IsNotNested(next) || IsLastListItemForLevel(previous, current, next))
                 {
                     sb.Append(_closingListBracketsStack.Pop());
-                    sb.Append(isOrderListItem ? Tags.Open(Tags.OrderedList) : Tags.Open(Tags.UnorderedList));
-                    _closingListBracketsStack.Push(isOrderListItem ? Tags.Close(Tags.OrderedList) : Tags.Close(Tags.UnorderedList));
+                    sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
+                    _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
                 }
                 else if(previous?.PPr?.Lvl == current.PPr?.Lvl && current.PPr?.Lvl == next?.PPr?.Lvl)
                 {
                     sb.Append(_closingListBracketsStack.Pop());
-                    sb.Append(isOrderListItem ? Tags.Open(Tags.OrderedList) : Tags.Open(Tags.UnorderedList));
-                    _closingListBracketsStack.Push(isOrderListItem ? Tags.Close(Tags.OrderedList) : Tags.Close(Tags.UnorderedList));
+                    sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
+                    _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
                 }
             }
 
             if (IsFirstListItem(current, previous))
             {
-                sb.Append(isOrderListItem ? Tags.Open(Tags.OrderedList) : Tags.Open(Tags.UnorderedList));
-                _closingListBracketsStack.Push(isOrderListItem ? Tags.Close(Tags.OrderedList) : Tags.Close(Tags.UnorderedList));
+                sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
+                _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
             }
 
             if (IsStartOfNestedList(previous, current))
@@ -54,14 +54,14 @@ namespace Aaks.PowerPointParser.Html
                 {
                     for (int i = previousLevel; i < current.PPr?.Lvl; i++)
                     {
-                        sb.Append(isOrderListItem ? Tags.Open(Tags.OrderedList) : Tags.Open(Tags.UnorderedList));
-                        _closingListBracketsStack.Push(isOrderListItem ? Tags.Close(Tags.OrderedList) : Tags.Close(Tags.UnorderedList));
+                        sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
+                        _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
                     }
                 }
                 else
                 {
-                    sb.Append(isOrderListItem ? Tags.Open(Tags.OrderedList) : Tags.Open(Tags.UnorderedList));
-                    _closingListBracketsStack.Push(isOrderListItem ? Tags.Close(Tags.OrderedList) : Tags.Close(Tags.UnorderedList));
+                    sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
+                    _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
                 }
             }
 
@@ -139,12 +139,12 @@ namespace Aaks.PowerPointParser.Html
 
             if (paragraphWrapper.PPr.BuAutoNum != null)
             {
-                return paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
+                return paragraphWrapper.PPr.BuAutoNum.Type == OpenXmlTextModifiers.OrderList;
             }
 
             if (paragraphWrapper.PPr.BuChar != null)
             {
-                return paragraphWrapper.PPr.BuChar.Char == "•";
+                return paragraphWrapper.PPr.BuChar.Char == OpenXmlTextModifiers.UnorderedList;
             }
 
             return false;
@@ -189,13 +189,13 @@ namespace Aaks.PowerPointParser.Html
         private bool IsUnOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
             if (paragraphWrapper?.PPr?.BuChar == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuChar.Char == "•";
+            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuChar.Char == OpenXmlTextModifiers.UnorderedList;
         }
 
         private bool IsOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
             if (paragraphWrapper?.PPr?.BuAutoNum?.Type == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == "arabicPeriod";
+            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == OpenXmlTextModifiers.OrderList;
         }
     }
 }
