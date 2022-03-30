@@ -9,7 +9,7 @@ namespace Aaks.PowerPointParser.Html
     {
         public string BuildInnerHtmlParagraph(OpenXmlTextWrapper textWrapper)
         {
-            return $"{HtmlTags.Open(HtmlTags.Paragraph, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.Paragraph)}";
+            return textWrapper.R?.Count == 0 ? string.Empty : $"{HtmlTags.Open(HtmlTags.Paragraph, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.Paragraph)}";
         }
 
         public string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper)

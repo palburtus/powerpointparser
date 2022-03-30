@@ -43,7 +43,6 @@ namespace Aaks.PowerPointParser.Html
                 paragraphWrappers.TryPeek(out var next);
 
                 if (current?.R == null) { return sb.ToString(); }
-                if (current.R.Count == 0) { return sb.ToString(); }
                 
                 bool isListItem = _htmlListBuilder.IsListItem(current);
 

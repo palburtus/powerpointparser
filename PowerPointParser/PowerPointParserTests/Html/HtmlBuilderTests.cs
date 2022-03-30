@@ -543,6 +543,52 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TwoConsecutiveEmptyParagraphLines_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello"));
+            queue.Enqueue(new()
+            {
+                R = new List<R>()
+            });
+            queue.Enqueue(new()
+            {
+                R = new List<R>()
+            });
+            queue.Enqueue(BuildParagraphLine("world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+            
+
+            Assert.AreEqual("<p>hello</p><p>world</p>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ThreeConsecutiveEmptyParagraphLines_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello"));
+            queue.Enqueue(new()
+            {
+                R = new List<R>()
+            });
+            queue.Enqueue(new()
+            {
+                R = new List<R>()
+            });
+            queue.Enqueue(new()
+            {
+                R = new List<R>()
+            });
+            queue.Enqueue(BuildParagraphLine("world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+
+            Assert.AreEqual("<p>hello</p><p>world</p>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OneLineInTwoRRecords_ReturnsString()
         {
             var rs = new List<R>();

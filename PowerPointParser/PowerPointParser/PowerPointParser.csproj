@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <VersionPrefix>0.2.1.88</VersionPrefix>
+	  <VersionPrefix>0.3.0.128</VersionPrefix>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	  <TargetFramework>net6.0</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
@@ -14,7 +14,7 @@
     <AssemblyName>Aaks$(MSBuildProjectName)</AssemblyName>
     <PackageProjectUrl>https://github.com/palburtus/powerpointparser#readme</PackageProjectUrl>
     <PackageTags>office, xml, powerpoint</PackageTags>
-    <PackageReleaseNotes>Fix bug for getting nested indent level from null object</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed bug that was causing paragraphs with two consecutive empty lists to truncate</PackageReleaseNotes>
     <Description>Library for Parsing .pptx Speaker Notes that can be converted to HTML</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>nuget_icon.png</PackageIcon>
