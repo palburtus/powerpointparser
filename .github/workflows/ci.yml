@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     paths-ignore:
       - '**/README.md'
-      - '**/assets/*'
+      - '**/blob/*'
   pull_request:
     branches: [ master ]
   
