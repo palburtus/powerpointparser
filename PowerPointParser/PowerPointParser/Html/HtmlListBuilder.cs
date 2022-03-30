@@ -42,6 +42,12 @@ namespace Aaks.PowerPointParser.Html
 
             if (IsFirstListItem(current, previous))
             {
+                sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+            }
+
+            if (IsStartOfNestedList(previous, current))
+            {
                 int previousLevel = GetPreviousNestingLevel(previous);
                 int currentLevel = GetCurrentNestingLevel(current);
                 if (previousLevel < currentLevel)
@@ -57,12 +63,8 @@ namespace Aaks.PowerPointParser.Html
                     sb.Append(isOrderListItem ? "<ol>" : "<ul>");
                     _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
                 }
-            }
-
-            if (IsStartOfNestedList(previous, current))
-            {
-                sb.Append(isOrderListItem ? "<ol>" : "<ul>");
-                _closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
+                //sb.Append(isOrderListItem ? "<ol>" : "<ul>");
+                //_closingListBracketsStack.Push(isOrderListItem ? "</ol>" : "</ul>");
             }
 
             sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));

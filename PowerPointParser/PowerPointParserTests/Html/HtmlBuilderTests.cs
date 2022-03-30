@@ -528,18 +528,33 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwoListTypeChangeAfterFirstItem_ReturnsString()
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwiceAfterNoNesting_ReturnsString()
         {
             Queue<OpenXmlParagraphWrapper?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("It supports"));
             queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
             queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 2));
             queue.Enqueue(BuildOrderListItem("And", level: 2));
+            queue.Enqueue(BuildOrderListItem("Ordered Lists", level: 2 ));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></ul></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedFiveTimesAfterNoNesting_ReturnsString()
+        {
+            Queue<OpenXmlParagraphWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("It supports"));
+            queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
+            queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 5));
+            queue.Enqueue(BuildOrderListItem("And", level: 5));
             queue.Enqueue(BuildOrderListItem("Ordered Lists", level: 2));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            Assert.AreEqual("<ul><li>It supports</li><li>Un-ordered lists</li><ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></ul>", actual);
+            Assert.AreEqual("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><ul><ul><ul><li>Nested Lists</li><li>And</li></ul></ul></ul><li>Ordered Lists</li></ul></ul></ul>", actual);
         }
 
 
