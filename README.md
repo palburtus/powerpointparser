@@ -2,6 +2,8 @@
 ![tests](https://raw.githubusercontent.com/gist/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/35f077152fb4d2f5545417cf6a7f90f0e847df95/power_point_parser_tests.md_badge.svg)
 ![version](https://img.shields.io/nuget/vpre/AaksPowerPointParser)
 ![issues](https://img.shields.io/github/issues/palburtus/powerpointparser)
+![dotnet](https://img.shields.io/badge/.NET-6.0-blue)
+![csharp](https://img.shields.io/badge/C%23-10.0-blue)
 ![license](https://img.shields.io/github/license/palburtus/powerpointparser)
 
 **Library for Parsing *.pptx* Speaker Notes**
