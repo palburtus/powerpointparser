@@ -1,5 +1,5 @@
 # PowerPoint HTML Generator
-![tests](https://raw.githubusercontent.com/gist/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/35f077152fb4d2f5545417cf6a7f90f0e847df95/power_point_parser_tests.md_badge.svg)
+![tests](https://raw.githubusercontent.com/gist/palburtus/abeb09d1ba12b9ce84a55f4da4f2af86/raw/f8698f8865f628bad6ef06bc979294ef22611b6f/power_point_parser_tests.md_badge.svg)
 ![version](https://img.shields.io/nuget/vpre/AaksPowerPointParser)
 ![issues](https://img.shields.io/github/issues/palburtus/powerpointparser)
 ![dotnet](https://img.shields.io/badge/.NET-6.0-blue)
