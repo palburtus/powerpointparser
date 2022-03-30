@@ -147,6 +147,87 @@ namespace Aaks.PowerPointParser.Tests
         }
 
         [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseStrikeThroughParagraph_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actual = map[3][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.PPr);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual("This text has a strike through", actual.R![0].T);
+            Assert.AreEqual("sngStrike", actual.R![0].RPr!.Strike);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseCenterAlignedParagraph_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actual = map[4][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual("ctr", actual.PPr!.Algn);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual("This text is center aligned", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+        }
+     
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseRightAlignedParagraph_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actual = map[5][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual("r", actual.PPr!.Algn);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual("This text is right aligned", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseJustifiedAlignedParagraph_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actual = map[6][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.AreEqual("just", actual.PPr!.Algn);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual("This text is aligned justified", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+
+        }
+
+        [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {

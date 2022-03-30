@@ -105,6 +105,9 @@ namespace Aaks.PowerPointParser.Dto
         [XmlAttribute(AttributeName = "u")]
         public string? U { get; set; }
 
+        [XmlAttribute(AttributeName = "strike")]
+        public string? Strike { get; set; }
+
         [XmlAttribute(AttributeName = "dirty")]
         public int Dirty { get; set; }
     }
@@ -121,7 +124,7 @@ namespace Aaks.PowerPointParser.Dto
     }
 
     [XmlRoot(Namespace = "http://schemas.openxmlformats.org/drawingml/2006/main", ElementName = "p")]
-    public class OpenXmlParagraphWrapper
+    public class OpenXmlTextWrapper
     {
 
         [XmlElement(ElementName = "pPr")]

@@ -4,7 +4,7 @@ namespace Aaks.PowerPointParser.Html
 {
     public interface IInnerHtmlBuilder
     {
-        string BuildInnerHtmlParagraph(OpenXmlParagraphWrapper paragraphWrapper);
-        string BuildInnerHtmlListItem(OpenXmlParagraphWrapper paragraphWrapper);
+        string BuildInnerHtmlParagraph(OpenXmlTextWrapper textWrapper);
+        string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper);
     }
 }

@@ -6,7 +6,7 @@ namespace Aaks.PowerPointParser
 {
     public interface IParser
     {
-        IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path);
-        IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream);
+        IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path);
+        IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream);
     }
 }

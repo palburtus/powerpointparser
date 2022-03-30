@@ -7,46 +7,53 @@ namespace Aaks.PowerPointParser.Html
 {
     public class InnerHtmlBuilder : IInnerHtmlBuilder
     {
-        public string BuildInnerHtmlParagraph(OpenXmlParagraphWrapper paragraphWrapper)
+        public string BuildInnerHtmlParagraph(OpenXmlTextWrapper textWrapper)
         {
             StringBuilder sb = new();
 
             sb.Append("<p>");
-            sb.Append(BuildInnerHtml(paragraphWrapper));
+            sb.Append(BuildInnerHtml(textWrapper));
             sb.Append("</p>");
 
             return sb.ToString();
         }
 
-        public string BuildInnerHtmlListItem(OpenXmlParagraphWrapper paragraphWrapper)
+        public string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper)
         {
             StringBuilder sb = new();
 
             sb.Append("<li>");
-            sb.Append(BuildInnerHtml(paragraphWrapper));
+            sb.Append(BuildInnerHtml(textWrapper));
             sb.Append("</li>");
 
             return sb.ToString();
         }
 
-        private static string BuildInnerHtml(OpenXmlParagraphWrapper paragraphWrapper)
+        private static string BuildInnerHtml(OpenXmlTextWrapper textWrapper)
         {
             StringBuilder sb = new();
-            foreach (var r in paragraphWrapper.R!.Where(r => r.T != null))
+            foreach (var r in textWrapper.R!.Where(r => r.T != null))
             {
-
-                if (IsBold(r)) sb.Append("<strong>");
-                if (IsUnderlined(r)) sb.Append("<u>");
-                if (IsItalic(r)) sb.Append("<i>");
+                if (IsBold(r)) sb.Append(Tags.Open(Tags.Bold));
+                if (IsUnderlined(r)) sb.Append(Tags.Open(Tags.Underlined));
+                if (IsItalic(r)) sb.Append(Tags.Open(Tags.Italic));
+                if (IsStrikeThrough(r)) sb.Append(Tags.Open(Tags.StrikeThrough));
 
                 sb.Append(HttpUtility.HtmlEncode(r.T));
 
-                if (IsItalic(r)) sb.Append("</i>");
-                if (IsUnderlined(r)) sb.Append("</u>");
-                if (IsBold(r)) sb.Append("</strong>");
+                if (IsStrikeThrough(r)) sb.Append(Tags.Close(Tags.StrikeThrough));
+                if (IsItalic(r)) sb.Append(Tags.Close(Tags.Italic));
+                if (IsUnderlined(r)) sb.Append(Tags.Close(Tags.Underlined));
+                if (IsBold(r)) sb.Append(Tags.Close(Tags.Bold));
             }
 
             return sb.ToString();
+        }
+
+        private static bool IsStrikeThrough(R? r)
+        {
+            if (r?.RPr == null) return false;
+            return r.RPr.Strike == "sngStrike";
         }
 
         private static bool IsUnderlined(R? r)

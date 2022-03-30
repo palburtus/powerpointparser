@@ -4,7 +4,7 @@ namespace Aaks.PowerPointParser.Html
 {
     public interface IHtmlListBuilder
     {
-        string BuildList(OpenXmlParagraphWrapper? previous, OpenXmlParagraphWrapper current, OpenXmlParagraphWrapper? next);
-        bool IsListItem(OpenXmlParagraphWrapper? paragraphWrapper);
+        string BuildList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper current, OpenXmlTextWrapper? next);
+        bool IsListItem(OpenXmlTextWrapper? paragraphWrapper);
     }
 }

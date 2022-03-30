@@ -14,7 +14,7 @@ namespace Aaks.PowerPointParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
-        public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
+        public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
         {
 
             using var presentationDocument = PresentationDocument.Open(memoryStream, false);
@@ -22,7 +22,7 @@ namespace Aaks.PowerPointParser
             return slidesContentMap;
 
         }
-        public IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(string path)
+        public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path)
         {
             
             using var presentationDocument = PresentationDocument.Open(path, false);
@@ -31,9 +31,9 @@ namespace Aaks.PowerPointParser
 
         }
 
-        private IDictionary<int, IList<OpenXmlParagraphWrapper?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
+        private IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
         {
-            var slidesContentMap = new Dictionary<int, IList<OpenXmlParagraphWrapper>>();
+            var slidesContentMap = new Dictionary<int, IList<OpenXmlTextWrapper>>();
             var presentationPart = presentationDocument.PresentationPart;
             if (presentationPart == null) return slidesContentMap!;
 
@@ -48,7 +48,7 @@ namespace Aaks.PowerPointParser
             foreach (var slideId in slideIds)
             {
                 var note = GetNotesSlidePart(presentationPart, slideId);
-                var openXmlParagraphWrappers = new List<OpenXmlParagraphWrapper>();
+                var openXmlParagraphWrappers = new List<OpenXmlTextWrapper>();
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
@@ -56,13 +56,13 @@ namespace Aaks.PowerPointParser
 
                     if (pNodesList != null)
                     {
-                        var xmlSerializer = new XmlSerializer(typeof(OpenXmlParagraphWrapper));
+                        var xmlSerializer = new XmlSerializer(typeof(OpenXmlTextWrapper));
                         foreach (XmlNode node in pNodesList)
                         {
                             try
                             {
                                 using StringReader stringReader = new(node.OuterXml);
-                                var wrapper = (OpenXmlParagraphWrapper)xmlSerializer.Deserialize(stringReader)!;
+                                var wrapper = (OpenXmlTextWrapper)xmlSerializer.Deserialize(stringReader)!;
                                 openXmlParagraphWrappers.Add(wrapper);
                             }
                             catch (InvalidOperationException ex)

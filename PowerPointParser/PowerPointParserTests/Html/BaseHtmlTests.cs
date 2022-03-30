@@ -5,34 +5,34 @@ namespace PowerPointParserTests.Html
 {
     public abstract class BaseHtmlTests
     {
-        protected static OpenXmlParagraphWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)
+        protected static OpenXmlTextWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0)
         {
             var wrapper = BuildLine(text, rPr);
             wrapper.PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" }, Lvl = level };
             return wrapper;
         }
 
-        protected static OpenXmlParagraphWrapper BuildOrderListItem(string text, RPr? rPr = null, int level = 0)
+        protected static OpenXmlTextWrapper BuildOrderListItem(string text, RPr? rPr = null, int level = 0)
         {
             var wrapper = BuildLine(text, rPr);
             wrapper.PPr = new PPr { BuAutoNum = new BuAutoNum { Type = "arabicPeriod" }, Lvl = level };
             return wrapper;
         }
 
-        protected static OpenXmlParagraphWrapper BuildParagraphLine(string text, RPr? rPr = null)
+        protected static OpenXmlTextWrapper BuildParagraphLine(string text, RPr? rPr = null)
         {
             var wrapper = BuildLine(text, rPr);
             wrapper.PPr = new PPr { BuNone = new object() };
             return wrapper;
         }
 
-        protected static OpenXmlParagraphWrapper BuildLine(string text, RPr? rPr = null)
+        protected static OpenXmlTextWrapper BuildLine(string text, RPr? rPr = null)
         {
             var rs = new List<R>();
             var r = BuildR(text, rPr);
             rs.Add(r);
 
-            OpenXmlParagraphWrapper wrapper = new()
+            OpenXmlTextWrapper wrapper = new()
             {
                 R = rs
             };
