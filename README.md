@@ -13,8 +13,12 @@ This libary uses OpenXML to parse Powerpoint Documents and generates the equivil
 ```
 PM > Install-Package AaksPowerPointParser
 ```
+[Nuget Page](https://www.nuget.org/packages/AaksPowerPointParser)
 
-https://www.nuget.org/packages/AaksPowerPointParser
+## Server-Side Friendly
+This library makes **no use** of the _Microsoft Innteropt_ libraries, does not rely on an instance of Microsoft Powerpoint and therefor **is suitable for use on servers**.
+
+If you are unfamiliar on server-side concerns and Office automation, Microsoft has provided more detailed information on why their interpot libraries are not suitable for [Microsoft Office Server-Side Office Automation](https://support.microsoft.com/en-us/topic/considerations-for-server-side-automation-of-office-48bcfe93-8a89-47f1-0bce-017433ad79e2).
 
 ## Demo Client
 
