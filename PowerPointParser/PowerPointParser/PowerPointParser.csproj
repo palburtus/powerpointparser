@@ -14,7 +14,7 @@
     <AssemblyName>Aaks$(MSBuildProjectName)</AssemblyName>
     <PackageProjectUrl>https://github.com/palburtus/powerpointparser#readme</PackageProjectUrl>
     <PackageTags>office, xml, powerpoint</PackageTags>
-    <PackageReleaseNotes>Fixed bug that was causing paragraphs with two consecutive empty lists to truncate</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed bug that was causing consecutive empty lines to truncate the rest of the paragraphs</PackageReleaseNotes>
     <Description>Library for Parsing .pptx Speaker Notes that can be converted to HTML</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>nuget_icon.png</PackageIcon>
