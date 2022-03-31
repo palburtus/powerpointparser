@@ -31,6 +31,8 @@ jobs:
       runs-on: ubuntu-latest
       
       steps:
+      - name: Build 
+        run: dotnet build ./PowerPointParser --no-restore
       - name: Test 
         run: dotnet test ./PowerPointParser --no-build --verbosity normal
       - name: Test Reporting
