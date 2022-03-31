@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <VersionPrefix>0.3.0.133</VersionPrefix>
+	  <VersionPrefix>0.4.0.143</VersionPrefix>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	  <TargetFramework>net6.0</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
@@ -14,7 +14,7 @@
     <AssemblyName>Aaks$(MSBuildProjectName)</AssemblyName>
     <PackageProjectUrl>https://github.com/palburtus/powerpointparser#readme</PackageProjectUrl>
     <PackageTags>office, xml, powerpoint</PackageTags>
-    <PackageReleaseNotes>Fixed bug that was causing consecutive empty lines to truncate the rest of the paragraphs</PackageReleaseNotes>
+    <PackageReleaseNotes>Added parsing support for non-standard ordered and un-ordered list item characters</PackageReleaseNotes>
     <Description>Library for Parsing .pptx Speaker Notes that can be converted to HTML</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>nuget_icon.png</PackageIcon>
