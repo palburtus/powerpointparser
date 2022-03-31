@@ -25,6 +25,21 @@ jobs:
       run: dotnet restore ./PowerPointParser
     - name: Build 
       run: dotnet build ./PowerPointParser --no-restore
+        
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore ./PowerPointParser
+    - name: Build 
+      run: dotnet build ./PowerPointParser --no-restore
     - name: Test 
       run: dotnet test ./PowerPointParser --no-build --verbosity normal
     - name: Test Reporting
@@ -37,3 +52,4 @@ jobs:
         gist_name: power_point_parser_tests.md
         gist_badge_label: 'Tests: %Counters_passed%/%Counters_total%'
         gist_token: ${{ secrets.GIST_TOKEN }}
+
