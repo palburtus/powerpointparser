@@ -521,6 +521,273 @@ namespace Aaks.PowerPointParser.Tests
         }
 
         [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_HollowRoundBulletsUnorderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[9].Count);
+
+            var actual = map[9][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuAutoNum);
+            Assert.AreEqual("§", actual.PPr!.BuChar!.Char);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Filled Square Bullets", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_HollowSquareBulletsUnorderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[10].Count);
+
+            var actual = map[10][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuAutoNum);
+            Assert.AreEqual("q", actual.PPr!.BuChar!.Char);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Hollow Square Bullets", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_StarBulletsUnorderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[11].Count);
+
+            var actual = map[11][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuAutoNum);
+            Assert.AreEqual("v", actual.PPr!.BuChar!.Char);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Star Bullets", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ArrowBulletsUnorderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[12].Count);
+
+            var actual = map[12][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuAutoNum);
+            Assert.AreEqual("Ø", actual.PPr!.BuChar!.Char);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Arrow Bullets", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_CheckMarkBulletsUnorderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[13].Count);
+
+            var actual = map[13][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuAutoNum);
+            Assert.AreEqual("ü", actual.PPr!.BuChar!.Char);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Checkmark Bullets", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_OpenParenRightOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[14].Count);
+
+            var actual = map[14][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("arabicParenR", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(3, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Open ", actual.R![0].T);
+            Assert.AreEqual("Paren", actual.R![1].T);
+            Assert.AreEqual(" Right", actual.R![2].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_CapitalRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[15].Count);
+
+            var actual = map[15][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("romanUcPeriod", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Roman Numerals", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_CapitalAlphaPeriodOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[16].Count);
+
+            var actual = map[16][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("alphaUcPeriod", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Capital Letters", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_LowerCaseAlphaRightParenOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[17].Count);
+
+            var actual = map[17][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("alphaLcParenR", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(2, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Lowercase Right ", actual.R![0].T);
+            Assert.AreEqual("Paren", actual.R![1].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_LowerCaseAlphaPeriodOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[18].Count);
+
+            var actual = map[18][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("alphaLcPeriod", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Lowercase Period", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_LowerCaseRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            Assert.AreEqual(2, map[19].Count);
+
+            var actual = map[19][0]!;
+
+            Assert.IsNull(actual.A);
+            Assert.IsNull(actual.Text);
+            Assert.IsNull(actual.PPr!.BuChar);
+            Assert.AreEqual("romanLcPeriod", actual.PPr!.BuAutoNum!.Type);
+            Assert.AreEqual(1, actual.R!.Count);
+            Assert.AreEqual(0, actual.PPr!.Lvl);
+            Assert.AreEqual("Lowercase Roman Numerals", actual.R![0].T);
+            Assert.AreEqual(0, actual.R![0].RPr!.B);
+            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+        }
+
+        [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
         {

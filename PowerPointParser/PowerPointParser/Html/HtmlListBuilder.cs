@@ -135,19 +135,7 @@ namespace Aaks.PowerPointParser.Html
 
         public bool IsListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
-            if (paragraphWrapper?.PPr == null) return false;
-
-            if (paragraphWrapper.PPr.BuAutoNum != null)
-            {
-                return paragraphWrapper.PPr.BuAutoNum.Type == OpenXmlTextModifiers.OrderList;
-            }
-
-            if (paragraphWrapper.PPr.BuChar != null)
-            {
-                return paragraphWrapper.PPr.BuChar.Char == OpenXmlTextModifiers.UnorderedList;
-            }
-
-            return false;
+            return IsUnOrderedListItem(paragraphWrapper) || IsOrderedListItem(paragraphWrapper);
         }
 
         private bool IsStartOfNestedList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
@@ -188,14 +176,26 @@ namespace Aaks.PowerPointParser.Html
 
         private bool IsUnOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
-            if (paragraphWrapper?.PPr?.BuChar == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuChar.Char == OpenXmlTextModifiers.UnorderedList;
+            return paragraphWrapper?.PPr?.BuChar?.Char is 
+                OpenXmlTextModifiers.UlFilledRoundBullet or 
+                OpenXmlTextModifiers.UlHollowRoundBullet or 
+                OpenXmlTextModifiers.UlFilledSquareBullet or
+                OpenXmlTextModifiers.UlHollowSquareBullet or
+                OpenXmlTextModifiers.UlStarBullet or
+                OpenXmlTextModifiers.UlArrowBullet or 
+                OpenXmlTextModifiers.UlCheckmarkBullet;
         }
 
         private bool IsOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
-            if (paragraphWrapper?.PPr?.BuAutoNum?.Type == null) return false;
-            return IsListItem(paragraphWrapper) && paragraphWrapper.PPr.BuAutoNum.Type == OpenXmlTextModifiers.OrderList;
+            return paragraphWrapper?.PPr?.BuAutoNum?.Type is 
+                OpenXmlTextModifiers.OlArabicPeriod or
+                OpenXmlTextModifiers.OlArabicParenRight or
+                OpenXmlTextModifiers.OlCapitalRomanNumeralsPeriod or 
+                OpenXmlTextModifiers.OlCapitalAlphaPeriod or
+                OpenXmlTextModifiers.OlLowercaseAlphaRightParen or
+                OpenXmlTextModifiers.OlLowerCaseAlphaPeriod or 
+                OpenXmlTextModifiers.OlLowercaseRomanNumeralsPeriod;
         }
     }
 }

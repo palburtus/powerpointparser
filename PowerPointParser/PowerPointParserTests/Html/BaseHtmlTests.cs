@@ -5,17 +5,21 @@ namespace PowerPointParserTests.Html
 {
     public abstract class BaseHtmlTests
     {
-        protected static OpenXmlTextWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0, string? align = null)
+        protected static OpenXmlTextWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0, string? align = null, string? specialChar = null)
         {
+            var buChar = new BuChar {Char = specialChar ?? "•"};
+
             var wrapper = BuildLine(text, rPr);
-            wrapper.PPr = new PPr { BuNone = null, BuChar = new BuChar { Char = "•" }, Lvl = level, Algn = align};
+            wrapper.PPr = new PPr { BuNone = null, BuChar = buChar, Lvl = level, Algn = align};
             return wrapper;
         }
 
-        protected static OpenXmlTextWrapper BuildOrderListItem(string text, RPr? rPr = null, int level = 0, string? align = null)
+        protected static OpenXmlTextWrapper BuildOrderListItem(string text, RPr? rPr = null, int level = 0, string? align = null, string? specialFont = null)
         {
+            var buAutoNum = new BuAutoNum {Type = specialFont?? "arabicPeriod"};
+
             var wrapper = BuildLine(text, rPr);
-            wrapper.PPr = new PPr { BuAutoNum = new BuAutoNum { Type = "arabicPeriod" }, Lvl = level, Algn = align};
+            wrapper.PPr = new PPr { BuAutoNum = buAutoNum, Lvl = level, Algn = align};
             return wrapper;
         }
 

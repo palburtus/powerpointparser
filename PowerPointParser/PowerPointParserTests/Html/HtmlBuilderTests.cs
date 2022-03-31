@@ -663,6 +663,138 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_HollowRoundBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "o"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_FilledSquareBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "§"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_HollowSquareBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "q"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_StarBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "v"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ArrowBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "Ø"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_CheckmarkBulletsUnorderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "ü"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ul><li>hello world</li></ul>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_ArabicParenRightOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "arabicParenR"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_CapitalRomanNumeralsPeriodOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "romanUcPeriod"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_CapitalLettersPeriodOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaUcPeriod"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseAlphaRightParenOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaLcParenR"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseAlphaPeriodOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaLcPeriod"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseRomanNumeralsPeriodOrderedListItem_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildOrderListItem("hello world", specialFont: "romanLcPeriod"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            Assert.AreEqual("<ol><li>hello world</li></ol>", actual);
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ItalicUnorderedListItem_ReturnsString()
         {
             Queue<OpenXmlTextWrapper?> queue = new();
