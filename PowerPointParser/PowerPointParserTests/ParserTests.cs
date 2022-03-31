@@ -228,6 +228,74 @@ namespace Aaks.PowerPointParser.Tests
         }
 
         [TestMethod]
+        [DeploymentItem("TestData/TestFour.pptx")]
+        public void Parse_ParseConsecutiveEmptySpaces_ReturnsIntWrapperMap()
+        {
+            IParser parser = new Parser();
+            var path = Path.Combine(_directory!, "TestFour.pptx");
+            var map = parser.ParseSpeakerNotes(path);
+
+            var actualOne = map[7][0]!;
+
+            Assert.IsNull(actualOne.A);
+            Assert.IsNull(actualOne.Text);
+            Assert.IsNull(actualOne.PPr!.Algn);
+            Assert.AreEqual(1, actualOne.R!.Count);
+            Assert.AreEqual("Paragraph One", actualOne.R![0].T);
+            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+
+            var actualTwo = map[7][1]!;
+
+            Assert.IsNull(actualTwo.A);
+            Assert.IsNull(actualTwo.Text);
+            Assert.IsNull(actualTwo.PPr!.Algn);
+            Assert.AreEqual(0, actualTwo.R!.Count);
+
+            var actualThree = map[7][2]!;
+
+            Assert.IsNull(actualThree.A);
+            Assert.IsNull(actualThree.Text);
+            Assert.IsNull(actualThree.PPr!.Algn);
+            Assert.AreEqual(0, actualThree.R!.Count);
+
+            var actualFour = map[7][3]!;
+
+            Assert.IsNull(actualFour.A);
+            Assert.IsNull(actualFour.Text);
+            Assert.IsNull(actualFour.PPr!.Algn);
+            Assert.AreEqual(1, actualFour.R!.Count);
+            Assert.AreEqual("Paragraph Two after two spaces", actualFour.R![0].T);
+            Assert.AreEqual(0, actualFour.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualFour.R![0].RPr!.Lang);
+
+            var actualFive = map[7][4]!;
+
+            Assert.IsNull(actualFive.A);
+            Assert.IsNull(actualFive.Text);
+            Assert.IsNull(actualFive.PPr!.Algn);
+            Assert.AreEqual(0, actualFive.R!.Count);
+
+            var actualSix = map[7][5]!;
+
+            Assert.IsNull(actualSix.A);
+            Assert.IsNull(actualSix.Text);
+            Assert.IsNull(actualSix.PPr!.Algn);
+            Assert.AreEqual(0, actualSix.R!.Count);
+
+            var actualSeven = map[7][6]!;
+
+            Assert.IsNull(actualSeven.A);
+            Assert.IsNull(actualSeven.Text);
+            Assert.IsNull(actualSeven.PPr!.Algn);
+            Assert.AreEqual(1, actualSeven.R!.Count);
+            Assert.AreEqual("Paragraph Three after three spaces", actualSeven.R![0].T);
+            Assert.AreEqual(0, actualSeven.R![0].RPr!.Dirty);
+            Assert.AreEqual("en-US", actualSeven.R![0].RPr!.Lang);
+
+        }
+
+        [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
