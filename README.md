@@ -17,7 +17,8 @@ This libary uses OpenXML to parse Powerpoint Documents and generates the equivil
 #### Generates This HTML
 ```
 <p>
-  Here is an example of a supported speaker note.  <strong>It can be bold,  </strong><i>italic,</i><u>underlined, </u>
+  Here is an example of a supported speaker note.  
+  <strong>It can be bold,  </strong><i>italic,</i><u>underlined, </u>
 </p>
 <ul>
   <li>It supports </li>
