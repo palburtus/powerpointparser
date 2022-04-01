@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Aaks.PowerPointParser.Dto;
+using FluentAssertions;
 using PowerPointParserTests.Html;
 
 namespace Aaks.PowerPointParser.Html.Tests
@@ -14,7 +15,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("hello world");
             var result = innerHtmlBuilder.BuildInnerHtmlParagraph(current);
 
-            Assert.AreEqual("<p>hello world</p>", result);
+            result.Should().Be("<p>hello world</p>");
         }
 
         [TestMethod]
@@ -24,7 +25,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("hello world", new RPr { B = 1 });
             var result = innerHtmlBuilder.BuildInnerHtmlListItem(current);
 
-            Assert.AreEqual("<li><strong>hello world</strong></li>", result);
+            result.Should().Be("<li><strong>hello world</strong></li>");
         }
 
         [TestMethod]
@@ -34,7 +35,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("hello world", new RPr { B = 1 });
             var result = innerHtmlBuilder.BuildInnerHtmlParagraph(current);
 
-            Assert.AreEqual("<p><strong>hello world</strong></p>", result);
+            result.Should().Be("<p><strong>hello world</strong></p>");
         }
 
         [TestMethod]
@@ -44,7 +45,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("hello world");
             var result = innerHtmlBuilder.BuildInnerHtmlListItem(current);
 
-            Assert.AreEqual("<li>hello world</li>", result);
+            result.Should().Be("<li>hello world</li>");
         }
 
 
@@ -55,7 +56,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("\"hello & world <one> 'two' \"");
             var result = innerHtmlBuilder.BuildInnerHtmlParagraph(current);
 
-            Assert.AreEqual("<p>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</p>", result);
+            result.Should().Be("<p>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</p>");
         }
 
         [TestMethod]
@@ -65,7 +66,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var current = BuildParagraphLine("\"hello & world <one> 'two' \"");
             var result = innerHtmlBuilder.BuildInnerHtmlListItem(current);
 
-            Assert.AreEqual("<li>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</li>", result);
+            result.Should().Be("<li>&quot;hello &amp; world &lt;one&gt; &#39;two&#39; &quot;</li>");
         }
     }
 }

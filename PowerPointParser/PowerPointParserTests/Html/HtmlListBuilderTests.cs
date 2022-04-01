@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointParserTests.Html;
 
 namespace Aaks.PowerPointParser.Html.Tests
@@ -21,7 +22,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var listItem = BuildUnorderedListItem("hello world");
             bool actual = _builder.IsListItem(listItem);
 
-            Assert.IsTrue(actual);
+            actual.Should().BeTrue();
         }
 
         [TestMethod]
@@ -30,7 +31,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var listItem = BuildOrderListItem("hello world");
             bool actual = _builder.IsListItem(listItem);
 
-            Assert.IsTrue(actual);
+            actual.Should().BeTrue();
         }
 
         [TestMethod]
@@ -39,7 +40,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             var listItem = BuildParagraphLine("hello world");
             bool actual = _builder.IsListItem(listItem);
 
-            Assert.IsFalse(actual);
+            actual.Should().BeFalse();
         }
 
         [TestMethod]
@@ -51,7 +52,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(four, five, six);
 
-            Assert.AreEqual("<li>goodbye world</li>", actual);
+            actual.Should().Be("<li>goodbye world</li>");
         }
 
         [TestMethod]
@@ -62,7 +63,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = new HtmlListBuilder(new InnerHtmlBuilder()).BuildList(five, six, null);
 
-            Assert.AreEqual("<li>test world</li>", actual);
+            actual.Should().Be("<li>test world</li>");
         }
         
         [TestMethod]
@@ -73,7 +74,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(null, one, two);
 
-            Assert.AreEqual("<ol><li>one</li>", actual);
+            actual.Should().Be("<ol><li>one</li>");
         }
 
         [TestMethod]
@@ -85,7 +86,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(one, two, three);
 
-            Assert.AreEqual("<li>two</li>", actual);
+            actual.Should().Be("<li>two</li>");
         }
 
         [TestMethod]
@@ -97,7 +98,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(two, three, four);
 
-            Assert.AreEqual("<ol><li>three</li></ol>", actual);
+            actual.Should().Be("<ol><li>three</li></ol>");
         }
 
         [TestMethod]
@@ -108,7 +109,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, null);
 
-            Assert.AreEqual("<li>hello world</li></ol>", actual);
+            actual.Should().Be("<li>hello world</li></ol>");
         }
 
         [TestMethod]
@@ -120,7 +121,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(null, two, three);
 
-            Assert.AreEqual("<ol><li>one</li>", actual);
+            actual.Should().Be("<ol><li>one</li>");
         }
 
         [TestMethod]
@@ -133,7 +134,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, three);
 
-            Assert.AreEqual("<li>two</li>", actual);
+            actual.Should().Be("<li>two</li>");
         }
 
         [TestMethod]
@@ -145,7 +146,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, three);
 
-            Assert.AreEqual("<ul><li>hello world</li>", actual);
+            actual.Should().Be("<ul><li>hello world</li>");
         }
 
         [TestMethod]
@@ -157,7 +158,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, three);
 
-            Assert.AreEqual("<li>goodbye world</li>", actual);
+            actual.Should().Be("<li>goodbye world</li>");
         }
     }
 }
