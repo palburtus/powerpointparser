@@ -89,11 +89,7 @@ public class HtmlExtractSpeakerNotesTests
 
         htmlPayloadActual.Should().NotBeEmpty();
         
-        Assert.AreEqual(expectedDict[fileNameTest][1], htmlPayloadActual[1]);
-        Assert.AreEqual(expectedDict[fileNameTest][2], htmlPayloadActual[2]);
-        Assert.AreEqual(expectedDict[fileNameTest][3], htmlPayloadActual[3]);
-        Assert.AreEqual(expectedDict[fileNameTest][4], htmlPayloadActual[4]);
-        //htmlPayloadActual.Should().BeEquivalentTo(expectedDict[fileNameTest]);
+        htmlPayloadActual.Should().BeEquivalentTo(expectedDict[fileNameTest]);
     }
 
     

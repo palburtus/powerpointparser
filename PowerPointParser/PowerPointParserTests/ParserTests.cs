@@ -1,5 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Aaks.PowerPointParser.Dto;
+using FluentAssertions;
 
 // ReSharper disable once CheckNamespace - Test namespaces should match production
 namespace Aaks.PowerPointParser.Tests
@@ -27,7 +30,7 @@ namespace Aaks.PowerPointParser.Tests
             IParser parser = new Parser();
             var map = parser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(4, map.Keys.Count);
+            map.Keys.Count.Should().Be(4);
         }
 
         [TestMethod]
@@ -39,16 +42,11 @@ namespace Aaks.PowerPointParser.Tests
 
             var actual = map[2][0]!;
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.PPr);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This note is just a paragraph", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.B);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-            Assert.IsNull(actual.Text);
-        }
+            var expected = BuildParagraphTextWrapper("This note is just a paragraph");
 
+            actual.Should().BeEquivalentTo(expected);
+        }
+        
         [TestMethod]
         [DeploymentItem("TestData/TestThree.pptx")]
         public void Parse_ParseAlternativeFormat_ReturnsIntWrapperMap()
@@ -60,8 +58,7 @@ namespace Aaks.PowerPointParser.Tests
 
             var actual = map[8][0]!;
 
-            Assert.AreEqual("Caricas", actual.R![0].T);
-            
+            actual.R![0].T.Should().Be("Caricas");
         }
 
         [TestMethod]
@@ -72,16 +69,9 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[3][1]!;
+            var expected = BuildParagraphTextWrapper("And this is a second paragraph");
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.PPr);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("And this is a second paragraph", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.B);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -92,16 +82,10 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(_path!);
 
             var actual = map[4][0]!;
+            var expected = BuildParagraphTextWrapper("This is a bold paragraph");
+            expected.R![0].RPr!.B = 1;
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.PPr);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This is a bold paragraph", actual.R![0].T);
-            Assert.AreEqual(1, actual.R![0].RPr!.B);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -113,15 +97,14 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[1][0]!;
+            var expected = BuildParagraphTextWrapper("This is an italic paragraph");
+            expected.R![0].RPr!.I = 1;
+            expected.PPr = BuildDefaultPpr();
+            expected.PPr.SpcBef = BuildDefaultSpcBef();
+            expected.PPr.SpcAft = BuildDefaultSpcAft();
+            expected.PPr.BuNone = new object();
 
-            Assert.IsNull(actual.A);
-            Assert.IsNotNull(actual.PPr);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This is an italic paragraph", actual.R![0].T);
-            Assert.AreEqual(1, actual.R![0].RPr!.I);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+            actual.Should().BeEquivalentTo(expected);
 
         }
 
@@ -134,16 +117,10 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[2][0]!;
+            var expected = BuildParagraphTextWrapper("This is underlined");
+            expected.R![0].RPr!.U = "sng";
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.PPr);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This is underlined", actual.R![0].T);
-            Assert.AreEqual("sng", actual.R![0].RPr!.U);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -155,16 +132,10 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[3][0]!;
+            var expected = BuildParagraphTextWrapper("This text has a strike through");
+            expected.R![0].RPr!.Strike = "sngStrike";
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.PPr);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This text has a strike through", actual.R![0].T);
-            Assert.AreEqual("sngStrike", actual.R![0].RPr!.Strike);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -177,14 +148,11 @@ namespace Aaks.PowerPointParser.Tests
 
             var actual = map[4][0]!;
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual("ctr", actual.PPr!.Algn);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This text is center aligned", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
+            var expected = BuildParagraphTextWrapper("This text is center aligned");
+            expected.PPr = BuildDefaultPpr();
+            expected.PPr.Algn = "ctr";
 
+            actual.Should().BeEquivalentTo(expected);
         }
      
         [TestMethod]
@@ -196,15 +164,11 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[5][0]!;
+            var expected = BuildParagraphTextWrapper("This text is right aligned");
+            expected.PPr = BuildDefaultPpr();
+            expected.PPr.Algn = "r";
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual("r", actual.PPr!.Algn);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This text is right aligned", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -216,15 +180,11 @@ namespace Aaks.PowerPointParser.Tests
             var map = parser.ParseSpeakerNotes(path);
 
             var actual = map[6][0]!;
+            var expected = BuildParagraphTextWrapper("This text is aligned justified");
+            expected.PPr = BuildDefaultPpr();
+            expected.PPr.Algn = "just";
 
-            Assert.IsNull(actual.A);
-            Assert.IsNull(actual.Text);
-            Assert.AreEqual("just", actual.PPr!.Algn);
-            Assert.AreEqual(1, actual.R!.Count);
-            Assert.AreEqual("This text is aligned justified", actual.R![0].T);
-            Assert.AreEqual(0, actual.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actual.R![0].RPr!.Lang);
-
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -235,63 +195,43 @@ namespace Aaks.PowerPointParser.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = parser.ParseSpeakerNotes(path);
 
-            var actualOne = map[7][0]!;
+            var expectedPpr = BuildDefaultPpr();
+            expectedPpr.BuFont = new BuFont { Typeface = "+mj-lt" };
+            expectedPpr.BuNone = new object();
+            expectedPpr.Algn = null;
 
-            Assert.IsNull(actualOne.A);
-            Assert.IsNull(actualOne.Text);
-            Assert.IsNull(actualOne.PPr!.Algn);
-            Assert.AreEqual(1, actualOne.R!.Count);
-            Assert.AreEqual("Paragraph One", actualOne.R![0].T);
-            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+            var actualOne = map[7][0]!;
+            var expectedOne = BuildParagraphTextWrapper("Paragraph One");
+            expectedOne.PPr = expectedPpr;
 
             var actualTwo = map[7][1]!;
-
-            Assert.IsNull(actualTwo.A);
-            Assert.IsNull(actualTwo.Text);
-            Assert.IsNull(actualTwo.PPr!.Algn);
-            Assert.AreEqual(0, actualTwo.R!.Count);
+            var expectedEmpty = new OpenXmlTextWrapper
+            {
+                R = new List<R>(),
+                PPr = expectedPpr
+            };
 
             var actualThree = map[7][2]!;
 
-            Assert.IsNull(actualThree.A);
-            Assert.IsNull(actualThree.Text);
-            Assert.IsNull(actualThree.PPr!.Algn);
-            Assert.AreEqual(0, actualThree.R!.Count);
-
             var actualFour = map[7][3]!;
-
-            Assert.IsNull(actualFour.A);
-            Assert.IsNull(actualFour.Text);
-            Assert.IsNull(actualFour.PPr!.Algn);
-            Assert.AreEqual(1, actualFour.R!.Count);
-            Assert.AreEqual("Paragraph Two after two spaces", actualFour.R![0].T);
-            Assert.AreEqual(0, actualFour.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualFour.R![0].RPr!.Lang);
+            var expectedFour = BuildParagraphTextWrapper("Paragraph Two after two spaces");
+            expectedFour.PPr = expectedPpr;
 
             var actualFive = map[7][4]!;
 
-            Assert.IsNull(actualFive.A);
-            Assert.IsNull(actualFive.Text);
-            Assert.IsNull(actualFive.PPr!.Algn);
-            Assert.AreEqual(0, actualFive.R!.Count);
-
             var actualSix = map[7][5]!;
 
-            Assert.IsNull(actualSix.A);
-            Assert.IsNull(actualSix.Text);
-            Assert.IsNull(actualSix.PPr!.Algn);
-            Assert.AreEqual(0, actualSix.R!.Count);
-
             var actualSeven = map[7][6]!;
+            var expectedSeven = BuildParagraphTextWrapper("Paragraph Three after three spaces");
+            expectedSeven.PPr = expectedPpr;
 
-            Assert.IsNull(actualSeven.A);
-            Assert.IsNull(actualSeven.Text);
-            Assert.IsNull(actualSeven.PPr!.Algn);
-            Assert.AreEqual(1, actualSeven.R!.Count);
-            Assert.AreEqual("Paragraph Three after three spaces", actualSeven.R![0].T);
-            Assert.AreEqual(0, actualSeven.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualSeven.R![0].RPr!.Lang);
+            actualOne.Should().BeEquivalentTo(expectedOne);
+            actualTwo.Should().BeEquivalentTo(expectedEmpty);
+            actualThree.Should().BeEquivalentTo(expectedEmpty);
+            actualFour.Should().BeEquivalentTo(expectedFour);
+            actualFive.Should().BeEquivalentTo(expectedEmpty);
+            actualSix.Should().BeEquivalentTo(expectedEmpty);
+            actualSeven.Should().BeEquivalentTo(expectedSeven);
 
         }
 
@@ -869,6 +809,58 @@ namespace Aaks.PowerPointParser.Tests
             Assert.AreEqual(0, actualThree.R![0].RPr!.B);
             Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
             Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
+        }
+
+        private static OpenXmlTextWrapper BuildParagraphTextWrapper(string text)
+        {
+            return new OpenXmlTextWrapper
+            {
+                R = new List<R> {new()
+                    {
+                        T = text,
+                        RPr = new RPr
+                        {
+                            B = 0,
+                            Dirty = 0,
+                            Lang = "en-US"
+                        }
+                    }
+                }
+            };
+        }
+
+        private static PPr BuildDefaultPpr()
+        {
+            return new PPr
+            {
+                Algn = "l",
+                Indent = 0,
+                Lvl = 0,
+                MarL = 0,
+                Rtl = 0
+            };
+        }
+
+        private static SpcAft BuildDefaultSpcAft()
+        {
+            return new SpcAft
+            {
+                SpcPts = new SpcPts
+                {
+                    Val = 0
+                }
+            };
+        }
+
+        private static SpcBef BuildDefaultSpcBef()
+        {
+            return new SpcBef
+            {
+                SpcPts = new SpcPts
+                {
+                    Val = 0
+                }
+            };
         }
     }
 }
