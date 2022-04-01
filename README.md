@@ -5,6 +5,7 @@
 ![dotnet](https://img.shields.io/badge/.NET-6.0-blue)
 ![csharp](https://img.shields.io/badge/C%23-10.0-blue)
 ![license](https://img.shields.io/github/license/palburtus/powerpointparser)
+![nuget](https://img.shields.io/nuget/dt/AaksPowerPointParser)
 
 **Library for Parsing *.pptx* Speaker Notes**
 Speaker Notes can be parsed converted to HTML 
