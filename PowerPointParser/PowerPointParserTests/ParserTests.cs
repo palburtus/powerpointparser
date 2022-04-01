@@ -99,7 +99,7 @@ namespace Aaks.PowerPointParser.Tests
             var actual = map[1][0]!;
             var expected = BuildParagraphTextWrapper("This is an italic paragraph");
             expected.R![0].RPr!.I = 1;
-            expected.PPr = BuildDefaultPpr();
+            expected.PPr = BuildDefaultParagraphPpr();
             expected.PPr.SpcBef = BuildDefaultSpcBef();
             expected.PPr.SpcAft = BuildDefaultSpcAft();
             expected.PPr.BuNone = new object();
@@ -149,7 +149,7 @@ namespace Aaks.PowerPointParser.Tests
             var actual = map[4][0]!;
 
             var expected = BuildParagraphTextWrapper("This text is center aligned");
-            expected.PPr = BuildDefaultPpr();
+            expected.PPr = BuildDefaultParagraphPpr();
             expected.PPr.Algn = "ctr";
 
             actual.Should().BeEquivalentTo(expected);
@@ -165,7 +165,7 @@ namespace Aaks.PowerPointParser.Tests
 
             var actual = map[5][0]!;
             var expected = BuildParagraphTextWrapper("This text is right aligned");
-            expected.PPr = BuildDefaultPpr();
+            expected.PPr = BuildDefaultParagraphPpr();
             expected.PPr.Algn = "r";
 
             actual.Should().BeEquivalentTo(expected);
@@ -181,7 +181,7 @@ namespace Aaks.PowerPointParser.Tests
 
             var actual = map[6][0]!;
             var expected = BuildParagraphTextWrapper("This text is aligned justified");
-            expected.PPr = BuildDefaultPpr();
+            expected.PPr = BuildDefaultParagraphPpr();
             expected.PPr.Algn = "just";
 
             actual.Should().BeEquivalentTo(expected);
@@ -195,7 +195,7 @@ namespace Aaks.PowerPointParser.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = parser.ParseSpeakerNotes(path);
 
-            var expectedPpr = BuildDefaultPpr();
+            var expectedPpr = BuildDefaultParagraphPpr();
             expectedPpr.BuFont = new BuFont { Typeface = "+mj-lt" };
             expectedPpr.BuNone = new object();
             expectedPpr.Algn = null;
@@ -246,43 +246,23 @@ namespace Aaks.PowerPointParser.Tests
 
             var actualOne = map[5][0]!;
 
-            Assert.IsNull(actualOne.A);
-            Assert.IsNull(actualOne.Text);
-            Assert.AreEqual(1, actualOne.R!.Count);
-            Assert.AreEqual(0, actualOne.PPr!.Lvl);
-            Assert.AreEqual("•", actualOne.PPr!.BuChar!.Char);
-            Assert.AreEqual("Unordered item 1", actualOne.R![0].T);
-            Assert.AreEqual(0, actualOne.R![0].RPr!.B);
-            Assert.AreEqual(0, actualOne.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualOne.R![0].RPr!.Lang);
+            var expectedOne = BuildUlTextWrapper("Unordered item 1");
+
+            actualOne.Should().BeEquivalentTo(expectedOne);
 
             var actualTwo = map[5][1]!;
+            var expectedTwo = BuildUlTextWrapper("Unordered item 2");
 
-            Assert.IsNull(actualTwo.A);
-            Assert.IsNull(actualTwo.Text);
-            Assert.AreEqual(1, actualTwo.R!.Count);
-            Assert.AreEqual(0, actualTwo.PPr!.Lvl);
-            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
-            Assert.AreEqual("Unordered item 2", actualTwo.R![0].T);
-            Assert.AreEqual(0, actualTwo.R![0].RPr!.B);
-            Assert.AreEqual(0, actualTwo.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualTwo.R![0].RPr!.Lang);
+            actualTwo.Should().BeEquivalentTo(expectedTwo);
+            
 
             var actualThree = map[5][2]!;
+            var expectedThree = BuildUlTextWrapper("Unordered item 3");
 
-            Assert.IsNull(actualThree.A);
-            Assert.IsNull(actualThree.Text);
-            Assert.AreEqual(1, actualThree.R!.Count);
-            Assert.AreEqual(0, actualThree.PPr!.Lvl);
-            Assert.AreEqual("•", actualTwo.PPr!.BuChar!.Char);
-            Assert.AreEqual("Unordered item 3", actualThree.R![0].T);
-            Assert.AreEqual(0, actualThree.R![0].RPr!.B);
-            Assert.AreEqual(0, actualThree.R![0].RPr!.Dirty);
-            Assert.AreEqual("en-US", actualThree.R![0].RPr!.Lang);
+            actualThree.Should().BeEquivalentTo(expectedThree);
 
         }
-
-
+        
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
@@ -829,7 +809,7 @@ namespace Aaks.PowerPointParser.Tests
             };
         }
 
-        private static PPr BuildDefaultPpr()
+        private static PPr BuildDefaultParagraphPpr()
         {
             return new PPr
             {
@@ -860,6 +840,27 @@ namespace Aaks.PowerPointParser.Tests
                 {
                     Val = 0
                 }
+            };
+        }
+
+        private static OpenXmlTextWrapper BuildUlTextWrapper(string text, int nestingLevel = 0)
+        {
+            return new OpenXmlTextWrapper
+            {
+                PPr = new PPr
+                {
+                    Lvl = nestingLevel,
+                    BuChar = new BuChar { Char = "•" },
+                    BuFont = new BuFont { Typeface = "Arial" },
+                    MarL = 171450,
+                    Indent = -171450
+                },
+                R = new List<R> { new R {T = text, RPr = new RPr
+                {
+                    B = 0,
+                    Dirty = 0,
+                    Lang = "en-US"
+                }}}
             };
         }
     }
