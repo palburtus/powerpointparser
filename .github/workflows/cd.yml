@@ -26,7 +26,7 @@ jobs:
     - name: Restore Dependencies
       run: dotnet restore ./PowerPointParser
     - name: Build 
-      run: dotnet build ./PowerPointParser --no-restore
+      run: dotnet build ./PowerPointParser --configuration Release --no-restore
     - name: Test 
       run: dotnet test ./PowerPointParser --no-build --verbosity normal
     - name: Push to Nuget
