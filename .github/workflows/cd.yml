@@ -28,4 +28,4 @@ jobs:
     - name: Build 
       run: dotnet build ./PowerPointParser --configuration Release --no-restore
     - name: Publish to Nuget
-      run: dotnet nuget push ./PowerPointParser/bin/Release/*.nupkg --skip-duplicate --no-symbols true
+      run: dotnet nuget push ./PowerPointParser/PowerPointParser/bin/Release/*.nupkg --skip-duplicate --no-symbols true
