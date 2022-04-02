@@ -18,13 +18,13 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-        source-url: https://nuget.pkg.github.com/AaksPowerPointParser/index.json
-      env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore Dependencies
       run: dotnet restore ./PowerPointParser
     - name: Build 
       run: dotnet build ./PowerPointParser --configuration Release --no-restore
     - name: Publish to Nuget
-      run: dotnet nuget push ./PowerPointParser/PowerPointParser/bin/Release/*.nupkg -k ${{ secrets.NUGET_KEY }}
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+        PROJECT_FILE_PATH: ./PowerPointParser/PowerPointParser.csproj
+        NUGET_KEY: ${{ secrets.NUGET_KEY }}
       
