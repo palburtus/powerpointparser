@@ -584,7 +584,6 @@ namespace Aaks.PowerPointParser.Tests
             var actual = map[10];
             
             actual[0]!.R![0].T.Should().Be("Un");
-
         }
 
         [TestMethod]
@@ -616,6 +615,5 @@ namespace Aaks.PowerPointParser.Tests
             actualTwo.Should().BeEquivalentTo(expectedTwo);
             actualThree.Should().BeEquivalentTo(expectedThree);
         }
-        
     }
 }
