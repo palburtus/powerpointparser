@@ -22,9 +22,5 @@ jobs:
       run: dotnet restore ./PowerPointParser
     - name: Build 
       run: dotnet build ./PowerPointParser --configuration Release --no-restore
-    - name: Publish to Nuget
-      uses: brandedoutcast/publish-nuget@v2.5.2
-      with:
-        PROJECT_FILE_PATH: ./PowerPointParser/PowerPointParser.csproj
-        NUGET_KEY: ${{ secrets.NUGET_KEY }}
-      
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/./}" >> $GITHUB_ENV
