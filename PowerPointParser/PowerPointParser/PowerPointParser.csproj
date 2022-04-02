@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <VersionPrefix>0.5.0.179</VersionPrefix>
+	  <VersionPrefix>0.5.0.180</VersionPrefix>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	  <TargetFramework>net6.0</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->

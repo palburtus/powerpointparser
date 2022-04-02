@@ -25,6 +25,6 @@ jobs:
     - name: Pack
       run: dotnet pack ./PowerPointParser/PowerPointParser/PowerPointParser.csproj --configuration Release --output .
     - name: Push
-      run: dotnet nuget push AaksPowerPointParser.${VERSION}.nupkg --source https://nuget.pkg.github.com/palburtus/index.json --api-key ${GITHUB_TOKEN}
+      run: dotnet nuget push AaksPowerPointParser.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${GITHUB_TOKEN}
       env:
         GITHUB_TOKEN: ${{ secrets.NUGET_KEY }}
