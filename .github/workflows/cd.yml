@@ -6,8 +6,6 @@ on:
     paths-ignore:
       - '**/README.md'
       - '**/blob/*'
-  pull_request:
-    branches: [ master ]
 
 jobs:
   publish:
