@@ -2,10 +2,8 @@ name: CD
 
 on:
   push:
-    branches: [ master ]
-    paths-ignore:
-      - '**/README.md'
-      - '**/blob/*'
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
 
 jobs:
   publish:
@@ -23,4 +21,10 @@ jobs:
     - name: Build 
       run: dotnet build ./PowerPointParser --configuration Release --no-restore
     - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF/refs\/tags\/./}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+    - name: Pack
+      run: dotnet pack --configuration Release /p:Version=${VERSION} --output .
+    - name: Push
+      run: dotnet nuget push AaksPowerPointParser.${VERSION}.nupkg --source https://nuget.pkg.github.com/palburtus/index.json --api-key ${GITHUB_TOKEN}
+      env:
+        GITHUB_TOKEN: ${{ secrets.NUGET_KEY }}
