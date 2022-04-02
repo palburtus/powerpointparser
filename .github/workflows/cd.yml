@@ -22,10 +22,11 @@ jobs:
         dotnet-version: 6.0.x
         source-url: https://nuget.pkg.github.com/AaksPowerPointParser/index.json
       env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_KEY}}
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Restore Dependencies
       run: dotnet restore ./PowerPointParser
     - name: Build 
       run: dotnet build ./PowerPointParser --configuration Release --no-restore
     - name: Publish to Nuget
-      run: dotnet nuget push ./PowerPointParser/PowerPointParser/bin/Release/*.nupkg
+      run: dotnet nuget push ./PowerPointParser/PowerPointParser/bin/Release/*.nupkg -k ${{secrets.NUGET_KEY}}
+
