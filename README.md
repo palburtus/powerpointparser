@@ -13,7 +13,7 @@ Speaker Notes can be parsed converted to HTML
 This libary uses OpenXML to parse Powerpoint Documents and generates the equivilant html markup as an output.
 
 #### Sample Powerpoint Speaker Notes
-![PowerPoint](/blob/SamplePowerpointInput.png)
+![PowerPoint](https://github.com/palburtus/powerpointparser/blob/SamplePowerpointInput.png)
 
 #### Generates This HTML
 ```
@@ -52,11 +52,11 @@ Included in this project is a simple console application design to demo this fun
 
 Enter the absolute path of your _.pptx_ file in the console window
 
-![Command Line](/blob/commandline.png)
+![Command Line](https://github.com/palburtus/powerpointparser/blob/commandline.png)
 
 And a timestamped _.html_ file with some basic styling will be created saved to your desktop 
 
-![Html Output](/blob/SampleHtmlOutput.png)
+![Html Output](https://github.com/palburtus/powerpointparser/blob/SampleHtmlOutput.png)
 
 ## License
 
