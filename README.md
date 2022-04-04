@@ -52,11 +52,11 @@ Included in this project is a simple console application design to demo this fun
 
 Enter the absolute path of your _.pptx_ file in the console window
 
-![Command Line](blob/commandline.png)
+![Command Line](https://raw.githubusercontent.com/palburtus/powerpointparser/master/blob/commandline.png)
 
 And a timestamped _.html_ file with some basic styling will be created saved to your desktop 
 
-![Html Output](blob/SampleHtmlOutput.png)
+![Html Output](https://raw.githubusercontent.com/palburtus/powerpointparser/master/blob/SampleHtmlOutput.png)
 
 ## License
 
