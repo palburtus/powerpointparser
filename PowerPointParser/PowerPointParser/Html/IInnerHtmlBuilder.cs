@@ -6,5 +6,6 @@ namespace Aaks.PowerPointParser.Html
     {
         string BuildInnerHtmlParagraph(OpenXmlTextWrapper textWrapper);
         string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper);
+        string BuildInnerHtmlListItemBeforeNesting(OpenXmlTextWrapper textWrapper);
     }
 }

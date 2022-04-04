@@ -17,6 +17,11 @@ namespace Aaks.PowerPointParser.Html
             return $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.ListItem)}";
         }
 
+        public string BuildInnerHtmlListItemBeforeNesting(OpenXmlTextWrapper textWrapper)
+        {
+            return $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}";
+        }
+
         private static string BuildInnerHtml(OpenXmlTextWrapper textWrapper)
         {
             StringBuilder sb = new();
