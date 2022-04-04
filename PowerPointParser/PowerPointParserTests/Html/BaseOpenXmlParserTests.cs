@@ -33,7 +33,7 @@ namespace PowerPointParserTests.Html
         {
             return new PPr
             {
-                BuChar = new BuChar { Char = charType },
+                BuChar = new BuChar { Character = charType },
                 SpcAft = BuildDefaultSpcAft(),
                 SpcBef = BuildDefaultSpcBef(),
                 MarL = 171450,
@@ -145,7 +145,7 @@ namespace PowerPointParserTests.Html
                 PPr = new PPr
                 {
                     Lvl = nestingLevel,
-                    BuChar = new BuChar { Char = "•" },
+                    BuChar = new BuChar { Character = "•" },
                     BuFont = new BuFont { Typeface = "Arial" },
                     MarL = marL,
                     Indent = -171450

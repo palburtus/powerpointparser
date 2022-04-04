@@ -78,7 +78,7 @@ namespace Aaks.PowerPointParser.Dto
     {
 
         [XmlAttribute(AttributeName = "char")]
-        public string? Char { get; set; }
+        public string? Character { get; set; }
     }
 
     [XmlRoot(ElementName = "buAutoNum")]

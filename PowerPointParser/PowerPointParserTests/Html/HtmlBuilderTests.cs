@@ -465,7 +465,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             OpenXmlTextWrapper wrapper = new()
             {
-                PPr = new PPr { BuNone = new object(), Algn = "ctr", BuChar = new BuChar { Char = "•" } },
+                PPr = new PPr { BuNone = new object(), Algn = "ctr", BuChar = new BuChar { Character = "•" } },
                 R = rs
             };
 

@@ -7,7 +7,7 @@ namespace Aaks.PowerPointParser.Extensions
     {
         public static bool IsUnOrderedListItem(this OpenXmlTextWrapper? paragraphWrapper)
         {
-            return paragraphWrapper?.PPr?.BuChar?.Char is
+            return paragraphWrapper?.PPr?.BuChar?.Character is
                 OpenXmlTextModifiers.UlFilledRoundBullet or
                 OpenXmlTextModifiers.UlHollowRoundBullet or
                 OpenXmlTextModifiers.UlFilledSquareBullet or

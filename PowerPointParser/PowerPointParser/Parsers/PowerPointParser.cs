@@ -70,7 +70,8 @@ namespace Aaks.PowerPointParser.Parsers
                             try
                             {
                                 using StringReader stringReader = new(node.OuterXml);
-                                var wrapper = (OpenXmlTextWrapper)xmlSerializer.Deserialize(stringReader)!;
+                                using XmlTextReader xmlReader = new (stringReader);
+                                var wrapper = (OpenXmlTextWrapper)xmlSerializer.Deserialize(xmlReader)!;
                                 openXmlParagraphWrappers.Add(wrapper);
                             }
                             catch (InvalidOperationException ex)
@@ -84,7 +85,7 @@ namespace Aaks.PowerPointParser.Parsers
                             {
                                 string message = $"{ex.Message} Unknown Exception Occurred";
                                 Console.WriteLine(message);
-                                _logger?.LogError(message);
+                                _logger?.LogError(ex, message);
                             }
                         }
                     }

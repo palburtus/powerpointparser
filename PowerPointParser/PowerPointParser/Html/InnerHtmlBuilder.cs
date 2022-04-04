@@ -7,20 +7,16 @@ namespace Aaks.PowerPointParser.Html
 {
     public class InnerHtmlBuilder : IInnerHtmlBuilder
     {
-        public string BuildInnerHtmlParagraph(OpenXmlTextWrapper textWrapper)
-        {
-            return textWrapper.R?.Count == 0 ? string.Empty : $"{HtmlTags.Open(HtmlTags.Paragraph, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.Paragraph)}";
-        }
+        public string BuildInnerHtmlParagraph(OpenXmlTextWrapper? textWrapper) => 
+            textWrapper?.R?.Count == 0 ? 
+                string.Empty :
+                $"{HtmlTags.Open(HtmlTags.Paragraph, GetTextAlignment(textWrapper?.PPr))}{BuildInnerHtml(textWrapper!)}{HtmlTags.Close(HtmlTags.Paragraph)}";
 
-        public string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper)
-        {
-            return $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.ListItem)}";
-        }
+        public string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper) => 
+            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.ListItem)}";
 
-        public string BuildInnerHtmlListItemBeforeNesting(OpenXmlTextWrapper textWrapper)
-        {
-            return $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}";
-        }
+        public string BuildInnerHtmlListItemBeforeNesting(OpenXmlTextWrapper textWrapper) => 
+            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}";
 
         private static string BuildInnerHtml(OpenXmlTextWrapper textWrapper)
         {

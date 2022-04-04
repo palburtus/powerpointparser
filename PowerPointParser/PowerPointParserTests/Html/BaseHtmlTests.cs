@@ -7,7 +7,7 @@ namespace PowerPointParserTests.Html
     {
         protected static OpenXmlTextWrapper BuildUnorderedListItem(string text, RPr? rPr = null, int level = 0, string? align = null, string? specialChar = null)
         {
-            var buChar = new BuChar {Char = specialChar ?? "•"};
+            var buChar = new BuChar {Character = specialChar ?? "•"};
 
             var wrapper = BuildLine(text, rPr);
             wrapper.PPr = new PPr { BuNone = null, BuChar = buChar, Lvl = level, Algn = align};
@@ -44,7 +44,7 @@ namespace PowerPointParserTests.Html
             return wrapper;
         }
 
-        protected static R BuildR(string text, RPr? rPr = null, PPr? ppr = null)
+        protected static R BuildR(string text, RPr? rPr = null)
         {
             return new R { RPr = rPr, T = text };
         }

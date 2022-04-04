@@ -1,4 +1,5 @@
-﻿using Aaks.PowerPointParser.Dto;
+﻿using System;
+using Aaks.PowerPointParser.Dto;
 using Aaks.PowerPointParser.Extensions;
 
 namespace Aaks.PowerPointParser.Html
@@ -36,20 +37,20 @@ namespace Aaks.PowerPointParser.Html
             return false;
         }
 
-        private bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
+        private static bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
         {
             return previous.IsUnOrderedListItem() && current.IsOrderedListItem() ||
                    previous.IsOrderedListItem() && current.IsUnOrderedListItem();
         }
 
-        private bool IsClosingUnorderedList(string bracket)
+        private static bool IsClosingUnorderedList(string bracket)
         {
-            return bracket.Contains(HtmlTags.UnorderedList);
+            return bracket.Contains(HtmlTags.UnorderedList, StringComparison.InvariantCulture);
         }
 
-        private bool IsClosingOrderedList(string bracket)
+        private static bool IsClosingOrderedList(string bracket)
         {
-            return bracket.Contains(HtmlTags.OrderedList);
+            return bracket.Contains(HtmlTags.OrderedList, StringComparison.InvariantCulture);
         }
 
     }

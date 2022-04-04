@@ -107,17 +107,17 @@ namespace Aaks.PowerPointParser.Html
             return sb.ToString();
         }
 
-        private int GetCurrentNestingLevel(OpenXmlTextWrapper current)
+        private static int GetCurrentNestingLevel(OpenXmlTextWrapper current)
         {
             return current is { PPr: { } } ? current.PPr!.Lvl : 0; 
         }
 
-        private int GetNextNestingLevel(OpenXmlTextWrapper? next)
+        private static int GetNextNestingLevel(OpenXmlTextWrapper? next)
         {
             return next is {PPr: { }} ? next.PPr!.Lvl : 0;
         }
 
-        private int GetPreviousNestingLevel(OpenXmlTextWrapper? previous)
+        private static int GetPreviousNestingLevel(OpenXmlTextWrapper? previous)
         {
             return previous is {PPr: { }} ? previous.PPr!.Lvl : 0;
         }
@@ -127,7 +127,7 @@ namespace Aaks.PowerPointParser.Html
             return paragraphWrapper.IsUnOrderedListItem() || paragraphWrapper.IsOrderedListItem();
         }
 
-        private bool IsStartOfNestedList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
+        private static bool IsStartOfNestedList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
         {
             if (previous == null && current?.PPr?.Lvl > 0)
             {
