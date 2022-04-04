@@ -122,7 +122,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ShouldChangeListTypes_PreviousOneCurrentZero_ReturnsTrue()
+        public void ShouldChangeListTypes_PreviousOneCurrentMatchesListType_ReturnsFalse()
         {
             INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
 
@@ -131,8 +131,72 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildUnorderedListItem("two"),
                 BuildUnorderedListItem("three"), "</ul>");
 
+            actual.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void ShouldChangeListTypes_PreviousOneCurrentDoesNotMatchesListType_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two"),
+                BuildUnorderedListItem("three"), "</ol>");
+
             actual.Should().BeTrue();
         }
 
+        [TestMethod]
+        public void ShouldChangeListTypes_CurrentAndPreviousLevelOneChangeType_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two"),
+                BuildUnorderedListItem("three"), "</ol>");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void ShouldChangeListTypes_SwitchOnSameNestedLevel_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two", level: 1),
+                BuildUnorderedListItem("three", level: 1), string.Empty);
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void ShouldChangeListTypes_NestedLevelOneToTwo_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two", level: 2),
+                BuildUnorderedListItem("three", level: 2), string.Empty);
+
+            actual.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void ShouldChangeListTypes_UnOrdrderListDoesNotMatchOrderedListType_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two"),
+                BuildUnorderedListItem("three"), "</ol>");
+
+            actual.Should().BeTrue();
+        }
     }
 }

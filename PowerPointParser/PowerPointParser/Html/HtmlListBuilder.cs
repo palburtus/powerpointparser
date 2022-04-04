@@ -155,10 +155,7 @@ namespace Aaks.PowerPointParser.Html
             return false;
         }*/
 
-        private static bool IsNotNested(OpenXmlTextWrapper? next)
-        {
-            return next?.PPr?.Lvl == 0;
-        }
+        
 
         public bool IsListItem(OpenXmlTextWrapper? paragraphWrapper)
         {

@@ -1235,7 +1235,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><li>three</li></ol><ul><ul><li>hello world</li></ul><li>goodbye world</li><li>test world</li></ul>");
+            actual.Should().Be("<ol><li>one</li><li>two</li><li>three<ul><li>hello world</li></ul></li></ol><ul><li>goodbye world</li><li>test world</li></ul>");
         }
 
         [TestMethod]
@@ -1269,7 +1269,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><ol><li>one</li><li>two</li><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li><li>three</li></ol></ol>");
+            actual.Should().Be("<ol><ol><li>one</li><li>two</li></ol><ul><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li></ul><ol><li>three</li></ol></ol>");
         }
 
         [TestMethod]

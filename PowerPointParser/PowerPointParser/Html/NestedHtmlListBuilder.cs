@@ -48,9 +48,18 @@ namespace Aaks.PowerPointParser.Html
                 }
 
             }
-            
+            //else if (IsNotNested(current) &&
+            //          IsClosingOrderedList(closingBracketTop) != IsOrderedListItem(current))
+            //{
+            //    return true;
+            //}
 
             return false;
+        }
+
+        private static bool IsNotNested(OpenXmlTextWrapper? current)
+        {
+            return current?.PPr?.Lvl == 0;
         }
 
         private bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
@@ -66,7 +75,7 @@ namespace Aaks.PowerPointParser.Html
 
         private bool IsClosingOrderedList(string bracket)
         {
-            return bracket.Contains("0l");
+            return bracket.Contains("ol");
         }
 
         private bool IsUnOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
