@@ -123,7 +123,7 @@ namespace Aaks.PowerPointParser.Parsers
             XmlDocument bodyNodeXmlDocument = new();
             
             byte[] bytes = Encoding.UTF8.GetBytes(bodyNode.OuterXml);
-            MemoryStream stream = new MemoryStream(bytes);
+            using var stream = new MemoryStream(bytes);
             bodyNodeXmlDocument.Load(stream);
 
             return bodyNodeXmlDocument.SelectNodes(PNodesListXPath, xmlNamespaceManager);
