@@ -7,6 +7,7 @@ using Aaks.PowerPointParser.Dto;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace Aaks.PowerPointParser.Parsers
 {
@@ -14,9 +15,16 @@ namespace Aaks.PowerPointParser.Parsers
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
+        
+        private readonly ILogger<PowerPointParser>? _logger;
+
+        public PowerPointParser(ILogger<PowerPointParser>? logger = null)
+        {
+            _logger = logger;
+        }
+
         public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
         {
-
             using var presentationDocument = PresentationDocument.Open(memoryStream, false);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
             return slidesContentMap;
@@ -67,12 +75,16 @@ namespace Aaks.PowerPointParser.Parsers
                             }
                             catch (InvalidOperationException ex)
                             {
-                                Console.WriteLine($"{ex.Message} Slide Note Deserialization Failed");
+                                string message = $"{ex.Message} Slide Note Deserialization Failed";
+                                Console.WriteLine(message);
+                                _logger?.LogError(message);
 
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"{ex.Message} Unknown Exception Occurred");
+                                string message = $"{ex.Message} Unknown Exception Occurred";
+                                Console.WriteLine(message);
+                                _logger?.LogError(message);
                             }
                         }
                     }
