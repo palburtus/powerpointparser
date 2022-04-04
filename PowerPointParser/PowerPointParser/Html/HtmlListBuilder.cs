@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Aaks.PowerPointParser.Dto;
 using Aaks.PowerPointParser.Extensions;

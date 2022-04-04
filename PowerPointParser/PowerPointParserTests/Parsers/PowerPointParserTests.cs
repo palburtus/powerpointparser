@@ -6,10 +6,10 @@ using FluentAssertions;
 using PowerPointParserTests.Html;
 
 // ReSharper disable once CheckNamespace - Test namespaces should match production
-namespace Aaks.PowerPointParser.Tests
+namespace Aaks.PowerPointParser.Parsers.Tests
 {
     [TestClass]
-    public class ParserTests : BaseOpenXmlParserTests
+    public class PowerPointParserTests : BaseOpenXmlParserTests
     {
         private static string? _directory;
         private static string? _path;
@@ -28,8 +28,8 @@ namespace Aaks.PowerPointParser.Tests
         {
             var path = Path.Combine(_directory!, "TestDeckOne.pptx");
 
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(path);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             map.Keys.Count.Should().Be(4);
         }
@@ -38,8 +38,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             var actual = map[2][0]!;
 
@@ -53,9 +53,9 @@ namespace Aaks.PowerPointParser.Tests
         public void Parse_ParseAlternativeFormat_ReturnsIntWrapperMap()
         {
             var path = Path.Combine(_directory!, "TestThree.pptx");
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
 
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[8][0]!;
 
@@ -66,8 +66,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             var actual = map[3][1]!;
             var expected = BuildParagraphTextWrapper("And this is a second paragraph");
@@ -79,8 +79,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseBoldParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             var actual = map[4][0]!;
             var expected = BuildParagraphTextWrapper("This is a bold paragraph");
@@ -93,9 +93,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseItalicParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[1][0]!;
             var expected = BuildParagraphTextWrapper("This is an italic paragraph");
@@ -113,9 +113,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseUnderlinedParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[2][0]!;
             var expected = BuildParagraphTextWrapper("This is underlined");
@@ -128,9 +128,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseStrikeThroughParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[3][0]!;
             var expected = BuildParagraphTextWrapper("This text has a strike through");
@@ -143,9 +143,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseCenterAlignedParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[4][0]!;
 
@@ -160,9 +160,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseRightAlignedParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[5][0]!;
             var expected = BuildParagraphTextWrapper("This text is right aligned");
@@ -176,9 +176,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseJustifiedAlignedParagraph_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var actual = map[6][0]!;
             var expected = BuildParagraphTextWrapper("This text is aligned justified");
@@ -192,9 +192,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseConsecutiveEmptySpaces_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             var expectedPpr = BuildDefaultParagraphPpr();
             expectedPpr.BuFont = new BuFont { Typeface = "+mj-lt" };
@@ -240,8 +240,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[5].Count);
 
@@ -264,8 +264,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             var actualOne = map[6][0]!;
             var expectedOne = BuildUlTextWrapper("Indent Unordered item 1");
@@ -286,8 +286,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(3, map[7].Count);
 
@@ -310,8 +310,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(4, map[8].Count);
 
@@ -345,9 +345,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_HollowRoundBulletsUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[9].Count);
 
@@ -362,9 +362,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_HollowSquareBulletsUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[10].Count);
 
@@ -379,9 +379,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_StarBulletsUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[11].Count);
 
@@ -396,9 +396,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ArrowBulletsUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[12].Count);
 
@@ -413,9 +413,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_CheckMarkBulletsUnorderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[13].Count);
 
@@ -431,9 +431,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_OpenParenRightOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[14].Count);
 
@@ -450,9 +450,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_CapitalRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[15].Count);
 
@@ -470,9 +470,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_CapitalAlphaPeriodOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[16].Count);
 
@@ -490,9 +490,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_LowerCaseAlphaRightParenOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[17].Count);
 
@@ -514,9 +514,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_LowerCaseAlphaPeriodOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[18].Count);
 
@@ -537,9 +537,9 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_LowerCaseRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
+            IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
-            var map = parser.ParseSpeakerNotes(path);
+            var map = powerPointParser.ParseSpeakerNotes(path);
 
             Assert.AreEqual(2, map[19].Count);
 
@@ -560,8 +560,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(1, map[9].Count);
 
@@ -576,8 +576,8 @@ namespace Aaks.PowerPointParser.Tests
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseIndentFollowedByOrdered_ReturnsIntWrapperMap()
         {
-            IParser parser = new Parser();
-            var map = parser.ParseSpeakerNotes(_path!);
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(_path!);
 
             Assert.AreEqual(6, map[10].Count);
 
@@ -595,7 +595,7 @@ namespace Aaks.PowerPointParser.Tests
             fileStream.CopyTo(memoryStream);
             memoryStream.Position = 0;
 
-            var parser = new Parser();
+            var parser = new PowerPointParser();
             var map = parser.ParseSpeakerNotes(memoryStream);
 
             Assert.AreEqual(3, map[5].Count);

@@ -8,9 +8,9 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 
-namespace Aaks.PowerPointParser
+namespace Aaks.PowerPointParser.Parsers
 {
-    public class Parser : IParser
+    public class PowerPointParser : IPowerPointParser
     {
         private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";

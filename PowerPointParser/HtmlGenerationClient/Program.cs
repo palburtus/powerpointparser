@@ -1,13 +1,13 @@
 ﻿using System.Text;
-using Aaks.PowerPointParser;
 using Aaks.PowerPointParser.Extensions;
 using Aaks.PowerPointParser.Html;
+using Aaks.PowerPointParser.Parsers;
 
 Console.WriteLine("Enter Absolute Powerpoint File Path");
 var powerpointFilePath = Console.ReadLine();
 
-IParser parser = new Parser();
-var speakerNotesMap = parser.ParseSpeakerNotes(powerpointFilePath!);
+IPowerPointParser powerPointParser = new PowerPointParser();
+var speakerNotesMap = powerPointParser.ParseSpeakerNotes(powerpointFilePath!);
 
 IInnerHtmlBuilder innerHtmlBuilder = new InnerHtmlBuilder();
 IHtmlBuilder builder = new HtmlBuilder(new HtmlListBuilder(innerHtmlBuilder), innerHtmlBuilder);

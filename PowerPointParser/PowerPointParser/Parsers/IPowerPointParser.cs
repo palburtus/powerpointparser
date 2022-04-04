@@ -2,9 +2,9 @@
 using System.IO;
 using Aaks.PowerPointParser.Dto;
 
-namespace Aaks.PowerPointParser
+namespace Aaks.PowerPointParser.Parsers
 {
-    public interface IParser
+    public interface IPowerPointParser
     {
         IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path);
         IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream);

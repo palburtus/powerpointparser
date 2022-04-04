@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Aaks.PowerPointParser;
 using Aaks.PowerPointParser.Extensions;
 using Aaks.PowerPointParser.Html;
+using Aaks.PowerPointParser.Parsers;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -44,7 +44,7 @@ public class HtmlExtractSpeakerNotesTests
         var filePath = Path.Combine(_directory, fileName);
         File.Exists(filePath).Should().Be(true);
 
-        var parser = new Parser();
+        var parser = new PowerPointParser();
 
         var items = parser.ParseSpeakerNotes(filePath);
 
@@ -78,7 +78,7 @@ public class HtmlExtractSpeakerNotesTests
         
 
 
-        var parser = new Parser();
+        var parser = new PowerPointParser();
 
         // Act
         var items = parser.ParseSpeakerNotes(filePath);
