@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Aaks.PowerPointParser.Dto;
+﻿using Aaks.PowerPointParser.Dto;
+using Aaks.PowerPointParser.Extensions;
 
 namespace Aaks.PowerPointParser.Html
 {
@@ -11,95 +7,50 @@ namespace Aaks.PowerPointParser.Html
     {
         public bool DoNotCloseListItemDueToNesting(OpenXmlTextWrapper? current, OpenXmlTextWrapper? next)
         {
-
-            if (next?.PPr?.Lvl > current?.PPr?.Lvl)
-            {
-                return true;
-            }
-
-            return false;
+            return next?.PPr?.Lvl > current?.PPr?.Lvl;
         }
 
         public bool IsOnSameNestingLevel(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
         {
             if (current == null) return true;
-            if (previous?.PPr == null && current?.PPr == null) return true;
-            return previous?.PPr?.Lvl == current?.PPr?.Lvl;
+            if (previous?.PPr == null && current.PPr == null) return true;
+            return previous?.PPr?.Lvl == current.PPr?.Lvl;
         }
 
         public bool ShouldChangeListTypes(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current, OpenXmlTextWrapper? next, string closingBracketTop)
         {
-            if (IsListOrderTypeChanged(previous, current))
+            if (!IsListOrderTypeChanged(previous, current))
+            {
+                if (IsClosingOrderedList(closingBracketTop) != current.IsOrderedListItem()) return true;
+                if (IsClosingUnorderedList(closingBracketTop) != current.IsUnOrderedListItem()) return true;
+            }
+            else
             {
                 if (IsOnSameNestingLevel(previous, current)) return true;
                 if (current?.PPr?.Lvl > previous?.PPr?.Lvl) return false;
-                if (current?.PPr?.Lvl < previous?.PPr?.Lvl)
-                {
-                    if (IsClosingUnorderedList(closingBracketTop) && !IsUnOrderedListItem(current))
-                    {
-                        return true;
-                    }
-                    
-                    if (IsClosingOrderedList(closingBracketTop) && !IsOrderedListItem(current))
-                    {
-                        return true;
-                    }
-                    
-                }
-
+                if (!(current?.PPr?.Lvl < previous?.PPr?.Lvl)) return false;
+                if (IsClosingUnorderedList(closingBracketTop) && !current.IsUnOrderedListItem()) return true;
+                if (IsClosingOrderedList(closingBracketTop) && !current.IsOrderedListItem()) return true;
             }
-            //else if (IsNotNested(current) &&
-            //          IsClosingOrderedList(closingBracketTop) != IsOrderedListItem(current))
-            //{
-            //    return true;
-            //}
 
             return false;
         }
 
-        private static bool IsNotNested(OpenXmlTextWrapper? current)
-        {
-            return current?.PPr?.Lvl == 0;
-        }
-
         private bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
         {
-            return IsUnOrderedListItem(previous) && IsOrderedListItem(current) ||
-                   IsOrderedListItem(previous) && IsUnOrderedListItem(current);
+            return previous.IsUnOrderedListItem() && current.IsOrderedListItem() ||
+                   previous.IsOrderedListItem() && current.IsUnOrderedListItem();
         }
 
         private bool IsClosingUnorderedList(string bracket)
         {
-            return bracket.Contains("ul");
+            return bracket.Contains(HtmlTags.UnorderedList);
         }
 
         private bool IsClosingOrderedList(string bracket)
         {
-            return bracket.Contains("ol");
+            return bracket.Contains(HtmlTags.OrderedList);
         }
 
-        private bool IsUnOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
-        {
-            return paragraphWrapper?.PPr?.BuChar?.Char is
-                OpenXmlTextModifiers.UlFilledRoundBullet or
-                OpenXmlTextModifiers.UlHollowRoundBullet or
-                OpenXmlTextModifiers.UlFilledSquareBullet or
-                OpenXmlTextModifiers.UlHollowSquareBullet or
-                OpenXmlTextModifiers.UlStarBullet or
-                OpenXmlTextModifiers.UlArrowBullet or
-                OpenXmlTextModifiers.UlCheckmarkBullet;
-        }
-
-        private bool IsOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
-        {
-            return paragraphWrapper?.PPr?.BuAutoNum?.Type is
-                OpenXmlTextModifiers.OlArabicPeriod or
-                OpenXmlTextModifiers.OlArabicParenRight or
-                OpenXmlTextModifiers.OlCapitalRomanNumeralsPeriod or
-                OpenXmlTextModifiers.OlCapitalAlphaPeriod or
-                OpenXmlTextModifiers.OlLowercaseAlphaRightParen or
-                OpenXmlTextModifiers.OlLowerCaseAlphaPeriod or
-                OpenXmlTextModifiers.OlLowercaseRomanNumeralsPeriod;
-        }
     }
 }

@@ -978,7 +978,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><ul><ul><ul><li>Nested Lists</li><li>And</li></ul></ul></ul><li>Ordered Lists</li></ul></ul></ul>");
+            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><ul><ul><ul><li>Nested Lists</li></ul><ol><li>And</li></ol></ul></ul></ul><ol><li>Ordered Lists</li></ol></ul></ul>");
         }
 
 
@@ -1070,7 +1070,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li><li>one one one<ol><li>two</li></ol><ul><li>two two</li><li>two two two two</li></ul></li></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>");
+            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one<ol><li>two</li></ol><ul><li>two two</li><li>two two two two</li></ul></li><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>");
 
         }
 
@@ -1217,7 +1217,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two<ol><li>three</li></ol></li></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
+            actual.Should().Be("<ul><li>one</li><li>two<ol><li>three</li><li>four</li></ol></li><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
         }
 
         
@@ -1252,7 +1252,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li><li>three</li></ol>");
+            actual.Should().Be("<ol><li>one</li><li>two</li></ol><ul><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li></ul><ol><li>three</li></ol>");
         }
 
         [TestMethod]

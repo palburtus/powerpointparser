@@ -187,12 +187,25 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
-        public void ShouldChangeListTypes_UnOrdrderListDoesNotMatchOrderedListType_ReturnsTrue()
+        public void ShouldChangeListTypes_UnOrderedListDoesNotMatchOrderedListType_ReturnsTrue()
         {
             INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
 
             bool actual = builder.ShouldChangeListTypes(
                 BuildOrderListItem("one", level: 1),
+                BuildUnorderedListItem("two"),
+                BuildUnorderedListItem("three"), "</ol>");
+
+            actual.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void ShouldChangeListTypes_SameListTypeDifferentBracket_ReturnsTrue()
+        {
+            INestedHtmlListBuilder builder = new NestedHtmlListBuilder();
+
+            bool actual = builder.ShouldChangeListTypes(
+                BuildUnorderedListItem("one", level: 1),
                 BuildUnorderedListItem("two"),
                 BuildUnorderedListItem("three"), "</ol>");
 

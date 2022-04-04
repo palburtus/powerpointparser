@@ -2,7 +2,7 @@
 using System.Linq;
 using Aaks.PowerPointParser.Dto;
 
-namespace Aaks.PowerPointParser
+namespace Aaks.PowerPointParser.Extensions
 {
 
     public static class PowerPointParserExtensions

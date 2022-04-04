@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Aaks.PowerPointParser;
+using Aaks.PowerPointParser.Extensions;
 using Aaks.PowerPointParser.Html;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
