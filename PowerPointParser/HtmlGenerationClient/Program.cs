@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Aaks.PowerPointParser;
+using Aaks.PowerPointParser.Extensions;
 using Aaks.PowerPointParser.Html;
 
 Console.WriteLine("Enter Absolute Powerpoint File Path");

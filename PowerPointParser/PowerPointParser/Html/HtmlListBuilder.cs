@@ -1,38 +1,36 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Aaks.PowerPointParser.Dto;
+using Aaks.PowerPointParser.Extensions;
 
 namespace Aaks.PowerPointParser.Html
 {
     public class HtmlListBuilder : IHtmlListBuilder
     {
         private readonly Stack<string> _closingListBracketsStack;
+        private readonly Stack<string> _closingListItemBracketsStack;
 
         private readonly IInnerHtmlBuilder _innerHtmlBuilder;
+        private readonly INestedHtmlListBuilder _nestedHtmlListBuilder;
        
         public HtmlListBuilder(IInnerHtmlBuilder innerHtmlBuilder)
         {
             _closingListBracketsStack = new Stack<string>();
+            _closingListItemBracketsStack = new Stack<string>();
+
             _innerHtmlBuilder = innerHtmlBuilder;
+            _nestedHtmlListBuilder = new NestedHtmlListBuilder();
         }
 
-        public string BuildList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper current,
-            OpenXmlTextWrapper? next)
+        public string BuildList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper current, OpenXmlTextWrapper? next)
         {
             StringBuilder sb = new();
-            bool isOrderListItem = IsOrderedListItem(current);
-            bool isLastOrderTypeChange = IsListOrderTypeChanged(previous, current);
+            bool isOrderListItem = current.IsOrderedListItem();
            
-            if (isLastOrderTypeChange)
+            if (_closingListBracketsStack.TryPeek(out var top))
             {
-
-                if (IsNotNested(next) || IsLastListItemForLevel(previous, current, next))
-                {
-                    sb.Append(_closingListBracketsStack.Pop());
-                    sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
-                    _closingListBracketsStack.Push(isOrderListItem ? HtmlTags.Close(HtmlTags.OrderedList) : HtmlTags.Close(HtmlTags.UnorderedList));
-                }
-                else if(previous?.PPr?.Lvl == current.PPr?.Lvl && current.PPr?.Lvl == next?.PPr?.Lvl)
+                if (_nestedHtmlListBuilder.ShouldChangeListTypes(previous, current, next, top))
                 {
                     sb.Append(_closingListBracketsStack.Pop());
                     sb.Append(isOrderListItem ? HtmlTags.Open(HtmlTags.OrderedList) : HtmlTags.Open(HtmlTags.UnorderedList));
@@ -65,7 +63,18 @@ namespace Aaks.PowerPointParser.Html
                 }
             }
 
-            sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
+            bool isNextStartOfNesting = _nestedHtmlListBuilder.DoNotCloseListItemDueToNesting(current, next);
+            bool isNestedWithoutParent = next?.PPr?.Lvl - current.PPr?.Lvl > 1;
+
+            if (isNextStartOfNesting && !isNestedWithoutParent)
+            {
+                sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItemBeforeNesting(current));
+                _closingListItemBracketsStack.Push(HtmlTags.Close(HtmlTags.ListItem));
+            }
+            else
+            {
+                sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
+            }
 
             if (IsEndOfNestedList(current, next))
             {
@@ -76,6 +85,11 @@ namespace Aaks.PowerPointParser.Html
                     if (_closingListBracketsStack.Count > 0)
                     {
                         sb.Append(_closingListBracketsStack.Pop());
+                    }
+
+                    if (_closingListItemBracketsStack.Count > 0)
+                    {
+                        sb.Append(_closingListItemBracketsStack.Pop());
                     }
                 }
             }
@@ -109,33 +123,9 @@ namespace Aaks.PowerPointParser.Html
             return previous is {PPr: { }} ? previous.PPr!.Lvl : 0;
         }
 
-        private bool IsLastListItemForLevel(OpenXmlTextWrapper? previous, OpenXmlTextWrapper current, OpenXmlTextWrapper? next)
-        {
-            if (next == null && current.PPr?.Lvl == previous?.PPr?.Lvl) return true;
-
-            if (next != null && IsListOrderTypeChanged(previous, current) &&
-                IsListOrderTypeChanged(current, next) &&
-                current.PPr?.Lvl == previous?.PPr?.Lvl) return true;
-
-
-            if (next != null && 
-                IsListOrderTypeChanged(previous, current) && 
-                IsListOrderTypeChanged(current, next) &&
-                IsListOrderTypeChanged(previous, next) &&
-                previous?.PPr?.Lvl < current.PPr?.Lvl) return true;
-
-            
-            return false;
-        }
-
-        private static bool IsNotNested(OpenXmlTextWrapper? next)
-        {
-            return next?.PPr?.Lvl == 0;
-        }
-
         public bool IsListItem(OpenXmlTextWrapper? paragraphWrapper)
         {
-            return IsUnOrderedListItem(paragraphWrapper) || IsOrderedListItem(paragraphWrapper);
+            return paragraphWrapper.IsUnOrderedListItem() || paragraphWrapper.IsOrderedListItem();
         }
 
         private bool IsStartOfNestedList(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
@@ -166,36 +156,6 @@ namespace Aaks.PowerPointParser.Html
         private bool IsFirstListItem(OpenXmlTextWrapper? current, OpenXmlTextWrapper? previous)
         {
             return IsListItem(current) && (previous == null || !IsListItem(previous));
-        }
-
-        private bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
-        {
-            return IsUnOrderedListItem(previous) && IsOrderedListItem(current) ||
-                   IsOrderedListItem(previous) && IsUnOrderedListItem(current);
-        }
-
-        private bool IsUnOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
-        {
-            return paragraphWrapper?.PPr?.BuChar?.Char is 
-                OpenXmlTextModifiers.UlFilledRoundBullet or 
-                OpenXmlTextModifiers.UlHollowRoundBullet or 
-                OpenXmlTextModifiers.UlFilledSquareBullet or
-                OpenXmlTextModifiers.UlHollowSquareBullet or
-                OpenXmlTextModifiers.UlStarBullet or
-                OpenXmlTextModifiers.UlArrowBullet or 
-                OpenXmlTextModifiers.UlCheckmarkBullet;
-        }
-
-        private bool IsOrderedListItem(OpenXmlTextWrapper? paragraphWrapper)
-        {
-            return paragraphWrapper?.PPr?.BuAutoNum?.Type is 
-                OpenXmlTextModifiers.OlArabicPeriod or
-                OpenXmlTextModifiers.OlArabicParenRight or
-                OpenXmlTextModifiers.OlCapitalRomanNumeralsPeriod or 
-                OpenXmlTextModifiers.OlCapitalAlphaPeriod or
-                OpenXmlTextModifiers.OlLowercaseAlphaRightParen or
-                OpenXmlTextModifiers.OlLowerCaseAlphaPeriod or 
-                OpenXmlTextModifiers.OlLowercaseRomanNumeralsPeriod;
         }
     }
 }

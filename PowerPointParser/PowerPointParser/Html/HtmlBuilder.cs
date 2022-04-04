@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Aaks.PowerPointParser.Dto;
+using Aaks.PowerPointParser.Extensions;
 
 namespace Aaks.PowerPointParser.Html
 {

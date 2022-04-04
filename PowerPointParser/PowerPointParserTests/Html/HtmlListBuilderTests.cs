@@ -52,7 +52,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(four, five, six);
 
-            actual.Should().Be("<li>goodbye world</li>");
+            actual.Should().Be("</ol><ul><li>goodbye world</li>");
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(one, two, three);
 
-            actual.Should().Be("<li>two</li>");
+            actual.Should().Be("<li>two");
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Aaks.PowerPointParser.Html.Tests
             
             var actual = _builder.BuildList(two, three, four);
 
-            actual.Should().Be("<ol><li>three</li></ol>");
+            actual.Should().Be("</ul><ol><ol><li>three</li></ol></li>");
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, null);
 
-            actual.Should().Be("<li>hello world</li></ol>");
+            actual.Should().Be("</ol><ul><li>hello world</li></ul>");
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _builder.BuildList(one, two, three);
 
-            actual.Should().Be("<li>two</li>");
+            actual.Should().Be("<li>two");
         }
 
         [TestMethod]

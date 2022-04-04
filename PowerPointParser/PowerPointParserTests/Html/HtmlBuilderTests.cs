@@ -903,7 +903,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li></ul><li>test world</li></ul>");
+            actual.Should().Be("<ul><li>hello world<ul><li>nested item</li></ul></li><li>test world</li></ul>");
         }
 
         [TestMethod]
@@ -917,7 +917,8 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li></ul></ul><li>test world</li></ul>");
+              actual.Should().Be("<ul><li>hello world<ul><li>nested item<ul><li>nested double</li></ul></li></ul></li><li>test world</li></ul>");
+            //actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li></ul></ul><li>test world</li></ul>");
         }
 
         [TestMethod]
@@ -932,7 +933,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li></ul></ul><li>test world</li></ul>");
+            actual.Should().Be("<ul><li>hello world<ul><li>nested item<ul><li>nested double</li><li>nested double two</li></ul></li></ul></li><li>test world</li></ul>");
         }
 
         [TestMethod]
@@ -947,7 +948,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists</li><ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></ul>");
+            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists<ul><li>Nested Lists</li></ul><ol><li>And</li><li>Ordered Lists</li></ol></li></ul>");
         }
 
         [TestMethod]
@@ -977,7 +978,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><ul><ul><ul><li>Nested Lists</li><li>And</li></ul></ul></ul><li>Ordered Lists</li></ul></ul></ul>");
+            actual.Should().Be("<ul><li>It supports</li><li>Un-ordered lists</li><ul><ul><ul><ul><ul><li>Nested Lists</li></ul><ol><li>And</li></ol></ul></ul></ul><ol><li>Ordered Lists</li></ol></ul></ul>");
         }
 
 
@@ -993,7 +994,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li></ul><li>test world</li></ul></ul>");
+            actual.Should().Be("<ul><li>hello world<ul><li>nested item<ul><li>nested double</li><li>nested double two</li></ul></li><li>test world</li></ul></li></ul>");
         }
 
         [TestMethod]
@@ -1026,7 +1027,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></ul>");
+            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one<ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></li></ul>");
 
         }
 
@@ -1049,7 +1050,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three</li></ul>");
+            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one<ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li></ul></li></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three</li></ul>");
 
         }
 
@@ -1069,10 +1070,9 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li><li>one one one</li><ol><li>two</li></ol><ul><li>two two</li><li>two two two two</li></ul></ul><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>");
+            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one<ol><li>two</li></ol><ul><li>two two</li><li>two two two two</li></ul></li><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol>");
 
         }
-
 
 
         [TestMethod]
@@ -1089,7 +1089,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ol><li>nested item</li><ul><li>nested double</li><li>nested double two</li><ol><li>three nested one</li><li>three nested two</li></ol></ul><li>test world</li></ol></ul>");
+            actual.Should().Be("<ul><li>hello world<ol><li>nested item<ul><li>nested double</li><li>nested double two<ol><li>three nested one</li><li>three nested two</li></ol></li></ul></li><li>test world</li></ol></li></ul>");
         }
 
         [TestMethod]
@@ -1106,7 +1106,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><ul><li>nested item</li><ul><li>nested double</li><li>nested double two</li><ul><li>three nested one</li><li>three nested two</li></ul></ul><li>test world</li></ul></ul>");
+            actual.Should().Be("<ul><li>hello world<ul><li>nested item<ul><li>nested double</li><li>nested double two<ul><li>three nested one</li><li>three nested two</li></ul></li></ul></li><li>test world</li></ul></li></ul>");
         }
 
         [TestMethod]
@@ -1119,7 +1119,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>hello world</li><li>nested item</li><ul><li>test world</li></ul></ul>");
+            actual.Should().Be("<ul><li>hello world</li><li>nested item<ul><li>test world</li></ul></li></ul>");
         }
 
         [TestMethod]
@@ -1136,7 +1136,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ul>");
+            actual.Should().Be("<ul><li>one</li><li>two<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul></li><li>three</li></ul>");
         }
 
         [TestMethod]
@@ -1172,6 +1172,22 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_NestedOrderedInUnOrderListItems_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("one"));
+            queue.Enqueue(BuildUnorderedListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            actual.Should().Be("<ul><li>one</li><li>two<ol><li>three</li></ol></li><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedOrderedFollowedByUnorderedListItems_ReturnsString()
         {
             Queue<OpenXmlTextWrapper?> queue = new();
@@ -1184,8 +1200,27 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><ol><li>three</li></ol></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
+            actual.Should().Be("<ol><li>one</li><li>two<ol><li>three</li></ol></li></ol><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
         }
+
+        [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_TwoNestedOrderedInUnOrderListItems_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildUnorderedListItem("one"));
+            queue.Enqueue(BuildUnorderedListItem("two"));
+            queue.Enqueue(BuildOrderListItem("three", level: 1));
+            queue.Enqueue(BuildOrderListItem("four", level: 1));
+            queue.Enqueue(BuildUnorderedListItem("hello world"));
+            queue.Enqueue(BuildUnorderedListItem("goodbye world"));
+            queue.Enqueue(BuildUnorderedListItem("test world"));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            actual.Should().Be("<ul><li>one</li><li>two<ol><li>three</li><li>four</li></ol></li><li>hello world</li><li>goodbye world</li><li>test world</li></ul>");
+        }
+
+        
 
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OrderedFollowedByNestedUnorderedListItems_ReturnsString()
@@ -1200,7 +1235,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><li>three</li></ol><ul><ul><li>hello world</li></ul><li>goodbye world</li><li>test world</li></ul>");
+            actual.Should().Be("<ol><li>one</li><li>two</li><li>three<ul><li>hello world</li></ul></li></ol><ul><li>goodbye world</li><li>test world</li></ul>");
         }
 
         [TestMethod]
@@ -1217,7 +1252,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><li>hello world</li><ul><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>");
+            actual.Should().Be("<ol><li>one</li><li>two</li></ol><ul><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li></ul><ol><li>three</li></ol>");
         }
 
         [TestMethod]
@@ -1234,7 +1269,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><ol><li>one</li><li>two</li><li>hello world</li><ul><li>goodbye world</li><li>test world</li></ul><li>three</li></ol></ol>");
+            actual.Should().Be("<ol><ol><li>one</li><li>two</li></ol><ul><li>hello world<ul><li>goodbye world</li><li>test world</li></ul></li></ul><ol><li>three</li></ol></ol>");
         }
 
         [TestMethod]
@@ -1251,7 +1286,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>two</li><ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul><li>three</li></ol>");
+            actual.Should().Be("<ol><li>one</li><li>two<ul><li>hello world</li><li>goodbye world</li><li>test world</li></ul></li><li>three</li></ol>");
         }
 
 
@@ -1272,7 +1307,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><ol><li>two</li><ul><li>three</li><ul><li>four</li><ol><li>five</li><ol><li>six</li><ul><li>seven</li><ul><li>eight</li><ol><li>nine</li><ol><li>ten</li></ol></ol></ul></ul></ol></ol></ul></ul></ol></ol>");
+            actual.Should().Be("<ol><li>one<ol><li>two<ul><li>three<ul><li>four<ol><li>five<ol><li>six<ul><li>seven<ul><li>eight<ol><li>nine<ol><li>ten</li></ol></li></ol></li></ul></li></ul></li></ol></li></ol></li></ul></li></ul></li></ol></li></ol>");
         }
 
         [TestMethod]
@@ -1302,12 +1337,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be(
-                "<ol><li>one</li><li>one one</li><ol><li>two</li><li>two two</li><ul><li>three</li><li>three three</li>" +
-                "<ul><li>four</li><li>four four</li><ol><li>five</li><li>five five</li>" +
-                "<ol><li>six</li><li>six six</li><ul><li>seven</li><li>seven seven</li>" +
-                "<ul><li>eight</li><li>eight eight</li><ol><li>nine</li><li>nine nine</li>" +
-                "<ol><li>ten</li><li>ten ten</li></ol></ol></ul></ul></ol></ol></ul></ul></ol></ol>");
+            actual.Should().Be("<ol><li>one</li><li>one one<ol><li>two</li><li>two two<ul><li>three</li><li>three three<ul><li>four</li><li>four four<ol><li>five</li><li>five five<ol><li>six</li><li>six six<ul><li>seven</li><li>seven seven<ul><li>eight</li><li>eight eight<ol><li>nine</li><li>nine nine<ol><li>ten</li><li>ten ten</li></ol></li></ol></li></ul></li></ul></li></ol></li></ol></li></ul></li></ul></li></ol></li></ol>");
         }
 
         [TestMethod]
@@ -1347,7 +1377,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><ol><li>two</li><li>two two</li><li>two two two</li><ul><li>three</li><li>three three</li><li>three three three</li><ul><li>four</li><li>four four</li><li>four four four</li><ol><li>five</li><li>five five</li><li>five five five</li><ol><li>six</li><li>six six</li><li>six six six six</li><ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><ol><li>ten</li><li>ten ten</li><li>ten ten ten</li></ol></ol></ul></ul></ol></ol></ul></ul></ol></ol>");
+            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one<ol><li>two</li><li>two two</li><li>two two two<ul><li>three</li><li>three three</li><li>three three three<ul><li>four</li><li>four four</li><li>four four four<ol><li>five</li><li>five five</li><li>five five five<ol><li>six</li><li>six six</li><li>six six six six<ul><li>seven</li><li>seven seven</li><li>seven seven seven<ul><li>eight</li><li>eight eight</li><li>eight eight eight<ol><li>nine</li><li>nine nine</li><li>nine nine nine<ol><li>ten</li><li>ten ten</li><li>ten ten ten</li></ol></li></ol></li></ul></li></ul></li></ol></li></ol></li></ul></li></ul></li></ol></li></ol>");
         }
 
         [TestMethod]
@@ -1397,7 +1427,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></ol></ul></ul></ol></ol></ul></ul></ol></ol>");
+            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one<ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two<ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three<ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four<ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five<ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six<ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven<ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight<ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine<ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></li></ol></li></ul></li></ul></li></ol></li></ol></li></ul></li></ul></li></ol></li></ol>");
         }
 
         [TestMethod]
@@ -1447,7 +1477,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ul><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ul><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ul><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ul><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ul><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul>");
+            actual.Should().Be("<ul><li>one</li><li>one one</li><li>one one one</li><li>one one one one<ul><li>two</li><li>two two</li><li>two two two</li><li>two two two two<ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three<ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four<ul><li>five</li><li>five five</li><li>five five five</li><li>five five five five<ul><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six<ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven<ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight<ul><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine<ul><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>");
         }
 
         [TestMethod]
@@ -1534,7 +1564,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ul><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ul><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ul><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ul><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ul><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ul><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ul><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li></ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li></ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li></ul><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li></ul><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li></ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li></ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li></ul><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li></ul><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li></ul>");
+            actual.Should().Be("<ul><li>one</li><li>one one</li><li>one one one</li><li>one one one one<ul><li>two</li><li>two two</li><li>two two two</li><li>two two two two<ul><li>three</li><li>three three</li><li>three three three</li><li>three three three three<ul><li>four</li><li>four four</li><li>four four four</li><li>four four four four<ul><li>five</li><li>five five</li><li>five five five</li><li>five five five five<ul><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six<ul><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven<ul><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight<ul><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine<ul><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ul></li><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li></ul></li><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li></ul></li><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li></ul></li><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li></ul></li><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li></ul></li><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li></ul></li><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li></ul></li><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li></ul></li><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li></ul>");
         }
 
         [TestMethod]
@@ -1584,7 +1614,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></ol></ol></ol></ol></ol></ol></ol></ol></ol>");
+            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one<ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two<ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three<ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four<ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five<ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six<ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven<ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight<ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine<ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>");
         }
 
         [TestMethod]
@@ -1671,7 +1701,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li><ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li><ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li><ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li><ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li><ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li><ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li><ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li><ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li><ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li></ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li></ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li></ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li></ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li></ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li></ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li></ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li></ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li></ol>");
+            actual.Should().Be("<ol><li>one</li><li>one one</li><li>one one one</li><li>one one one one<ol><li>two</li><li>two two</li><li>two two two</li><li>two two two two<ol><li>three</li><li>three three</li><li>three three three</li><li>three three three three<ol><li>four</li><li>four four</li><li>four four four</li><li>four four four four<ol><li>five</li><li>five five</li><li>five five five</li><li>five five five five<ol><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six<ol><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven<ol><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight<ol><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine<ol><li>ten</li><li>ten ten</li><li>ten ten ten</li><li>ten ten ten ten</li></ol></li><li>nine</li><li>nine nine</li><li>nine nine nine</li><li>nine nine nine nine</li></ol></li><li>eight</li><li>eight eight</li><li>eight eight eight</li><li>eight eight eight eight</li></ol></li><li>seven</li><li>seven seven</li><li>seven seven seven</li><li>seven seven seven seven</li></ol></li><li>six</li><li>six six</li><li>six six six six</li><li>six six six six six</li></ol></li><li>five</li><li>five five</li><li>five five five</li><li>five five five five</li></ol></li><li>four</li><li>four four</li><li>four four four</li><li>four four four four</li></ol></li><li>three</li><li>three three</li><li>three three three</li><li>three three three three</li></ol></li><li>two</li><li>two two</li><li>two two two</li><li>two two two two</li></ol></li><li>one</li><li>one one</li><li>one one one</li><li>one one one one</li></ol>");
         }
 
         [TestMethod]
@@ -1681,7 +1711,7 @@ namespace Aaks.PowerPointParser.Html.Tests
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
 
-            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one</li><ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two</li><ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three</li><ol><li>four</li></ol><ul><li>four four</li></ul><ol><li>four four four</li></ol><ul><li>four four four four</li><ol><li>five</li></ol><ul><li>five five</li></ul><ol><li>five five five</li></ol><ul><li>five five five five</li><ol><li>six</li></ol><ul><li>six six</li></ul><ol><li>six six six six</li></ol><ul><li>six six six six six</li><ol><li>seven</li></ol><ul><li>seven seven</li></ul><ol><li>seven seven seven</li></ol><ul><li>seven seven seven seven</li><ol><li>eight</li></ol><ul><li>eight eight</li></ul><ol><li>eight eight eight</li></ol><ul><li>eight eight eight eight</li><ol><li>nine</li></ol><ul><li>nine nine</li></ul><ol><li>nine nine nine</li></ol><ul><li>nine nine nine nine</li><ol><li>ten</li></ol><ul><li>ten ten</li></ul><ol><li>ten ten ten</li></ol><ul><li>ten ten ten ten</li></ul></ul></ul></ul></ul></ul></ul></ul></ul></ul>");
+            actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one<ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two<ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three<ol><li>four</li></ol><ul><li>four four</li></ul><ol><li>four four four</li></ol><ul><li>four four four four<ol><li>five</li></ol><ul><li>five five</li></ul><ol><li>five five five</li></ol><ul><li>five five five five<ol><li>six</li></ol><ul><li>six six</li></ul><ol><li>six six six six</li></ol><ul><li>six six six six six<ol><li>seven</li></ol><ul><li>seven seven</li></ul><ol><li>seven seven seven</li></ol><ul><li>seven seven seven seven<ol><li>eight</li></ol><ul><li>eight eight</li></ul><ol><li>eight eight eight</li></ol><ul><li>eight eight eight eight<ol><li>nine</li></ol><ul><li>nine nine</li></ul><ol><li>nine nine nine</li></ol><ul><li>nine nine nine nine<ol><li>ten</li></ol><ul><li>ten ten</li></ul><ol><li>ten ten ten</li></ol><ul><li>ten ten ten ten</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>");
         }
 
         public static Queue<OpenXmlTextWrapper?> GetTenDeepNestingFourAlternateEachOrdered()
