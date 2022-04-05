@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Aaks.PowerPointParser.Parsers;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Aaks.PowerPointParser.Dto;
@@ -19,8 +20,10 @@ namespace Aaks.PowerPointParser.Parsers.Tests
         {
             _directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             _path = Path.Combine(_directory!, "TestDeckParagraph.pptx");
-            
+
         }
+
+        #region Notes Parsing
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckOne.pptx")]
@@ -47,7 +50,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
             actual.Should().BeEquivalentTo(expected);
         }
-        
+
         [TestMethod]
         [DeploymentItem("TestData/TestThree.pptx")]
         public void Parse_ParseAlternativeFormat_ReturnsIntWrapperMap()
@@ -155,7 +158,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
             actual.Should().BeEquivalentTo(expected);
         }
-     
+
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
         public void Parse_ParseRightAlignedParagraph_ReturnsIntWrapperMap()
@@ -259,7 +262,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actualThree.Should().BeEquivalentTo(expectedThree);
 
         }
-        
+
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
         public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
@@ -293,10 +296,10 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
             var actualOne = map[7][0]!;
             var expectedOne = BuildOlTextWrapper("Ordered one");
-            
+
             var actualTwo = map[7][1]!;
             var expectedTwo = BuildOlTextWrapper("Ordered two");
-            
+
             var actualThree = map[7][2]!;
             var expectedThree = BuildOlTextWrapper("Ordered three");
 
@@ -304,7 +307,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actualTwo.Should().BeEquivalentTo(expectedTwo);
             actualThree.Should().BeEquivalentTo(expectedThree);
         }
-        
+
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
@@ -318,20 +321,20 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var actualOne = map[8][0]!;
             var expectedOne = BuildOlTextWrapper("Indent Ordered One");
 
-            
+
 
             var actualTwo = map[8][1]!;
             var expectedTwo = BuildOlTextWrapper("Indent Ordered One ", 1);
             expectedTwo.R!.Add(BuildRItem("One"));
 
-            
+
 
             var actualThree = map[8][2]!;
             var expectedThree = BuildOlTextWrapper("Indent Order One ", 2);
             expectedThree.R!.Add(BuildRItem("One"));
             expectedThree.R!.Add(BuildRItem(string.Empty));
             expectedThree.R!.Add(BuildRItem("One"));
-            
+
             var actualFour = map[8][3]!;
             var expectedFour = BuildOlTextWrapper("Indent Ordered Three");
 
@@ -582,7 +585,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             Assert.AreEqual(6, map[10].Count);
 
             var actual = map[10];
-            
+
             actual[0]!.R![0].T.Should().Be("Un");
         }
 
@@ -603,11 +606,11 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var actualOne = map[5][0]!;
             var expectedOne = BuildUlTextWrapper("Unordered item 1");
 
-           
+
             var actualTwo = map[5][1]!;
             var expectedTwo = BuildUlTextWrapper("Unordered item 2");
 
-          
+
             var actualThree = map[5][2]!;
             var expectedThree = BuildUlTextWrapper("Unordered item 3");
 
@@ -615,5 +618,25 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actualTwo.Should().BeEquivalentTo(expectedTwo);
             actualThree.Should().BeEquivalentTo(expectedThree);
         }
+
+        #endregion
+
+        #region Slide Parsing
+
+        [TestMethod]
+        public void ParseSlideTest()
+        {
+            IPowerPointParser parser = new PowerPointParser();
+            var slideDictionary = parser.ParseSlide(_path!);
+
+            var actual = slideDictionary[2][0];
+
+
+            Assert.IsNotNull(slideDictionary);
+        }
+
+        #endregion
+
+
     }
 }

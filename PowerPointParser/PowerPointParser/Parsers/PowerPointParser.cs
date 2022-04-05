@@ -7,6 +7,8 @@ using Aaks.PowerPointParser.Dto;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using DocumentFormat.OpenXml.Drawing;
 using Microsoft.Extensions.Logging;
 
 namespace Aaks.PowerPointParser.Parsers
@@ -17,6 +19,13 @@ namespace Aaks.PowerPointParser.Parsers
         private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
         
         private readonly ILogger<PowerPointParser>? _logger;
+
+        public IDictionary<int, IList<Paragraph?>> ParseSlide(string path)
+        {
+            using var presentationDocument = PresentationDocument.Open(path, false);
+            var slidesContentMap = ParseSlides(presentationDocument);
+            return slidesContentMap!;
+        }
 
         public PowerPointParser(ILogger<PowerPointParser>? logger = null)
         {
@@ -30,13 +39,51 @@ namespace Aaks.PowerPointParser.Parsers
             return slidesContentMap;
 
         }
+
         public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path)
         {
-            
             using var presentationDocument = PresentationDocument.Open(path, false);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
             return slidesContentMap;
+        }
 
+        private IDictionary<int, IList<Paragraph>?> ParseSlides(PresentationDocument presentationDocument)
+        {
+            IDictionary<int, IList<Paragraph>?> slidesContentMap = new Dictionary<int, IList<Paragraph?>>()!;
+            var presentationPart = presentationDocument.PresentationPart;
+            if (presentationPart == null) return slidesContentMap!;
+
+            var presentation = presentationPart.Presentation;
+
+            if (presentation.SlideIdList == null) return slidesContentMap;
+
+            var slideIds = presentation.SlideIdList.Elements<SlideId>();
+
+            int slideIndex = 1;
+
+            foreach (var slideId in slideIds)
+            {
+                var openXmlItems = new List<Paragraph>();
+
+                if (slideId == null) return null;
+                if (slideId.RelationshipId == null) return null;
+
+                var openXmlPart = presentationPart.GetPartById(slideId.RelationshipId!);
+                SlidePart? slidePart = openXmlPart as SlidePart;
+
+                
+                foreach (var item in slidePart?.Slide.Descendants<DocumentFormat.OpenXml.Drawing.Paragraph>()!)
+                {
+                    openXmlItems.Add(item);
+                }
+
+                slideIndex++;
+
+                slidesContentMap.Add(slideIndex, openXmlItems);
+            }
+
+
+            return slidesContentMap;
         }
 
         private IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
@@ -60,12 +107,13 @@ namespace Aaks.PowerPointParser.Parsers
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
+                    //var pNodesList = note.NotesSlide.Descendants<DocumentFormat.OpenXml.Drawing.Paragraph>();
                     var pNodesList = ParsePNodesList(note!);
 
                     if (pNodesList != null)
                     {
                         var xmlSerializer = new XmlSerializer(typeof(OpenXmlTextWrapper));
-                        foreach (XmlNode node in pNodesList)
+                        foreach (/*var*/XmlNode node in pNodesList)
                         {
                             try
                             {
