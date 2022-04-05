@@ -60,12 +60,12 @@ namespace Aaks.PowerPointParser.Parsers
 
                 if (DoesSlideHaveSpeakerNotes(note))
                 {
-                    var pNodesList = ParsePNodesList(note!);
+                    var pNodesList = note?.NotesSlide.Descendants<DocumentFormat.OpenXml.Drawing.Paragraph>();
 
                     if (pNodesList != null)
                     {
                         var xmlSerializer = new XmlSerializer(typeof(OpenXmlTextWrapper));
-                        foreach (XmlNode node in pNodesList)
+                        foreach (var node in pNodesList)
                         {
                             try
                             {

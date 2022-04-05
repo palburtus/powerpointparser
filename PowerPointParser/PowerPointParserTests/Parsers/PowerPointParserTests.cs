@@ -276,7 +276,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var actualThree = map[6][2]!;
             var expectedThree = BuildUlTextWrapper("Indent Unordered item 3", 2);
 
-            map[6].Count.Should().Be(3);
+            map[6].Count.Should().Be(4);
             actualOne.Should().BeEquivalentTo(expectedOne);
             actualTwo.Should().BeEquivalentTo(expectedTwo);
             actualThree.Should().BeEquivalentTo(expectedThree);
@@ -289,7 +289,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
 
-            Assert.AreEqual(3, map[7].Count);
+            Assert.AreEqual(4, map[7].Count);
 
             var actualOne = map[7][0]!;
             var expectedOne = BuildOlTextWrapper("Ordered one");
@@ -313,7 +313,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
 
-            Assert.AreEqual(4, map[8].Count);
+            Assert.AreEqual(5, map[8].Count);
 
             var actualOne = map[8][0]!;
             var expectedOne = BuildOlTextWrapper("Indent Ordered One");
@@ -349,7 +349,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[9].Count);
+            Assert.AreEqual(3, map[9].Count);
 
             var actual = map[9][0]!;
             var expected = BuildUlTextWrapper("Filled Square Bullets");
@@ -366,7 +366,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[10].Count);
+            Assert.AreEqual(3, map[10].Count);
 
             var actual = map[10][0]!;
             var expected = BuildUlTextWrapper("Hollow Square Bullets");
@@ -383,7 +383,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[11].Count);
+            Assert.AreEqual(3, map[11].Count);
 
             var actual = map[11][0]!;
             var expected = BuildUlTextWrapper("Star Bullets");
@@ -400,7 +400,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[12].Count);
+            Assert.AreEqual(3, map[12].Count);
 
             var actual = map[12][0]!;
             var expected = BuildUlTextWrapper("Arrow Bullets");
@@ -417,7 +417,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[13].Count);
+            Assert.AreEqual(3, map[13].Count);
 
             var actual = map[13][0]!;
             var expected = BuildUlTextWrapper("Checkmark Bullets");
@@ -435,7 +435,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[14].Count);
+            Assert.AreEqual(3, map[14].Count);
 
             var actual = map[14][0]!;
             var expected = BuildOlTextWrapper("Open ");
@@ -454,7 +454,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[15].Count);
+            Assert.AreEqual(3, map[15].Count);
 
             var actual = map[15][0]!;
 
@@ -474,7 +474,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[16].Count);
+            Assert.AreEqual(3, map[16].Count);
 
             var actual = map[16][0]!;
 
@@ -494,7 +494,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[17].Count);
+            Assert.AreEqual(3, map[17].Count);
 
             var actual = map[17][0]!;
 
@@ -518,7 +518,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[18].Count);
+            Assert.AreEqual(3, map[18].Count);
 
             var actual = map[18][0]!;
 
@@ -541,7 +541,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var path = Path.Combine(_directory!, "TestFour.pptx");
             var map = powerPointParser.ParseSpeakerNotes(path);
 
-            Assert.AreEqual(2, map[19].Count);
+            Assert.AreEqual(3, map[19].Count);
 
             var actual = map[19][0]!;
 
@@ -563,7 +563,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
 
-            Assert.AreEqual(1, map[9].Count);
+            Assert.AreEqual(2, map[9].Count);
 
             var actual = map[9][0]!;
 
@@ -579,7 +579,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
 
-            Assert.AreEqual(6, map[10].Count);
+            Assert.AreEqual(7, map[10].Count);
 
             var actual = map[10];
             
@@ -598,7 +598,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             var parser = new PowerPointParser();
             var map = parser.ParseSpeakerNotes(memoryStream);
 
-            Assert.AreEqual(3, map[5].Count);
+            Assert.AreEqual(4, map[5].Count);
 
             var actualOne = map[5][0]!;
             var expectedOne = BuildUlTextWrapper("Unordered item 1");
