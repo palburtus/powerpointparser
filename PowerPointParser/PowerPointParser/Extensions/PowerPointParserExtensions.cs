@@ -7,9 +7,9 @@ namespace Aaks.PowerPointParser.Extensions
 
     public static class PowerPointParserExtensions
     {
-        public static Queue<OpenXmlTextWrapper> ToQueue(this IDictionary<int, IList<OpenXmlTextWrapper>> items)
+        public static Queue<OpenXmlLineItem> ToQueue(this IDictionary<int, IList<OpenXmlLineItem>> items)
         {
-            Queue<OpenXmlTextWrapper> openXmlParagraphWrappers = new();
+            Queue<OpenXmlLineItem> openXmlParagraphWrappers = new();
             var xmlParagraphWrappers = items.Select(x => x.Value).SelectMany(y => y).ToList();
             foreach (var openXmlParagraphWrapper in xmlParagraphWrappers)
             {
@@ -17,9 +17,9 @@ namespace Aaks.PowerPointParser.Extensions
             }
             return openXmlParagraphWrappers;
         }
-        public static Queue<OpenXmlTextWrapper> ToQueue(this IList<OpenXmlTextWrapper> items)
+        public static Queue<OpenXmlLineItem> ToQueue(this IList<OpenXmlLineItem> items)
         {
-            Queue<OpenXmlTextWrapper> openXmlParagraphWrappers = new();
+            Queue<OpenXmlLineItem> openXmlParagraphWrappers = new();
             foreach (var current in items)
             {
                 openXmlParagraphWrappers.Enqueue(current);

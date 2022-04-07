@@ -209,7 +209,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             expectedOne.PPr = expectedPpr;
 
             var actualTwo = map[7][1]!;
-            var expectedEmpty = new OpenXmlTextWrapper
+            var expectedEmpty = new OpenXmlLineItem
             {
                 R = new List<R>(),
                 PPr = expectedPpr
@@ -629,10 +629,10 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             IPowerPointParser parser = new PowerPointParser();
             var slideDictionary = parser.ParseSlide(_path!);
 
-            var actual = slideDictionary[2][0];
+            var actual = slideDictionary[2][2]!.R![0].T;
 
 
-            Assert.IsNotNull(slideDictionary);
+            actual.Should().Be("Sit Dolor Amet");
         }
 
         #endregion

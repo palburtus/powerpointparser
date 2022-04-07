@@ -5,7 +5,7 @@ namespace PowerPointParserTests.Html
 {
     public  abstract class BaseOpenXmlParserTests
     {
-        protected static OpenXmlTextWrapper BuildOlTextWrapper(string text, int nestingLevel = 0)
+        protected static OpenXmlLineItem BuildOlTextWrapper(string text, int nestingLevel = 0)
         {
 
             int marL = nestingLevel switch
@@ -15,7 +15,7 @@ namespace PowerPointParserTests.Html
                 _ => 228600
             };
 
-            return new OpenXmlTextWrapper
+            return new OpenXmlLineItem
             {
                 PPr = new PPr
                 {
@@ -78,9 +78,9 @@ namespace PowerPointParserTests.Html
             };
         }
 
-        protected static OpenXmlTextWrapper BuildParagraphTextWrapper(string text)
+        protected static OpenXmlLineItem BuildParagraphTextWrapper(string text)
         {
-            return new OpenXmlTextWrapper
+            return new OpenXmlLineItem
             {
                 R = new List<R> {new()
                     {
@@ -130,7 +130,7 @@ namespace PowerPointParserTests.Html
             };
         }
 
-        protected static OpenXmlTextWrapper BuildUlTextWrapper(string text, int nestingLevel = 0)
+        protected static OpenXmlLineItem BuildUlTextWrapper(string text, int nestingLevel = 0)
         {
 
             int marL = nestingLevel switch
@@ -140,7 +140,7 @@ namespace PowerPointParserTests.Html
                 _ => 171450
             };
 
-            return new OpenXmlTextWrapper
+            return new OpenXmlLineItem
             {
                 PPr = new PPr
                 {

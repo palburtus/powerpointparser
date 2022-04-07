@@ -7,21 +7,21 @@ namespace Aaks.PowerPointParser.Html
 {
     public class InnerHtmlBuilder : IInnerHtmlBuilder
     {
-        public string BuildInnerHtmlParagraph(OpenXmlTextWrapper? textWrapper) => 
+        public string BuildInnerHtmlParagraph(OpenXmlLineItem? textWrapper) => 
             textWrapper?.R?.Count == 0 ? 
                 string.Empty :
                 $"{HtmlTags.Open(HtmlTags.Paragraph, GetTextAlignment(textWrapper?.PPr))}{BuildInnerHtml(textWrapper!)}{HtmlTags.Close(HtmlTags.Paragraph)}";
 
-        public string BuildInnerHtmlListItem(OpenXmlTextWrapper textWrapper) => 
-            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}{HtmlTags.Close(HtmlTags.ListItem)}";
+        public string BuildInnerHtmlListItem(OpenXmlLineItem lineItem) => 
+            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(lineItem.PPr))}{BuildInnerHtml(lineItem)}{HtmlTags.Close(HtmlTags.ListItem)}";
 
-        public string BuildInnerHtmlListItemBeforeNesting(OpenXmlTextWrapper textWrapper) => 
-            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(textWrapper.PPr))}{BuildInnerHtml(textWrapper)}";
+        public string BuildInnerHtmlListItemBeforeNesting(OpenXmlLineItem lineItem) => 
+            $"{HtmlTags.Open(HtmlTags.ListItem, GetTextAlignment(lineItem.PPr))}{BuildInnerHtml(lineItem)}";
 
-        private static string BuildInnerHtml(OpenXmlTextWrapper textWrapper)
+        private static string BuildInnerHtml(OpenXmlLineItem lineItem)
         {
             StringBuilder sb = new();
-            foreach (var r in textWrapper.R!.Where(r => r.T != null))
+            foreach (var r in lineItem.R!.Where(r => r.T != null))
             {
                 if (IsBold(r)) sb.Append(HtmlTags.Open(HtmlTags.Bold));
                 if (IsUnderlined(r)) sb.Append(HtmlTags.Open(HtmlTags.Underlined));

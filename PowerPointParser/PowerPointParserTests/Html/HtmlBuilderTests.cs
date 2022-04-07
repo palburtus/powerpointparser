@@ -22,7 +22,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_WrapperListNull_ReturnsNull()
         {
-            Queue<OpenXmlTextWrapper?>? wrapperList = null;
+            Queue<OpenXmlLineItem?>? wrapperList = null;
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(wrapperList);
 
@@ -32,8 +32,8 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_WrapperNull_ReturnsNull()
         {
-            OpenXmlTextWrapper? wrapper = null;
-            Queue<OpenXmlTextWrapper?> queue = new();
+            OpenXmlLineItem? wrapper = null;
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -44,8 +44,8 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_RNull_ReturnsNull()
         {
-            OpenXmlTextWrapper wrapper = new();
-            Queue<OpenXmlTextWrapper?> queue = new();
+            OpenXmlLineItem wrapper = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -56,12 +56,12 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_REmptyNull_ReturnsNull()
         {
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 R = new List<R>()
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -72,7 +72,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ParagraphTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -83,7 +83,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_BoldTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr {B = 1}));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -94,7 +94,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ItalicTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { I = 1 }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -105,7 +105,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_UnderlineTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { U = "sng" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -116,7 +116,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrikeThroughTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { Strike = "sngStrike" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -127,7 +127,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrongItalicTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { I = 1 , B = 1}));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -138,7 +138,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrongUnderlinedItalicTag_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", new RPr { I = 1, B = 1, U = "sng" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -156,13 +156,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr {BuNone = new object()},
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -179,13 +179,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -202,13 +202,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -225,13 +225,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -248,13 +248,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world", new RPr {B = 1})
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -271,13 +271,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -294,13 +294,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -317,13 +317,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -334,7 +334,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphCenter_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr{Algn = "ctr"}));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -345,7 +345,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphRight_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr { Algn = "r" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -356,7 +356,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignParagraphJustify_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello world", ppr: new PPr { Algn = "just" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -367,7 +367,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemCenter_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", align: "ctr"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -378,7 +378,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemRight_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", align: "r"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -389,7 +389,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignOrderedListItemJustify_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", align: "just"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -401,7 +401,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemCenter_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", align: "ctr"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -412,7 +412,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemRight_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", align: "r"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -423,7 +423,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlignUnOrderedListItemJustify_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", align: "just"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -440,13 +440,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object(), Algn = "r"},
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -463,13 +463,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object(), Algn = "ctr", BuChar = new BuChar { Character = "•" } },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -486,13 +486,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" world")
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object(), Algn = "just", BuAutoNum = new BuAutoNum { Type = "arabicPeriod" } },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -513,13 +513,13 @@ namespace Aaks.PowerPointParser.Html.Tests
                 BuildR(" not", new RPr {Strike = "sngStrike"})
             };
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr { BuNone = new object() },
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -530,10 +530,10 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ConsecutiveParagraph_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello"));
 
-            Queue<OpenXmlTextWrapper?> queue2 = new();
+            Queue<OpenXmlLineItem?> queue2 = new();
             queue2.Enqueue(BuildParagraphLine("world"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -545,7 +545,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwoConsecutiveEmptyParagraphLines_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello"));
             queue.Enqueue(new()
             {
@@ -566,7 +566,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ThreeConsecutiveEmptyParagraphLines_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("hello"));
             queue.Enqueue(new()
             {
@@ -597,13 +597,13 @@ namespace Aaks.PowerPointParser.Html.Tests
             rs.Add(rOne);
             rs.Add(rTwo);
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr {BuNone = new object()},
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -614,7 +614,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ParagraphBeforeUnorderedList_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("Paragraph Before"));
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
@@ -627,7 +627,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ParagraphAfterUnorderedList_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
             queue.Enqueue(BuildParagraphLine("Paragraph After"));
@@ -640,7 +640,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ParagraphBeforeAndAfterUnorderedList_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildParagraphLine("Paragraph Before"));
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
@@ -654,7 +654,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrongUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr {B = 1}));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -665,7 +665,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_HollowRoundBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "o"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -676,7 +676,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_FilledSquareBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "§"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -687,7 +687,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_HollowSquareBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "q"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -698,7 +698,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StarBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "v"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -709,7 +709,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ArrowBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "Ø"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -720,7 +720,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_CheckmarkBulletsUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", specialChar: "ü"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -731,7 +731,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ArabicParenRightOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "arabicParenR"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -742,7 +742,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_CapitalRomanNumeralsPeriodOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "romanUcPeriod"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -753,7 +753,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_CapitalLettersPeriodOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaUcPeriod"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -764,7 +764,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseAlphaRightParenOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaLcParenR"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -775,7 +775,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseAlphaPeriodOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "alphaLcPeriod"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -786,7 +786,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_LowercaseRomanNumeralsPeriodOrderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world", specialFont: "romanLcPeriod"));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -797,7 +797,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_ItalicUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { I = 1 }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -808,7 +808,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_UnderlinedUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { U = "sng" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -819,7 +819,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrikeThroughUnorderedListItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world", new RPr { Strike = "sngStrike" }));
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -830,7 +830,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("goodbye world"));
 
@@ -844,7 +844,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         {
             var wrapper = BuildOrderListItem("hello world");
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -866,13 +866,13 @@ namespace Aaks.PowerPointParser.Html.Tests
             rs.Add(rThree);
             rs.Add(rFour);
 
-            OpenXmlTextWrapper wrapper = new()
+            OpenXmlLineItem wrapper = new()
             {
                 PPr = new PPr {BuAutoNum = new BuAutoNum {Type = "arabicPeriod"}},
                 R = rs
             };
 
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(wrapper);
 
             var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
@@ -883,7 +883,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OrderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("hello world"));
             queue.Enqueue(BuildOrderListItem("goodbye world"));
             queue.Enqueue(BuildOrderListItem("test world"));
@@ -896,7 +896,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("test world"));
@@ -909,7 +909,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwiceNestedUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
@@ -924,7 +924,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwiceTwoNestedUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
@@ -939,7 +939,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedListTypeChangeAfterFirstItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("It supports"));
             queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
             queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 1));
@@ -954,7 +954,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwiceAfterNoNesting_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("It supports"));
             queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
             queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 2));
@@ -969,7 +969,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedFiveTimesAfterNoNesting_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("It supports"));
             queue.Enqueue(BuildUnorderedListItem("Un-ordered lists"));
             queue.Enqueue(BuildUnorderedListItem("Nested Lists", level: 5));
@@ -985,7 +985,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwiceNestedFollowedBySingleNested_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
@@ -1000,7 +1000,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlternateEveryItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1015,7 +1015,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlternateEveryNestFourItem_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1034,7 +1034,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlternateEveryFourNestItemFinalNestZero_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1057,7 +1057,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AlternateEveryThreeNestItemFinalNestZero_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1078,7 +1078,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TripleNested_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildOrderListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
@@ -1095,7 +1095,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OrderedNestUnorderedNestOrdered_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item", level: 1));
             queue.Enqueue(BuildUnorderedListItem("nested double", level: 2));
@@ -1112,7 +1112,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedLastItemUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("nested item"));
             queue.Enqueue(BuildUnorderedListItem("test world", level: 1));
@@ -1125,7 +1125,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnorderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
             queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
@@ -1142,7 +1142,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_UnorderedFollowedByOrderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("hello world"));
             queue.Enqueue(BuildUnorderedListItem("goodbye world"));
             queue.Enqueue(BuildUnorderedListItem("test world"));
@@ -1158,7 +1158,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OrderedFollowedByUnorderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two"));
             queue.Enqueue(BuildOrderListItem("three"));
@@ -1174,7 +1174,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedOrderedInUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
             queue.Enqueue(BuildOrderListItem("three", level: 1));
@@ -1190,7 +1190,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedOrderedFollowedByUnorderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two"));
             queue.Enqueue(BuildOrderListItem("three", level: 1));
@@ -1206,7 +1206,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TwoNestedOrderedInUnOrderListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("two"));
             queue.Enqueue(BuildOrderListItem("three", level: 1));
@@ -1225,7 +1225,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_OrderedFollowedByNestedUnorderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two"));
             queue.Enqueue(BuildOrderListItem("three"));
@@ -1241,7 +1241,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedTwoUnorderedInsideOrderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two"));
             queue.Enqueue(BuildUnorderedListItem("hello world"));
@@ -1258,7 +1258,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_AllNestedTwoUnorderedInsideOrderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one", level: 1));
             queue.Enqueue(BuildOrderListItem("two", level: 1));
             queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
@@ -1275,7 +1275,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_NestedUnorderedInsideOrderedListItems_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two"));
             queue.Enqueue(BuildUnorderedListItem("hello world", level: 1));
@@ -1293,7 +1293,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingAlternatingOrderEveryTwo_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("two", level: 1));
             queue.Enqueue(BuildUnorderedListItem("three", level: 2));
@@ -1313,7 +1313,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingAlternatingTwoOrderEveryTwo_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("one one"));
             queue.Enqueue(BuildOrderListItem("two", level: 1));
@@ -1343,7 +1343,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingAlternatingThreeOrderEveryTwo_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1383,7 +1383,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingAlternatingFourOrderEveryTwo_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1433,7 +1433,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingFourUnordered_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildUnorderedListItem("one one one"));
@@ -1483,7 +1483,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingFourUnorderedFinalNestZero_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildUnorderedListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildUnorderedListItem("one one one"));
@@ -1570,7 +1570,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingFourOrdered_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1620,7 +1620,7 @@ namespace Aaks.PowerPointParser.Html.Tests
         [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_TenDeepNestingFourOrderedFinalNestZero_ReturnsString()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildOrderListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));
@@ -1714,9 +1714,9 @@ namespace Aaks.PowerPointParser.Html.Tests
             actual.Should().Be("<ol><li>one</li></ol><ul><li>one one</li></ul><ol><li>one one one</li></ol><ul><li>one one one one<ol><li>two</li></ol><ul><li>two two</li></ul><ol><li>two two two</li></ol><ul><li>two two two two<ol><li>three</li></ol><ul><li>three three</li></ul><ol><li>three three three</li></ol><ul><li>three three three three<ol><li>four</li></ol><ul><li>four four</li></ul><ol><li>four four four</li></ol><ul><li>four four four four<ol><li>five</li></ol><ul><li>five five</li></ul><ol><li>five five five</li></ol><ul><li>five five five five<ol><li>six</li></ol><ul><li>six six</li></ul><ol><li>six six six six</li></ol><ul><li>six six six six six<ol><li>seven</li></ol><ul><li>seven seven</li></ul><ol><li>seven seven seven</li></ol><ul><li>seven seven seven seven<ol><li>eight</li></ol><ul><li>eight eight</li></ul><ol><li>eight eight eight</li></ol><ul><li>eight eight eight eight<ol><li>nine</li></ol><ul><li>nine nine</li></ul><ol><li>nine nine nine</li></ol><ul><li>nine nine nine nine<ol><li>ten</li></ol><ul><li>ten ten</li></ul><ol><li>ten ten ten</li></ol><ul><li>ten ten ten ten</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>");
         }
 
-        public static Queue<OpenXmlTextWrapper?> GetTenDeepNestingFourAlternateEachOrdered()
+        public static Queue<OpenXmlLineItem?> GetTenDeepNestingFourAlternateEachOrdered()
         {
-            Queue<OpenXmlTextWrapper?> queue = new();
+            Queue<OpenXmlLineItem?> queue = new();
             queue.Enqueue(BuildOrderListItem("one"));
             queue.Enqueue(BuildUnorderedListItem("one one"));
             queue.Enqueue(BuildOrderListItem("one one one"));

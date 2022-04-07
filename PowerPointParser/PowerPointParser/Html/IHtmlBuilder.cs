@@ -5,9 +5,9 @@ namespace Aaks.PowerPointParser.Html
 {
     public interface IHtmlBuilder
     {
-        string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlTextWrapper?>? paragraphWrapper);
+        string? ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlLineItem?>? paragraphWrapper);
 
         public Dictionary<int, string> ConvertOpenXmlParagraphWrapperToHtml(
-            IDictionary<int, IList<OpenXmlTextWrapper?>> paragraphWrappers);
+            IDictionary<int, IList<OpenXmlLineItem?>> paragraphWrappers);
     }
 }

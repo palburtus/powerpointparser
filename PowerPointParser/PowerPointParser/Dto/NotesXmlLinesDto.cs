@@ -124,7 +124,7 @@ namespace Aaks.PowerPointParser.Dto
     }
 
     [XmlRoot(Namespace = "http://schemas.openxmlformats.org/drawingml/2006/main", ElementName = "p")]
-    public class OpenXmlTextWrapper
+    public class OpenXmlLineItem
     {
 
         [XmlElement(ElementName = "pPr")]

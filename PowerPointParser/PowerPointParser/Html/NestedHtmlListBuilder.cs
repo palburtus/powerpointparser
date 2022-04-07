@@ -6,19 +6,19 @@ namespace Aaks.PowerPointParser.Html
 {
     public class NestedHtmlListBuilder : INestedHtmlListBuilder
     {
-        public bool DoNotCloseListItemDueToNesting(OpenXmlTextWrapper? current, OpenXmlTextWrapper? next)
+        public bool DoNotCloseListItemDueToNesting(OpenXmlLineItem? current, OpenXmlLineItem? next)
         {
             return next?.PPr?.Lvl > current?.PPr?.Lvl;
         }
 
-        public bool IsOnSameNestingLevel(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
+        public bool IsOnSameNestingLevel(OpenXmlLineItem? previous, OpenXmlLineItem? current)
         {
             if (current == null) return true;
             if (previous?.PPr == null && current.PPr == null) return true;
             return previous?.PPr?.Lvl == current.PPr?.Lvl;
         }
 
-        public bool ShouldChangeListTypes(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current, OpenXmlTextWrapper? next, string closingBracketTop)
+        public bool ShouldChangeListTypes(OpenXmlLineItem? previous, OpenXmlLineItem? current, OpenXmlLineItem? next, string closingBracketTop)
         {
             if (!IsListOrderTypeChanged(previous, current))
             {
@@ -37,7 +37,7 @@ namespace Aaks.PowerPointParser.Html
             return false;
         }
 
-        private static bool IsListOrderTypeChanged(OpenXmlTextWrapper? previous, OpenXmlTextWrapper? current)
+        private static bool IsListOrderTypeChanged(OpenXmlLineItem? previous, OpenXmlLineItem? current)
         {
             return previous.IsUnOrderedListItem() && current.IsOrderedListItem() ||
                    previous.IsOrderedListItem() && current.IsUnOrderedListItem();

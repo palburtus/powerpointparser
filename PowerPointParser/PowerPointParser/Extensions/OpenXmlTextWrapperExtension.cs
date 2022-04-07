@@ -5,7 +5,7 @@ namespace Aaks.PowerPointParser.Extensions
 {
     public static class OpenXmlTextWrapperExtension
     {
-        public static bool IsUnOrderedListItem(this OpenXmlTextWrapper? paragraphWrapper)
+        public static bool IsUnOrderedListItem(this OpenXmlLineItem? paragraphWrapper)
         {
             return paragraphWrapper?.PPr?.BuChar?.Character is
                 OpenXmlTextModifiers.UlFilledRoundBullet or
@@ -17,7 +17,7 @@ namespace Aaks.PowerPointParser.Extensions
                 OpenXmlTextModifiers.UlCheckmarkBullet;
         }
 
-        public static bool IsOrderedListItem(this OpenXmlTextWrapper? paragraphWrapper)
+        public static bool IsOrderedListItem(this OpenXmlLineItem? paragraphWrapper)
         {
             return paragraphWrapper?.PPr?.BuAutoNum?.Type is
                 OpenXmlTextModifiers.OlArabicPeriod or

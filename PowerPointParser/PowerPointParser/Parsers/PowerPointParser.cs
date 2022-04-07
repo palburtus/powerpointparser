@@ -20,7 +20,7 @@ namespace Aaks.PowerPointParser.Parsers
         
         private readonly ILogger<PowerPointParser>? _logger;
 
-        public IDictionary<int, IList<Paragraph?>> ParseSlide(string path)
+        public IDictionary<int, IList<OpenXmlLineItem?>> ParseSlide(string path)
         {
             using var presentationDocument = PresentationDocument.Open(path, false);
             var slidesContentMap = ParseSlides(presentationDocument);
@@ -32,7 +32,7 @@ namespace Aaks.PowerPointParser.Parsers
             _logger = logger;
         }
 
-        public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
+        public IDictionary<int, IList<OpenXmlLineItem?>> ParseSpeakerNotes(MemoryStream memoryStream)
         {
             using var presentationDocument = PresentationDocument.Open(memoryStream, false);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
@@ -40,111 +40,112 @@ namespace Aaks.PowerPointParser.Parsers
 
         }
 
-        public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path)
+        public IDictionary<int, IList<OpenXmlLineItem?>> ParseSpeakerNotes(string path)
         {
             using var presentationDocument = PresentationDocument.Open(path, false);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
             return slidesContentMap;
         }
 
-        private IDictionary<int, IList<Paragraph>?> ParseSlides(PresentationDocument presentationDocument)
+        private IDictionary<int, IList<OpenXmlLineItem?>> ParseSlides(PresentationDocument presentationDocument)
         {
-            IDictionary<int, IList<Paragraph>?> slidesContentMap = new Dictionary<int, IList<Paragraph?>>()!;
+            IDictionary<int, IList<OpenXmlLineItem?>> slidesContentMap = new Dictionary<int, IList<OpenXmlLineItem?>>();
             var presentationPart = presentationDocument.PresentationPart;
-            if (presentationPart == null) return slidesContentMap!;
-
-            var presentation = presentationPart.Presentation;
-
-            if (presentation.SlideIdList == null) return slidesContentMap;
-
-            var slideIds = presentation.SlideIdList.Elements<SlideId>();
+            
+            var slideIds = GetSlideIds(presentationPart);
 
             int slideIndex = 1;
 
             foreach (var slideId in slideIds)
             {
-                var openXmlItems = new List<Paragraph>();
+                if (slideId.RelationshipId == null) return slidesContentMap;
 
-                if (slideId == null) return null;
-                if (slideId.RelationshipId == null) return null;
-
-                var openXmlPart = presentationPart.GetPartById(slideId.RelationshipId!);
+                var openXmlPart = presentationPart!.GetPartById(slideId.RelationshipId!);
                 SlidePart? slidePart = openXmlPart as SlidePart;
 
-                
-                foreach (var item in slidePart?.Slide.Descendants<DocumentFormat.OpenXml.Drawing.Paragraph>()!)
+                var lineItems = slidePart?.Slide.Descendants<Paragraph>();
+
+                var openXmlSlideParagraph = new List<OpenXmlLineItem>();
+
+
+                if (lineItems != null)
                 {
-                    openXmlItems.Add(item);
+                    foreach (var item in lineItems)
+                    {
+                        openXmlSlideParagraph.AddRange(DeserializeOpenXmlLineItem(item.OuterXml));
+                    }
                 }
 
+
                 slideIndex++;
-
-                slidesContentMap.Add(slideIndex, openXmlItems);
+                slidesContentMap.Add(slideIndex, openXmlSlideParagraph!);
             }
-
 
             return slidesContentMap;
         }
 
-        private IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
+        private IDictionary<int, IList<OpenXmlLineItem?>> ParseSpeakerNotes(PresentationDocument presentationDocument)
         {
-            var slidesContentMap = new Dictionary<int, IList<OpenXmlTextWrapper>>();
+            var slidesContentMap = new Dictionary<int, IList<OpenXmlLineItem>>();
             var presentationPart = presentationDocument.PresentationPart;
-            if (presentationPart == null) return slidesContentMap!;
-
-            var presentation = presentationPart.Presentation;
-
-            if (presentation.SlideIdList == null) return slidesContentMap!;
-
-            var slideIds = presentation.SlideIdList.Elements<SlideId>();
+            
+            var slideIds = GetSlideIds(presentationPart);
 
             int slideIndex = 1;
 
             foreach (var slideId in slideIds)
             {
-                var note = GetNotesSlidePart(presentationPart, slideId);
-                var openXmlParagraphWrappers = new List<OpenXmlTextWrapper>();
+                var notesSlidePart = GetNotesSlidePart(presentationPart!, slideId);
+                var openXmlSpeakerNotes = new List<OpenXmlLineItem>();
 
-                if (DoesSlideHaveSpeakerNotes(note))
+                if (DoesSlideHaveSpeakerNotes(notesSlidePart))
                 {
-                    //var pNodesList = note.NotesSlide.Descendants<DocumentFormat.OpenXml.Drawing.Paragraph>();
-                    var pNodesList = ParsePNodesList(note!);
+                    var pNodesList = ParsePNodesList(notesSlidePart!.NotesSlide.OuterXml);
 
                     if (pNodesList != null)
                     {
-                        var xmlSerializer = new XmlSerializer(typeof(OpenXmlTextWrapper));
-                        foreach (/*var*/XmlNode node in pNodesList)
+                        foreach (XmlNode node in pNodesList)
                         {
-                            try
-                            {
-                                using StringReader stringReader = new(node.OuterXml);
-                                using XmlTextReader xmlReader = new (stringReader);
-                                var wrapper = (OpenXmlTextWrapper)xmlSerializer.Deserialize(xmlReader)!;
-                                openXmlParagraphWrappers.Add(wrapper);
-                            }
-                            catch (InvalidOperationException ex)
-                            {
-                                string message = $"{ex.Message} Slide Note Deserialization Failed";
-                                Console.WriteLine(message);
-                                _logger?.LogError(message);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                string message = $"{ex.Message} Unknown Exception Occurred";
-                                Console.WriteLine(message);
-                                _logger?.LogError(ex, message);
-                            }
+                            openXmlSpeakerNotes.AddRange(DeserializeOpenXmlLineItem(node.OuterXml));
                         }
                     }
                 }
 
-                slidesContentMap.Add(slideIndex, openXmlParagraphWrappers);
+                slidesContentMap.Add(slideIndex, openXmlSpeakerNotes);
                 slideIndex++;
             }
 
             return slidesContentMap!;
         }
+
+        private List<OpenXmlLineItem> DeserializeOpenXmlLineItem(string xml)
+        {
+            List<OpenXmlLineItem> openXmlParagraphWrappers = new List<OpenXmlLineItem>();
+            
+            try
+            {
+                var xmlSerializer = new XmlSerializer(typeof(OpenXmlLineItem));
+                using StringReader stringReader = new(xml);
+                using XmlTextReader xmlReader = new(stringReader);
+                var wrapper = (OpenXmlLineItem) xmlSerializer.Deserialize(xmlReader)!;
+                openXmlParagraphWrappers.Add(wrapper);
+            }
+            catch (InvalidOperationException ex)
+            {
+                string message = $"{ex.Message} Slide Note Deserialization Failed";
+                Console.WriteLine(message);
+                _logger?.LogError(message);
+            }
+            catch (Exception ex)
+            {
+                string message = $"{ex.Message} Unknown Exception Occurred";
+                Console.WriteLine(message);
+                _logger?.LogError(ex, message);
+            }
+
+            return openXmlParagraphWrappers;
+        }
+
         private static NotesSlidePart? GetNotesSlidePart(OpenXmlPartContainer presentationPart, SlideId? slideId)
         {
             if (slideId == null) return null;
@@ -157,6 +158,18 @@ namespace Aaks.PowerPointParser.Parsers
             return slidePart?.NotesSlidePart;
         }
 
+        private static IEnumerable<SlideId> GetSlideIds(PresentationPart? presentationPart)
+        {
+            if (presentationPart == null) return new List<SlideId>();
+
+            var presentation = presentationPart.Presentation;
+
+            if (presentation.SlideIdList == null) return new List<SlideId>();
+
+            var slideIds = presentation.SlideIdList.Elements<SlideId>();
+            return slideIds;
+        }
+
         private static bool DoesSlideHaveSpeakerNotes(NotesSlidePart? note)
         {
             if(note == null) return false;
@@ -164,9 +177,8 @@ namespace Aaks.PowerPointParser.Parsers
             return !string.IsNullOrEmpty(note.NotesSlide.InnerText);
         }
 
-        private static XmlNodeList? ParsePNodesList(NotesSlidePart note)
+        private static XmlNodeList? ParsePNodesList(string xml)
         {
-            var xml = note.NotesSlide.OuterXml;
             XmlDocument xmlDocument = new();
             xmlDocument.LoadXml(xml);
 

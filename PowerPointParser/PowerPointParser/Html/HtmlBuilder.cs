@@ -16,11 +16,11 @@ namespace Aaks.PowerPointParser.Html
             _innerHtmlBuilder = innerHtmlBuilder;
         }
 
-        public string ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlTextWrapper?>? paragraphWrappers)
+        public string ConvertOpenXmlParagraphWrapperToHtml(Queue<OpenXmlLineItem?>? paragraphWrappers)
         {
             return ConvertHtmlParagraphWrapperToHtml(paragraphWrappers, null);
         }
-        public Dictionary<int, string> ConvertOpenXmlParagraphWrapperToHtml(IDictionary<int, IList<OpenXmlTextWrapper?>> paragraphWrappers)
+        public Dictionary<int, string> ConvertOpenXmlParagraphWrapperToHtml(IDictionary<int, IList<OpenXmlLineItem?>> paragraphWrappers)
         {
             
             var speakerNotes = new Dictionary<int, string>();
@@ -32,7 +32,7 @@ namespace Aaks.PowerPointParser.Html
             }
             return speakerNotes;
         }
-        private string ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlTextWrapper?>? paragraphWrappers, OpenXmlTextWrapper? previous)
+        private string ConvertHtmlParagraphWrapperToHtml(Queue<OpenXmlLineItem?>? paragraphWrappers, OpenXmlLineItem? previous)
         {
             StringBuilder sb = new();
             if (paragraphWrappers == null) { return sb.ToString(); }
