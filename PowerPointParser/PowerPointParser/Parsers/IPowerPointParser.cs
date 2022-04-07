@@ -7,7 +7,7 @@ namespace Aaks.PowerPointParser.Parsers
 {
     public interface IPowerPointParser
     {
-        IDictionary<int, IList<OpenXmlLineItem?>> ParseSlide(string path);
+        IDictionary<int, IList<OpenXmlSlide?>> ParseSlide(string path);
         IDictionary<int, IList<OpenXmlLineItem?>> ParseSpeakerNotes(string path);
         IDictionary<int, IList<OpenXmlLineItem?>> ParseSpeakerNotes(MemoryStream memoryStream);
     }

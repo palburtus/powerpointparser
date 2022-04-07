@@ -1,5 +1,4 @@
-﻿using Aaks.PowerPointParser.Parsers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Aaks.PowerPointParser.Dto;
@@ -27,7 +26,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckOne.pptx")]
-        public void Parse_ParseTestDeck_ReturnsIntWrapperMap()
+        public void Parse_ParseTestDeck_ReturnsOpenXmlLineItem()
         {
             var path = Path.Combine(_directory!, "TestDeckOne.pptx");
 
@@ -39,7 +38,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseNoteParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseNoteParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -53,7 +52,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestThree.pptx")]
-        public void Parse_ParseAlternativeFormat_ReturnsIntWrapperMap()
+        public void Parse_ParseAlternativeFormat_ReturnsOpenXmlLineItem()
         {
             var path = Path.Combine(_directory!, "TestThree.pptx");
             IPowerPointParser powerPointParser = new PowerPointParser();
@@ -67,7 +66,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseNoteConsecutiveParagraphs_ReturnsIntWrapperMap()
+        public void Parse_ParseNoteConsecutiveParagraphs_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -80,7 +79,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseBoldParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseBoldParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -94,7 +93,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseItalicParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseItalicParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -114,7 +113,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseUnderlinedParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseUnderlinedParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -129,7 +128,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseStrikeThroughParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseStrikeThroughParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -144,7 +143,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseCenterAlignedParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseCenterAlignedParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -161,7 +160,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseRightAlignedParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseRightAlignedParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -177,7 +176,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseJustifiedAlignedParagraph_ReturnsIntWrapperMap()
+        public void Parse_ParseJustifiedAlignedParagraph_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -193,7 +192,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ParseConsecutiveEmptySpaces_ReturnsIntWrapperMap()
+        public void Parse_ParseConsecutiveEmptySpaces_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -241,7 +240,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_ParseUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -265,7 +264,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseEmbeddedUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_ParseEmbeddedUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -287,7 +286,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseOrderedList_ReturnsIntWrapperMap()
+        public void Parse_ParseOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -311,7 +310,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseEmbeddedOrderedList_ReturnsIntWrapperMap()
+        public void Parse_ParseEmbeddedOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -346,7 +345,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_HollowRoundBulletsUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_HollowRoundBulletsUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -363,7 +362,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_HollowSquareBulletsUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_HollowSquareBulletsUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -380,7 +379,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_StarBulletsUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_StarBulletsUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -397,7 +396,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_ArrowBulletsUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_ArrowBulletsUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -414,7 +413,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_CheckMarkBulletsUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_CheckMarkBulletsUnorderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -432,7 +431,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_OpenParenRightOrderedList_ReturnsIntWrapperMap()
+        public void Parse_OpenParenRightOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -451,7 +450,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_CapitalRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
+        public void Parse_CapitalRomanNumeralsPeriodOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -471,7 +470,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_CapitalAlphaPeriodOrderedList_ReturnsIntWrapperMap()
+        public void Parse_CapitalAlphaPeriodOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -491,7 +490,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_LowerCaseAlphaRightParenOrderedList_ReturnsIntWrapperMap()
+        public void Parse_LowerCaseAlphaRightParenOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -515,7 +514,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_LowerCaseAlphaPeriodOrderedList_ReturnsIntWrapperMap()
+        public void Parse_LowerCaseAlphaPeriodOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -538,7 +537,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestFour.pptx")]
-        public void Parse_LowerCaseRomanNumeralsPeriodOrderedList_ReturnsIntWrapperMap()
+        public void Parse_LowerCaseRomanNumeralsPeriodOrderedList_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var path = Path.Combine(_directory!, "TestFour.pptx");
@@ -561,7 +560,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseHyperlink_ReturnsIntWrapperMap()
+        public void Parse_ParseHyperlink_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -577,7 +576,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_ParseIndentFollowedByOrdered_ReturnsIntWrapperMap()
+        public void Parse_ParseIndentFollowedByOrdered_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser powerPointParser = new PowerPointParser();
             var map = powerPointParser.ParseSpeakerNotes(_path!);
@@ -591,7 +590,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
         [TestMethod]
         [DeploymentItem("TestData/TestDeckParagraph.pptx")]
-        public void Parse_FromMemoryStreamParseUnorderedList_ReturnsIntWrapperMap()
+        public void Parse_FromMemoryStreamParseUnorderedList_ReturnsOpenXmlLineItem()
         {
             using var memoryStream = new MemoryStream();
             using var fileStream = File.OpenRead(_path!);
@@ -624,15 +623,31 @@ namespace Aaks.PowerPointParser.Parsers.Tests
         #region Slide Parsing
 
         [TestMethod]
-        public void ParseSlideTest()
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void ParseSlide_ParseTitleSlideSubtitle_ReturnsOpenXmlLineItem()
         {
             IPowerPointParser parser = new PowerPointParser();
             var slideDictionary = parser.ParseSlide(_path!);
 
-            var actual = slideDictionary[2][2]!.R![0].T;
+            slideDictionary.Should().NotBeNull();
 
+            var actual = slideDictionary[2][0]!.CSld.SpTree.Sp[2].TxBody.P.R.T;
 
             actual.Should().Be("Sit Dolor Amet");
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/TestDeckParagraph.pptx")]
+        public void ParseSlide_ParseTitleSlideTitle_ReturnsOpenXmlLineItem()
+        {
+            IPowerPointParser parser = new PowerPointParser();
+            var slideDictionary = parser.ParseSlide(_path!);
+
+            slideDictionary.Should().NotBeNull();
+
+            var actual = slideDictionary[2][0]!.CSld.SpTree.Sp[1].TxBody.P.R.T;
+
+            actual.Should().Be("Title Lorem Ipsum");
         }
 
         #endregion
