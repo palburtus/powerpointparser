@@ -617,10 +617,10 @@ namespace Aaks.PowerPointParser.Parsers.Tests
         }
 
         [TestMethod]
-        //[DeploymentItem("TestData/Malformed.pptx")]
+        [DeploymentItem("TestData/Malformed.pptx")]
         public void ParseSlide_ParseSlidesMailformedUrl_ReturnsOpenXmlLineItem()
         {
-            var path = Path.Combine(_directory!, "aa.pptx");
+            var path = Path.Combine(_directory!, "Malformed.pptx");
             using var memoryStream = new MemoryStream();
             using var fileStream = File.OpenRead(path!);
             fileStream.CopyTo(memoryStream);
