@@ -7,6 +7,7 @@ using Aaks.PowerPointParser.Dto;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using Aaks.PowerPointParser.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Aaks.PowerPointParser.Parsers
@@ -25,15 +26,25 @@ namespace Aaks.PowerPointParser.Parsers
 
         public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(MemoryStream memoryStream)
         {
-            using var presentationDocument = PresentationDocument.Open(memoryStream, false);
+            var settings = new OpenSettings
+            {
+                RelationshipErrorHandlerFactory = p => new RemoveMalformedHyperlinksRelationshipErrorHandler(p),
+            };
+
+            using var presentationDocument = PresentationDocument.Open(memoryStream, true, settings);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
             return slidesContentMap;
 
         }
         public IDictionary<int, IList<OpenXmlTextWrapper?>> ParseSpeakerNotes(string path)
         {
-            
-            using var presentationDocument = PresentationDocument.Open(path, false);
+
+            var settings = new OpenSettings
+            {
+                RelationshipErrorHandlerFactory = p => new RemoveMalformedHyperlinksRelationshipErrorHandler(p),
+            };
+
+            using var presentationDocument = PresentationDocument.Open(path, true, settings);
             var slidesContentMap = ParseSpeakerNotes(presentationDocument);
             return slidesContentMap;
 

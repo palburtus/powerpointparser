@@ -615,5 +615,28 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actualTwo.Should().BeEquivalentTo(expectedTwo);
             actualThree.Should().BeEquivalentTo(expectedThree);
         }
+
+        [TestMethod]
+        //[DeploymentItem("TestData/Malformed.pptx")]
+        public void ParseSlide_ParseSlidesMailformedUrl_ReturnsOpenXmlLineItem()
+        {
+            var path = Path.Combine(_directory!, "aa.pptx");
+            using var memoryStream = new MemoryStream();
+            using var fileStream = File.OpenRead(path!);
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(memoryStream);
+
+            map.Keys.Count.Should().Be(2);
+
+            var actual = map[1];
+
+            actual[0]!.R![0].T.Should().Be("Figure ");
+            actual[0]!.R![1].T.Should().Be("Legend");
+            actual[0]!.R![2].T.Should().Be(":");
+
+        }
     }
 }
