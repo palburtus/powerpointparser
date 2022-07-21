@@ -33,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestData\ExtraNoteObject.pptx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\Malformed.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

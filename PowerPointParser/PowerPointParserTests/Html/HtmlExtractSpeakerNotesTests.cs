@@ -12,7 +12,7 @@ namespace PowerPointParserTests.Html;
 public class HtmlExtractSpeakerNotesTests 
 {
     private readonly string _directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
-    protected const string ExpectedTestDeckParagraph = @"<p>This note is just a paragraph</p><p>This note is just a paragraph</p><p>And this is a second paragraph</p><p><strong>This is a bold paragraph</strong></p><ul><li>Unordered item 1</li><li>Unordered item 2</li><li>Unordered item 3</li><li>Indent Unordered item 1<ul><li>Indent Unordered item 2<ul><li>Indent Unordered item 3</li></ul></li></ul></li></ul><ol><li>Ordered one</li><li>Ordered two</li><li>Ordered three</li><li>Indent Ordered One<ol><li>Indent Ordered One One<ol><li>Indent Order One OneOne</li></ol></li></ol></li><li>Indent Ordered Three</li></ol><p>Here a link: https://www.google.com/</p><ul><li>Un</li><li>Order</li><li>List</li></ul><ol><li>Followed </li><li>by </li><li>Ordered</li></ol>";
+    protected const string ExpectedTestDeckParagraph = @"<p>This note is just a paragraph</p><p>This note is just a paragraph</p><p>And this is a second paragraph</p><p><strong>This is a bold paragraph</strong></p><ul><li>Unordered item 1</li><li>Unordered item 2</li><li>Unordered item 3</li></ul><ul><li>Indent Unordered item 1<ul><li>Indent Unordered item 2<ul><li>Indent Unordered item 3</li></ul></li></ul></li></ul><ol><li>Ordered one</li><li>Ordered two</li><li>Ordered three</li><li>Indent Ordered One<ol><li>Indent Ordered One One<ol><li>Indent Order One OneOne</li></ol></li></ol></li><li>Indent Ordered Three</li></ol><p>Here a link: https://www.google.com/</p><ul><li>Un</li><li>Order</li><li>List</li></ul><ol><li>Followed </li><li>by </li><li>Ordered</li></ol>";
     protected Dictionary<int, string> ExpectedTestDeckOneDict = new()
     {
         {1, "<p>Intro Slide </p><p><strong>Test</strong></p><p><strong>One</strong></p><p><strong>Two</strong></p><ol><li><strong>Order one</strong></li><li><strong>Order two</strong></li><li><strong>Order three</strong></li></ol><p><strong>Here is a note that is </strong>not bold</p>" },
@@ -26,16 +26,15 @@ public class HtmlExtractSpeakerNotesTests
         {2,  "<p>This note is just a paragraph</p>"},
         {3,  "<p>This note is just a paragraph</p><p>And this is a second paragraph</p>"},
         {4,  "<p><strong>This is a bold paragraph</strong></p>"},
-        {5,  "<ul><li>Unordered item 1</li><li>Unordered item 2</li><li>Unordered item 3</li></ul>"},
-        {6, "<ul><li>Indent Unordered item 1<ul><li>Indent Unordered item 2<ul><li>Indent Unordered item 3</li></ul></li></ul></li></ul>" },
+        {5,  "<ul><li>Unordered item 1</li><li>Unordered item 2</li><li>Unordered item</li></ul>"},
+        {6,  "<ul><li>Indent Unordered item 1<ul><li>Indent Unordered item 2<ul><li>Indent Unordered item 3</li></ul></li></ul></li></ul>" },
         {7,  "<ol><li>Ordered one</li><li>Ordered two</li><li>Ordered three</li></ol>"},
         {8,  "<ol><li>Indent Ordered One<ol><li>Indent Ordered One One<ol><li>Indent Order One OneOne</li></ol></li></ol></li><li>Indent Ordered Three</li></ol>" },
         {9,  "<p>Here a link: https://www.google.com/</p>"},
         {10, "<ul><li>Un</li><li>Order</li><li>List</li></ul><ol><li>Followed </li><li>by </li><li>Ordered</li></ol>"}
     };
-    
 
-
+   
     [TestMethod]
     [DeploymentItem("TestData")]
     [DataRow("TestDeckParagraph.pptx", ExpectedTestDeckParagraph)]

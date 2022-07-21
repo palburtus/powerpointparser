@@ -14,8 +14,8 @@ namespace Aaks.PowerPointParser.Parsers
 {
     public class PowerPointParser : IPowerPointParser
     {
-        private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']";
-        private const string PNodesListXPath = @"/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
+        private const string XpathNotesToSp = @"/*[local-name() = 'notes']/*[local-name() = 'cSld']/*[local-name() = 'spTree']/*[local-name() = 'sp']/*[local-name() = 'txBody']/*[local-name() = 'p']";
+        private const string PNodesListXPath = @"/*[local-name() = 'txBody']/*[local-name() = 'p']";
         
         private readonly ILogger<PowerPointParser>? _logger;
 
@@ -135,12 +135,13 @@ namespace Aaks.PowerPointParser.Parsers
 
             var xmlNamespaceManager = new XmlNamespaceManager(xmlDocument.NameTable);
             xmlNamespaceManager.AddNamespace(@"p", "http://schemas.openxmlformats.org/drawingml/2006/main");
+            xmlNamespaceManager.AddNamespace(@"p", "http://schemas.openxmlformats.org/presentationml/2006/main");
 
             var spNodesList = xmlDocument.SelectNodes(XpathNotesToSp, xmlNamespaceManager);
+            return spNodesList;
+            /*if(spNodesList == null) return null;
             
-            if(spNodesList == null) return null;
-            
-            var bodyNode = spNodesList[1];
+            XmlNode? bodyNode = spNodesList[0];
 
             if(bodyNode == null) return null;
 
@@ -150,7 +151,7 @@ namespace Aaks.PowerPointParser.Parsers
             using var stream = new MemoryStream(bytes);
             bodyNodeXmlDocument.Load(stream);
 
-            return bodyNodeXmlDocument.SelectNodes(PNodesListXPath, xmlNamespaceManager);
+            return bodyNodeXmlDocument.SelectNodes(PNodesListXPath, xmlNamespaceManager);*/
         }
     }
 }
