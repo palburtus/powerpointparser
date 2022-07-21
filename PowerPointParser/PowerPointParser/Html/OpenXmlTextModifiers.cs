@@ -4,6 +4,7 @@ namespace Aaks.PowerPointParser.Html
     public static class OpenXmlTextModifiers
     {
         public const string StrikeThrough = "sngStrike";
+        public const string DoubleStrikeThrough = "dblStrike";
         public const string Underlined = "sng";
         public const int Bold = 1;
         public const int Italic = 1;
@@ -24,6 +25,6 @@ namespace Aaks.PowerPointParser.Html
         public const string AlignTextCenter = "ctr";
         public const string AlignTextRight = "r";
         public const string AlignTextJustify = "just";
-
+        
     }
 }

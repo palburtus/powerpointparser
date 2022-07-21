@@ -660,5 +660,49 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actual[1]!.R![0].T.Should().Be("The");
             actual[1]!.R![1].T.Should().Be(".");
         }
+
+        [TestMethod]
+        [DeploymentItem("TestData/SpecialCharacters.pptx")]
+        public void ParseSpeakerNotes_ParseSpecialCharacters_ReturnsOpenLineItemXml()
+        {
+            var path = Path.Combine(_directory!, "SpecialCharacters.pptx");
+            using var memoryStream = new MemoryStream();
+            using var fileStream = File.OpenRead(path!);
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(memoryStream);
+
+            map.Keys.Count.Should().Be(1);
+
+            var actual = map[1];
+
+            //actual[0]!.R!.Count.Should().Be(37);
+            actual[12]!.R![0].T.Should().Be("Google");
+            actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
+        }
+
+        [TestMethod]
+        [DeploymentItem("TestData/SpecialCharacters.pptx")]
+        public void ParseSpeakerNotes_ParseDoubleStrikeThrough_ReturnsOpenLineItemXml()
+        {
+            var path = Path.Combine(_directory!, "SpecialCharacters.pptx");
+            using var memoryStream = new MemoryStream();
+            using var fileStream = File.OpenRead(path!);
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(memoryStream);
+
+            map.Keys.Count.Should().Be(1);
+
+            var actual = map[1];
+
+            //actual[0]!.R!.Count.Should().Be(37);
+            actual[12]!.R![0].T.Should().Be("Google");
+            actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
+        }
     }
 }

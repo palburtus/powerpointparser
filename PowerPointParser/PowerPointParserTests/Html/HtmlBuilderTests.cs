@@ -125,6 +125,17 @@ namespace Aaks.PowerPointParser.Html.Tests
         }
 
         [TestMethod]
+        public void ConvertOpenXmlParagraphWrapperToHtml_DoubleStrikeThroughTag_ReturnsString()
+        {
+            Queue<OpenXmlTextWrapper?> queue = new();
+            queue.Enqueue(BuildParagraphLine("hello world", new RPr { Strike = "dblStrike" }));
+
+            var actual = _htmlConverter.ConvertOpenXmlParagraphWrapperToHtml(queue);
+
+            actual.Should().Be("<p><del style=\"text-decoration-style: double;\">hello world</del></p>");
+        }
+
+        [TestMethod]
         public void ConvertOpenXmlParagraphWrapperToHtml_StrongItalicTag_ReturnsString()
         {
             Queue<OpenXmlTextWrapper?> queue = new();

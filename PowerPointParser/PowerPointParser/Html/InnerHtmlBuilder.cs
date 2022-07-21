@@ -27,9 +27,11 @@ namespace Aaks.PowerPointParser.Html
                 if (IsUnderlined(r)) sb.Append(HtmlTags.Open(HtmlTags.Underlined));
                 if (IsItalic(r)) sb.Append(HtmlTags.Open(HtmlTags.Italic));
                 if (IsStrikeThrough(r)) sb.Append(HtmlTags.Open(HtmlTags.StrikeThrough));
+                if (IsDoubleStrikeThrough(r)) sb.Append(HtmlTags.Open(HtmlTags.DoubleStrikeThrough, style:HtmlTags.DoubleStrikeThroughTextDecoration));
 
                 sb.Append(HttpUtility.HtmlEncode(r.T));
 
+                if (IsDoubleStrikeThrough(r)) sb.Append(HtmlTags.Close(HtmlTags.DoubleStrikeThrough));
                 if (IsStrikeThrough(r)) sb.Append(HtmlTags.Close(HtmlTags.StrikeThrough));
                 if (IsItalic(r)) sb.Append(HtmlTags.Close(HtmlTags.Italic));
                 if (IsUnderlined(r)) sb.Append(HtmlTags.Close(HtmlTags.Underlined));
@@ -54,6 +56,12 @@ namespace Aaks.PowerPointParser.Html
         {
             if (r?.RPr == null) return false;
             return r.RPr.Strike == OpenXmlTextModifiers.StrikeThrough;
+        }
+
+        private static bool IsDoubleStrikeThrough(R r)
+        {
+            if (r?.RPr == null) return false;
+            return r.RPr.Strike == OpenXmlTextModifiers.DoubleStrikeThrough;
         }
 
         private static bool IsUnderlined(R? r)

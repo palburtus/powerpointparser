@@ -39,6 +39,9 @@
     <None Update="TestData\Malformed.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\SpecialCharacters.pptx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\TestDeckOne.pptx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
