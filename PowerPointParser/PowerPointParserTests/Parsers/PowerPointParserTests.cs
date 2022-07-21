@@ -704,7 +704,7 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
         }
         
-        [TestMethod]
+        /*[TestMethod]
         [DeploymentItem("TestData/Indentation.pptx")]
         public void ParseSpeakerNotes_Indentation_ReturnsOpenLineItemXml()
         {
@@ -723,6 +723,6 @@ namespace Aaks.PowerPointParser.Parsers.Tests
 
             //actual[12]!.R![0].T.Should().Be("Google");
             //actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
-        }
+        }*/
     }
 }
