@@ -28,5 +28,6 @@ namespace Aaks.PowerPointParser.Html
         public static readonly string StrikeThrough = "del";
         public const string DoubleStrikeThrough = "del";
         public const string DoubleStrikeThroughTextDecoration = "text-decoration-style: double;";
+        public const string LineBreak = "<br/>";
     }
 }

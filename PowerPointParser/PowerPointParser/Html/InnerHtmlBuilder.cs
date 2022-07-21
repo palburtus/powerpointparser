@@ -58,7 +58,7 @@ namespace Aaks.PowerPointParser.Html
             return r.RPr.Strike == OpenXmlTextModifiers.StrikeThrough;
         }
 
-        private static bool IsDoubleStrikeThrough(R r)
+        private static bool IsDoubleStrikeThrough(R? r)
         {
             if (r?.RPr == null) return false;
             return r.RPr.Strike == OpenXmlTextModifiers.DoubleStrikeThrough;

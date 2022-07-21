@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <VersionPrefix>1.0.1.207</VersionPrefix>
+	  <VersionPrefix>1.0.1.209</VersionPrefix>
 	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	  <TargetFramework>net6.0</TargetFramework>
     <!--<ImplicitUsings>enable</ImplicitUsings>-->
@@ -15,7 +15,7 @@
     <AssemblyName>Aaks$(MSBuildProjectName)</AssemblyName>
     <PackageProjectUrl>https://github.com/palburtus/powerpointparser#readme</PackageProjectUrl>
     <PackageTags>office, xml, powerpoint</PackageTags>
-    <PackageReleaseNotes>Fixed bug that caused blank slides for pptx files with extra note objects</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed empty list bug that caused blank list items, added support for double strikethrough</PackageReleaseNotes>
     <Description>Library for Parsing .pptx Speaker Notes that can be converted to HTML</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>nuget_icon.png</PackageIcon>

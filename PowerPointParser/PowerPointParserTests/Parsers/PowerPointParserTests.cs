@@ -699,10 +699,30 @@ namespace Aaks.PowerPointParser.Parsers.Tests
             map.Keys.Count.Should().Be(1);
 
             var actual = map[1];
-
-            //actual[0]!.R!.Count.Should().Be(37);
+            
             actual[12]!.R![0].T.Should().Be("Google");
             actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
+        }
+        
+        [TestMethod]
+        [DeploymentItem("TestData/Indentation.pptx")]
+        public void ParseSpeakerNotes_Indentation_ReturnsOpenLineItemXml()
+        {
+            var path = Path.Combine(_directory!, "Indentation.pptx");
+            using var memoryStream = new MemoryStream();
+            using var fileStream = File.OpenRead(path!);
+            fileStream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+
+            IPowerPointParser powerPointParser = new PowerPointParser();
+            var map = powerPointParser.ParseSpeakerNotes(memoryStream);
+
+            map.Keys.Count.Should().Be(1);
+
+            var actual = map[1];
+
+            //actual[12]!.R![0].T.Should().Be("Google");
+            //actual[12]!.R![0].RPr!.Strike.Should().Be("dblStrike");
         }
     }
 }

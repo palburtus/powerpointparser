@@ -65,6 +65,8 @@ namespace Aaks.PowerPointParser.Html
             bool isNextStartOfNesting = _nestedHtmlListBuilder.DoNotCloseListItemDueToNesting(current, next);
             bool isNestedWithoutParent = next?.PPr?.Lvl - current.PPr?.Lvl > 1;
 
+            
+
             if (isNextStartOfNesting && !isNestedWithoutParent)
             {
                 sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItemBeforeNesting(current));
@@ -72,9 +74,9 @@ namespace Aaks.PowerPointParser.Html
             }
             else
             {
-                sb.Append(_innerHtmlBuilder.BuildInnerHtmlListItem(current));
+                sb.Append(current.R?.Count > 0 ? _innerHtmlBuilder.BuildInnerHtmlListItem(current) : HtmlTags.LineBreak);
             }
-
+            
             if (IsEndOfNestedList(current, next))
             {
                 int nextLevel = GetNextNestingLevel(next);
@@ -155,6 +157,24 @@ namespace Aaks.PowerPointParser.Html
         private bool IsFirstListItem(OpenXmlTextWrapper? current, OpenXmlTextWrapper? previous)
         {
             return IsListItem(current) && (previous == null || !IsListItem(previous));
+        }
+
+        private bool IsListCharacterChanged(OpenXmlTextWrapper? current, OpenXmlTextWrapper? previous)
+        {
+            if (current != null && previous != null)
+            {
+                if (current.IsUnOrderedListItem() && previous.IsUnOrderedListItem() && (current.PPr?.BuChar?.Character != previous.PPr?.BuChar?.Character))
+                {
+                    return true;
+                }
+
+                if (current.IsOrderedListItem() && previous.IsOrderedListItem() && (current.PPr?.BuAutoNum?.Type != previous.PPr?.BuAutoNum?.Type))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
